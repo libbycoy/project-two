@@ -16,14 +16,25 @@ var timer, timerEvent, text
 LevelOne.Boot.prototype = {
   preload: function() {
 
-      game.load.image('background', 'assets/phaser_background-01.jpg');
-      game.load.image('ground', 'assets/platform0.png');
-      game.load.image('star', 'assets/star.png');
-      game.load.image('diamond', 'assets/diamond.png')
-      game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-  },
+        game.load.image('background', 'assets/phaser_background-01.jpg');
+        //game.load.image('ground', 'assets/platform.png');
+        game.load.image('ground', 'assets/walls/outer-wall.png');
+        game.load.image('star', 'assets/star.png');
+        game.load.image('diamond', 'assets/diamond.png')
+        game.load.image('horizontalLine', 'assets/walls/s-line-h.png');
+        game.load.image('verticalLine', 'assets/walls/s-line-v.png');
+        game.load.image('half_rectangle', 'assets/walls/s-rect-half.png')
+        game.load.image('thinRectangle', 'assets/walls/s-rect-thin.png');
+        game.load.image('wideRectangle', 'assets/walls/s-rect-wide.png');
+        game.load.image('square', 'assets/walls/s-square.png')
+        game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    },
 
   create: function () {
+
+
+    //create the external walls
+    this.game.scale.pageAlignHorizontally = true;this.game.scale.pageAlignVertically = true;this.game.scale.refresh();
 
       // Create a custom timer
       timer = game.time.create();
@@ -34,15 +45,17 @@ LevelOne.Boot.prototype = {
       // Start the timer!
       timer.start();
 
-
       //  We're going to be using physics, so enable the Arcade Physics system
       game.physics.startSystem(Phaser.Physics.ARCADE);
+
+      // The player and its settings
+      // player = game.add.sprite(32, game.world.height - 550, 'dude');
+      player = game.add.sprite(game.world.centerX, game.world.height - 0, 'dude')
 
       //  A simple background for our game
       // game.add.sprite(0, 0, 'sky');
       game.add.tileSprite(0, 0, 1920, 1920, 'background');
       game.world.setBounds(0, 0, 1920, 1920);
-
 
       //  The platforms group contains the ground and the 2 ledges we can jump on
       platforms = game.add.group();
@@ -51,7 +64,8 @@ LevelOne.Boot.prototype = {
       platforms.enableBody = true;
 
       // Here we create the ground.
-      var ground = platforms.create(0, game.world.height - 64, 'ground');
+      var ground = platforms.create(40, game.world.height - 200, 'ground');
+      
 
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
       ground.scale.setTo(2, 2);
@@ -70,7 +84,7 @@ LevelOne.Boot.prototype = {
 
        // The player and its settings
       // player = game.add.sprite(32, game.world.height - 550, 'dude');
-      player = game.add.sprite(game.world.centerX, game.world.centerY, 'dude')
+      player = game.add.sprite(game.world.centerX, game.world.height - 0, 'dude')
 
       //  We need to enable physics on the player
       game.physics.arcade.enable(player);
