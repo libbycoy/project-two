@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 
 function preload() {
@@ -6,7 +6,9 @@ function preload() {
     game.load.image('sky', 'assets/sky.png');
     game.load.image('ground', 'assets/platform.png');
     game.load.image('star', 'assets/star.png');
+    game.load.image('diamond', 'assets/diamond.png')
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+
 
 }
 
@@ -14,11 +16,15 @@ var player;
 var platforms;
 var cursors;
 var stars;
+var diamonds;
 var score = 0;
 var scoreText;
 
 
 function create() {
+
+    timer = game.time.create();
+
 
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -60,8 +66,6 @@ function create() {
     //  We need to enable physics on the player
     game.physics.arcade.enable(player);
 
-    //  Player physics properties. Give the little guy a slight bounce.
-    player.body.bounce.y = 0.2;
     // player.body.gravity.y = 300;
     player.body.collideWorldBounds = true;
 
@@ -75,8 +79,13 @@ function create() {
     //  Finally some stars to collect
     stars = game.add.group();
 
+    // Adding Diamonds
+    diamonds = game.add.group()
+
     //  We will enable physics for any star that is created in this group
     stars.enableBody = true;
+
+    diamonds.enableBody = true;
 
     //  Here we'll create 12 of them evenly spaced apart
     for (var i = 0; i < 12; i++)
@@ -91,13 +100,25 @@ function create() {
         star.body.bounce.y = 0.7 + Math.random() * 0.2;
     }
 
-    //  The score
-    scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    for (var i = 0; i < 6; i++)
+    {
+        //  Create a star inside of the 'stars' group
+        var diamond = diamonds.create(i * 30, 0, 'diamond');
 
+        //  Let gravity do its thing
+        diamond.body.gravity.y = 300;
+
+    }
+
+    //  The score
+    // Original Score generator
+    // scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
+    scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    scoreText.fixedToCamera = true
 
     game.camera.follow(player);
-    game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
-    // var camera = new Phaser.Camera(Phaser.Game, nil, player.world.x, player.world.y, 100, 100);
+    game.camera.deadzone = new Phaser.Rectangle(450, 250, 100, 100);
 }
 
 function update() {
@@ -105,9 +126,12 @@ function update() {
      //  Collide the player and the stars with the platforms
     game.physics.arcade.collide(player, platforms);
     game.physics.arcade.collide(stars, platforms);
+    game.physics.arcade.collide(diamonds, platforms)
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
+    game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this);
+
 
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
@@ -147,8 +171,10 @@ function update() {
 
 function render() {
 
-    game.debug.cameraInfo(game.camera, 32, 32);
-    game.debug.spriteCoords(player, 32, 500);
+  //  game.context.fillStyle = 'rgba(255,0,0,0.6)';
+  // game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
+  // game.debug.cameraInfo(game.camera, 32, 32);
+  // game.debug.spriteCoords(player, 32, 500);
 
 }
 
@@ -162,4 +188,14 @@ function collectStar (player, star) {
     score += 10;
     scoreText.text = 'Score: ' + score;
 
+}
+function collectDiamond (player, diamond) {
+
+    // Removes the star from the screen
+    diamond.kill();
+
+
+    //  Add and update the score
+    score += 50;
+    scoreText.text = 'Score: ' + score;
 }
