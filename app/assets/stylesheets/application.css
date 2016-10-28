@@ -13,3 +13,9 @@
  *= require_tree .
  *= require_self
  */
+
+background-image: url("assets/background.jpg);
+
+ .radial {
+   background-image: radial-gradient(100px 100px , #064485 100%, #042f5b 100%);
+ }
