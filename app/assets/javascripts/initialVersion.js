@@ -4,6 +4,7 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, creat
 function preload() {
 
     game.load.image('background', 'assets/phaser_background-01.jpg');
+    game.load.image('opacity', 'assets/opacity-02.png');
     game.load.image('ground', 'assets/platform.png');
     game.load.image('star', 'assets/star.png');
     game.load.image('diamond', 'assets/diamond.png')
@@ -17,9 +18,11 @@ var stars;
 var diamonds;
 var score = 0;
 var scoreText;
+var opaqimg;
 
 
 function create() {
+
 
     timer = game.time.create();
 
@@ -30,8 +33,14 @@ function create() {
     //  A simple background for our game
     // game.add.sprite(0, 0, 'sky');
     game.add.tileSprite(0, 0, 1920, 1920, 'background');
+
+    opaqimg = game.add.sprite(1000, 600, 'opacity');
+    opaqimg.fixedToCamera = true;
+    opaqimg.cameraOffset.setTo(0, 0);
+
     game.world.setBounds(0, 0, 1920, 1920);
 
+        // t.cameraOffset.setTo(200, 500);
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = game.add.group();
@@ -117,6 +126,8 @@ function create() {
 
     game.camera.follow(player);
     game.camera.deadzone = new Phaser.Rectangle(450, 250, 100, 100);
+
+
 }
 
 function update() {
