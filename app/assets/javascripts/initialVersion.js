@@ -185,7 +185,7 @@ LevelOne.Boot.prototype = {
       game.debug.text("Done!", 940, 14, "#0f0");
     }
     // For camera debugging only. Plz don't delete.
-    game.debug.cameraInfo(game.camera, 32, 32);
+    // game.debug.cameraInfo(game.camera, 32, 32);
     // game.debug.spriteCoords(player, 32, 500);
   },
   endTimer: function () {
