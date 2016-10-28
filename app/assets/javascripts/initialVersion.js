@@ -3,7 +3,7 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, creat
 
 function preload() {
 
-    game.load.image('sky', 'assets/sky.png');
+    game.load.image('background', 'assets/phaser_background-01.jpg');
     game.load.image('ground', 'assets/platform.png');
     game.load.image('star', 'assets/star.png');
     game.load.image('diamond', 'assets/diamond.png')
@@ -29,7 +29,7 @@ function create() {
 
     //  A simple background for our game
     // game.add.sprite(0, 0, 'sky');
-    game.add.tileSprite(0, 0, 1920, 1920, 'sky');
+    game.add.tileSprite(0, 0, 1920, 1920, 'background');
     game.world.setBounds(0, 0, 1920, 1920);
 
 
