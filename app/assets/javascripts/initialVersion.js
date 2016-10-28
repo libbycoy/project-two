@@ -64,7 +64,8 @@ LevelOne.Boot.prototype = {
       platforms.enableBody = true;
 
       // Here we create the ground.
-      var ground = platforms.create(0, game.world.height - 64, 'ground');
+      var ground = platforms.create(40, game.world.height - 200, 'ground');
+      
 
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
       ground.scale.setTo(2, 2);
@@ -83,7 +84,7 @@ LevelOne.Boot.prototype = {
 
        // The player and its settings
       // player = game.add.sprite(32, game.world.height - 550, 'dude');
-      player = game.add.sprite(game.world.centerX, game.world.centerY, 'dude')
+      player = game.add.sprite(game.world.centerX, game.world.height - 0, 'dude')
 
       //  We need to enable physics on the player
       game.physics.arcade.enable(player);
