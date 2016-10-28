@@ -8,8 +8,6 @@ function preload() {
     game.load.image('star', 'assets/star.png');
     game.load.image('diamond', 'assets/diamond.png')
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-
-
 }
 
 var player;
@@ -171,8 +169,7 @@ function update() {
 
 function render() {
 
-  //  game.context.fillStyle = 'rgba(255,0,0,0.6)';
-  // game.context.fillRect(zone.x, zone.y, zone.width, zone.height);
+  // For camera debugging only. Plz don't delete.
   // game.debug.cameraInfo(game.camera, 32, 32);
   // game.debug.spriteCoords(player, 32, 500);
 
