@@ -14,8 +14,12 @@
  *= require_self
  */
 
-background-image: url("assets/background.jpg);
-
+.background-image {
+   background-image: url("/assets/phaser_background-01.jpg");
+   background-repeat: no-repeat;
+   width: 1920px;
+   height: 1920px;
+}
  .radial {
    background-image: radial-gradient(100px 100px , #064485 100%, #042f5b 100%);
  }
