@@ -1,4 +1,4 @@
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );/*{ preload: preload, create: create, update: update, render: render }*/
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
 
 var LevelOne = function( game ) {};
 
@@ -9,6 +9,7 @@ var platforms;
 var cursors;
 var stars;
 var diamonds;
+var extractLocation;
 var score = 0;
 var scoreText, promptText;
 var style1 = { font: '32px Arial', fill: '#FFF' },
@@ -31,6 +32,7 @@ LevelOne.Boot.prototype = {
         game.load.image('entrance', 'assets/walls/entrance.png');
         game.load.image('star', 'assets/star.png');
         game.load.image('diamond', 'assets/diamond.png')
+        game.load.image('firstaid', 'assets/firstaid.png')
         game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     },
 
@@ -51,9 +53,6 @@ LevelOne.Boot.prototype = {
 
       //  We're going to be using physics, so enable the Arcade Physics system
       game.physics.startSystem(Phaser.Physics.ARCADE);
-
-      // The player and its settings
-      player = game.add.sprite(game.world.centerX, game.world.height - 0, 'dude')
 
       //  A simple background for our game
       game.add.tileSprite(0, 0, 1920, 1920, 'background');
@@ -109,8 +108,8 @@ LevelOne.Boot.prototype = {
 
 
        // The player and its settings
-      // player = game.add.sprite(32, game.world.height - 550, 'dude');
-      player = game.add.sprite(game.world.centerX, game.world.height - 0, 'dude')
+      player = game.add.sprite(game.world.centerX, game.world.height - 390, 'dude')
+      // player.body.setSize(20, 30, 0, 0)
 
       //  We need to enable physics on the player
       game.physics.arcade.enable(player);
@@ -125,29 +124,26 @@ LevelOne.Boot.prototype = {
       //  Our controls.
       cursors = game.input.keyboard.createCursorKeys();
 
-      //  Finally some stars to collect
+      // stars and diamonds added to group.
       stars = game.add.group();
-
-      // Adding Diamonds
       diamonds = game.add.group()
 
       //  We will enable physics for any star that is created in this group
       stars.enableBody = true;
-
       diamonds.enableBody = true;
 
       //  Here we'll create 12 of them evenly spaced apart
-        for (var i = 0; i < 12; i++)
+        for (var i = 1; i < 13; i++)
       {
           //  Create a star inside of the 'stars' group
           var star = stars.create(i * 70, 1500, 'star');
 
       }
 
-      for (var i = 0; i < 6; i++)
+      for (var i = 1; i < 7; i++)
       {
           //  Create a star inside of the 'stars' group
-          var diamond = diamonds.create(i * 50, 1550, 'diamond');
+          var diamond = diamonds.create(i * 70, 1550, 'diamond');
 
 
       }
@@ -162,18 +158,35 @@ LevelOne.Boot.prototype = {
 
       game.camera.follow(player);
       game.camera.deadzone = new Phaser.Rectangle(450, 250, 100, 100);
+
+      // Appearing Text
+      // var fadeText1 = game.time.events.add(2000, function() {    game.add.tween("myTex").to({y: 0}, 1500, Phaser.Easing.Linear.None, true); game.add.tween("myText").to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);}, this);
+      // fadeText1.fixedToCamera = true;
+      // fadeText2.fixedToCamera = true;
+
+      extractLocation = game.add.group();
+      extractLocation.enableBody = true;
+      // extractLocation.body.immovable = true;
+      var extract = extractLocation.create(game.world.centerX + 100, game.world.height - 390, 'firstaid')
+
+      promptText.anchor.setTo(0.5, 0.5);
+      this.clearPromptText();
+
+
   },
 
   update: function () {
 
        //  Collide the player and the stars with the platforms
       game.physics.arcade.collide(player, platforms);
+      // game.physics.arcade.collide(player, extractLocation);
       game.physics.arcade.collide(stars, platforms);
       game.physics.arcade.collide(diamonds, platforms)
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       game.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       game.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
+      game.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
 
 
       //  Reset the players velocity (movement)
@@ -232,25 +245,42 @@ LevelOne.Boot.prototype = {
     var seconds = "0" + Math.floor(s - minutes * 60);
     return minutes.substr(-2) + ":" +seconds.substr(-2)
   },
+  dropOff: function(player, extract) {
+    this.clearPromptText();
+    promptText.text = 'Press X to leave.';
+  },
   collectStar: function (player, star) {
       // Removes the star from the screen
       star.kill();
 
       //  Add and update the score
       score += 10;
-      scoreText.text = 'Score: ' + score;
+      scoreText.text = 'Take: $' + score;
+      this.fadePromptText();
+      promptText.text = '+$10'
 
   },
   collectDiamond: function(player, diamond) {
 
-      // Removes the star from the screen
+      // Removes the diamond from the screen
       diamond.kill();
-
 
       //  Add and update the score
       score += 50;
-      scoreText.text = 'Score: ' + score;
+      scoreText.text = 'Take: $' + score;
+      this.fadePromptText();
+      promptText.text = '+$50'
+  },
+  // TODO Need a way to clear the prompt text from screen.
+  fadePromptText: function() {
+    promptText.alpha = 0;
+    game.add.tween(promptText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 1000);
+  },
+  clearPromptText: function() {
+    promptText.alpha = 0;
+    game.add.tween(promptText).from( { alpha: 1 }, 400, Phaser.Easing.default, true, 600);
   }
+
 }; // END OF LevelOne
 
 game.state.add('Boot', LevelOne.Boot);
