@@ -95,11 +95,17 @@ LevelOne.Boot.prototype = {
       ground.scale.setTo(1, 1);
 
       // create the internal bank walls that cannot move and are half the size of extrnal walls
+      this.wall = game.add.group();
+      this.wall.enableBody = true;
 
-      var wall = platforms.create(1104, 942, 'inner-wall-h');
-
-      wall.scale.setTo(0.5, 0.5);
+      var wall = platforms.create(560, 1400, 'inner-wall-h');
       wall.body.immovable = true;
+      var wall = platforms.create(560, 635, 'inner-wall-v');
+      wall.body.immovable = true;
+      var wall = platforms.create(1326, 635, 'inner-wall-v');
+      wall.body.immovable = true;
+
+      wall.scale.setTo(1,1);
 
 
        // The player and its settings
