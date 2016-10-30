@@ -27,6 +27,8 @@ LevelOne.Boot.prototype = {
         game.load.image('ground-right', 'assets/walls/ground.png');
         game.load.image('inner-wall-h', 'assets/walls/inner-wall-h.png');
         game.load.image('inner-wall-v', 'assets/walls/inner-wall-v.png');
+        game.load.image('inner-wall-h-small', 'assets/walls/inner-wall-h-small.png');
+        game.load.image('inner-wall-v-small', 'assets/walls/inner-wall-v-small.png');
         game.load.image('side-wall', 'assets/walls/side-wall.png');
         game.load.image('back-wall', 'assets/walls/back-wall.png');
         game.load.image('entrance', 'assets/walls/entrance.png');
@@ -103,6 +105,15 @@ LevelOne.Boot.prototype = {
       wall.body.immovable = true;
       var wall = platforms.create(1326, 635, 'inner-wall-v');
       wall.body.immovable = true;
+      var wall = platforms.create(300, 60, 'inner-wall-v');
+      wall.body.immovable = true;
+      var wall = platforms.create(300, 410, 'inner-wall-h');
+      wall.body.immovable = true;
+      var wall = platforms.create(1065, 180, 'inner-wall-v');
+      wall.body.immovable = true;
+      var wall = platforms.create(1065, 635, 'inner-wall-h-small');
+      wall.body.immovable = true;
+
 
       wall.scale.setTo(1,1);
 
