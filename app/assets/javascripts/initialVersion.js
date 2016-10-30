@@ -17,7 +17,7 @@ var timer, timerEvent, text
 LevelOne.Boot.prototype = {
   preload: function() {
 
-        game.load.image('background', 'assets/phaser_background-01.jpg');
+        game.load.image('background', 'assets/phaser_background-02.png');
         game.load.image('opacity', 'assets/opacity-02.png');
         //game.load.image('ground', 'assets/platform.png');
         game.load.image('ground', 'assets/walls/ground.png');
