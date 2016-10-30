@@ -12,8 +12,8 @@ var diamonds;
 var extractLocation;
 var score = 0, totalScore = 0;
 var scoreText, promptText;
-var style1 = { font: '32px Arial', fill: '#FFF' },
-    style2 = { font: '22px Arial', fill: '#FFF', align: 'centerY' };
+var style1 = { font: '30px Arial', fill: '#00FFFF' },
+    style2 = { font: '22px Arial', fill: '#00FFFF', align: 'centerY' };
 var opaqimg;
 var timer, timerEvent, text
 
@@ -22,17 +22,22 @@ LevelOne.Boot.prototype = {
 
         game.load.image('background', 'assets/phaser_background-02.png');
         game.load.image('opacity', 'assets/opacity-02.png');
+        game.load.image('key', 'assets/key-01.png');
         //game.load.image('ground', 'assets/platform.png');
         game.load.image('ground', 'assets/walls/ground.png');
         game.load.image('ground-right', 'assets/walls/ground.png');
         game.load.image('inner-wall-h', 'assets/walls/inner-wall-h.png');
         game.load.image('inner-wall-v', 'assets/walls/inner-wall-v.png');
+        game.load.image('inner-wall-h-small', 'assets/walls/inner-wall-h-small.png');
+        game.load.image('inner-wall-v-small', 'assets/walls/inner-wall-v-small.png');
         game.load.image('side-wall', 'assets/walls/side-wall.png');
         game.load.image('back-wall', 'assets/walls/back-wall.png');
         game.load.image('entrance', 'assets/walls/entrance.png');
         game.load.image('star', 'assets/star.png');
         game.load.image('diamond', 'assets/diamond.png')
         game.load.image('firstaid', 'assets/firstaid.png')
+        game.load.image('guard', 'assets/baddie.png')
+
         game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     },
 
@@ -65,6 +70,10 @@ LevelOne.Boot.prototype = {
       opaqimg.fixedToCamera = true;
       opaqimg.cameraOffset.setTo(0, 0);
 
+      keyimg = game.add.sprite(150, 95, 'key');
+      keyimg.fixedToCamera = true;
+      keyimg.cameraOffset.setTo(20, 20);
+
       //  We will enable physics for any object that is created in this group
       platforms.enableBody = true;
 
@@ -92,11 +101,36 @@ LevelOne.Boot.prototype = {
       ground.scale.setTo(1, 1);
 
       // create the internal bank walls that cannot move and are half the size of extrnal walls
+      this.wall = game.add.group();
+      this.wall.enableBody = true;
 
-      var wall = platforms.create(1104, 942, 'inner-wall-h');
-
-      wall.scale.setTo(0.5, 0.5);
+      var wall = platforms.create(560, 1400, 'inner-wall-h');
       wall.body.immovable = true;
+      var wall = platforms.create(560, 635, 'inner-wall-v');
+      wall.body.immovable = true;
+      var wall = platforms.create(1326, 635, 'inner-wall-v');
+      wall.body.immovable = true;
+      var wall = platforms.create(300, 60, 'inner-wall-v');
+      wall.body.immovable = true;
+      var wall = platforms.create(300, 410, 'inner-wall-h');
+      wall.body.immovable = true;
+      var wall = platforms.create(1065, 180, 'inner-wall-v');
+      wall.body.immovable = true;
+      var wall = platforms.create(1065, 635, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(1065, 180, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(1473, 410, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(760, 945, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(500, 634, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(760, 845, 'inner-wall-v-small');
+      wall.body.immovable = true;
+
+
+      wall.scale.setTo(1,1);
 
 
        // The player and its settings
@@ -141,7 +175,7 @@ LevelOne.Boot.prototype = {
       }
 
       //  The current level score controls
-      scoreText = game.add.text(16, 16, 'score: 0', style1);
+      scoreText = game.add.text(100, 67, '$0', style1);
       scoreText.fixedToCamera = true
 
       // promptText variable
@@ -188,14 +222,14 @@ LevelOne.Boot.prototype = {
       if (cursors.left.isDown)
       {
           //  Move to the left
-          player.body.velocity.x = -150;
+          player.body.velocity.x = -250;
 
           player.animations.play('left');
       }
       else if (cursors.right.isDown)
       {
           //  Move to the right
-          player.body.velocity.x = 150;
+          player.body.velocity.x = 250;
 
           player.animations.play('right');
       }
@@ -209,21 +243,21 @@ LevelOne.Boot.prototype = {
 
       if (cursors.up.isDown)
       {
-          player.body.velocity.y = -150;
+          player.body.velocity.y = -250;
       }
       else if (cursors.down.isDown)
       {
-          player.body.velocity.y = 150;
+          player.body.velocity.y = 250;
       }
   },
 
 
   render: function () {
     if (timer.running) {
-      game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#ff0");
+      game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#00FFFF");
     }
     else {
-      game.debug.text("Done!", 940, 14, "#0f0");
+      game.debug.text("Done!", 940, 14, "#00FFFF");
       this.timeOut();
 
       //TODO  Make the game end.
@@ -254,7 +288,7 @@ LevelOne.Boot.prototype = {
 
       //  Add and update the score
       score += 10;
-      scoreText.text = 'Take: $' + score;
+      scoreText.text = '$' + score;
       this.fadePromptText();
       promptText.text = '+$10'
 
@@ -266,7 +300,7 @@ LevelOne.Boot.prototype = {
 
       //  Add and update the score
       score += 50;
-      scoreText.text = 'Take: $' + score;
+      scoreText.text = '$' + score;
       this.fadePromptText();
       promptText.text = '+$50'
   },
@@ -276,7 +310,7 @@ LevelOne.Boot.prototype = {
   },
   clearPromptText: function() {
     promptText.alpha = 0;
-    game.add.tween(promptText).from( { alpha: 1 }, 300, Phaser.Easing.default, true, 100);
+    game.add.tween(promptText).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
   },
   timeOut: function () {
     promptText.alpha = 1;
