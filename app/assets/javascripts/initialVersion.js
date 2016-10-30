@@ -12,8 +12,8 @@ var diamonds;
 var extractLocation;
 var score = 0;
 var scoreText, promptText;
-var style1 = { font: '32px Arial', fill: '#FFF' },
-    style2 = { font: '22px Arial', fill: '#FFF', align: 'centerY' };
+var style1 = { font: '30px Arial', fill: '#00FFFF' },
+    style2 = { font: '22px Arial', fill: '#00FFFF', align: 'centerY' };
 var opaqimg;
 var timer, timerEvent, text
 
@@ -22,6 +22,7 @@ LevelOne.Boot.prototype = {
 
         game.load.image('background', 'assets/phaser_background-02.png');
         game.load.image('opacity', 'assets/opacity-02.png');
+        game.load.image('key', 'assets/key-01.png');
         //game.load.image('ground', 'assets/platform.png');
         game.load.image('ground', 'assets/walls/ground.png');
         game.load.image('ground-right', 'assets/walls/ground.png');
@@ -66,6 +67,10 @@ LevelOne.Boot.prototype = {
       opaqimg = game.add.sprite(1000, 600, 'opacity');
       opaqimg.fixedToCamera = true;
       opaqimg.cameraOffset.setTo(0, 0);
+
+      keyimg = game.add.sprite(150, 95, 'key');
+      keyimg.fixedToCamera = true;
+      keyimg.cameraOffset.setTo(20, 20);
 
       //  We will enable physics for any object that is created in this group
       platforms.enableBody = true;
@@ -170,7 +175,7 @@ LevelOne.Boot.prototype = {
       }
 
       //  The current level score controls
-      scoreText = game.add.text(16, 16, 'score: 0', style1);
+      scoreText = game.add.text(100, 67, '0', style1);
       scoreText.fixedToCamera = true
 
       // promptText variable
@@ -247,7 +252,7 @@ LevelOne.Boot.prototype = {
   },
   render: function () {
     if (timer.running) {
-      game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#ff0");
+      game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#00FFFF");
     }
     else {
       game.debug.text("Done!", 940, 14, "#0f0");
