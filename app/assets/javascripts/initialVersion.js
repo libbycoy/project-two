@@ -245,7 +245,7 @@ LevelOne.Boot.prototype = {
       game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#00FFFF");
     }
     else {
-      game.debug.text("Done!", 940, 14, "#0f0");
+      game.debug.text("Done!", 940, 14, "#00FFFF");
     }
     // For camera debugging only. Plz don't delete.
     // game.debug.cameraInfo(game.camera, 32, 32);
