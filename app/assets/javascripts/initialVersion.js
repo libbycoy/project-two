@@ -11,22 +11,24 @@ var stars;
 var diamonds;
 var score = 0;
 var scoreText;
+var opaqimg;
 var timer, timerEvent, text
 
 LevelOne.Boot.prototype = {
   preload: function() {
 
-        game.load.image('background', 'assets/phaser_background-01.jpg');
+        game.load.image('background', 'assets/phaser_background-02.png');
+        game.load.image('opacity', 'assets/opacity-02.png');
         //game.load.image('ground', 'assets/platform.png');
-        game.load.image('ground', 'assets/walls/outer-wall.png');
+        game.load.image('ground', 'assets/walls/ground.png');
+        game.load.image('ground-right', 'assets/walls/ground.png');
+        game.load.image('inner-wall-h', 'assets/walls/inner-wall-h.png');
+        game.load.image('inner-wall-v', 'assets/walls/inner-wall-v.png');
+        game.load.image('side-wall', 'assets/walls/side-wall.png');
+        game.load.image('back-wall', 'assets/walls/back-wall.png');
+        game.load.image('entrance', 'assets/walls/entrance.png');
         game.load.image('star', 'assets/star.png');
         game.load.image('diamond', 'assets/diamond.png')
-        game.load.image('horizontalLine', 'assets/walls/s-line-h.png');
-        game.load.image('verticalLine', 'assets/walls/s-line-v.png');
-        game.load.image('half_rectangle', 'assets/walls/s-rect-half.png')
-        game.load.image('thinRectangle', 'assets/walls/s-rect-thin.png');
-        game.load.image('wideRectangle', 'assets/walls/s-rect-wide.png');
-        game.load.image('square', 'assets/walls/s-square.png')
         game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     },
 
@@ -49,38 +51,54 @@ LevelOne.Boot.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
 
       // The player and its settings
-      // player = game.add.sprite(32, game.world.height - 550, 'dude');
       player = game.add.sprite(game.world.centerX, game.world.height - 0, 'dude')
 
       //  A simple background for our game
-      // game.add.sprite(0, 0, 'sky');
       game.add.tileSprite(0, 0, 1920, 1920, 'background');
       game.world.setBounds(0, 0, 1920, 1920);
 
-      //  The platforms group contains the ground and the 2 ledges we can jump on
+      //  The platforms group contains the walls to containethe sprite
       platforms = game.add.group();
+
+      opaqimg = game.add.sprite(1000, 600, 'opacity');
+      opaqimg.fixedToCamera = true;
+      opaqimg.cameraOffset.setTo(0, 0);
 
       //  We will enable physics for any object that is created in this group
       platforms.enableBody = true;
 
-      // Here we create the ground.
-      var ground = platforms.create(40, game.world.height - 200, 'ground');
-      
+      this.ground = game.add.group();
+      this.ground.enableBody = true;
 
-      //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-      ground.scale.setTo(2, 2);
+      //this.ground.create(1014, game.world.height - 330, 'ground');
+      var ground = platforms.create(60, game.world.height - 1860, 'side-wall');
+      ground.body.immovable = true;
+      var ground = platforms.create(60, game.world.height - 1860, 'back-wall');
+      ground.body.immovable = true;
+      var ground = platforms.create(1842, game.world.height - 1860, 'side-wall');
+      ground.body.immovable = true;
+      var ground = platforms.create(1014, game.world.height - 330, 'entrance');
+      ground.body.immovable = true;
+      var ground = platforms.create(888, game.world.height - 330, 'entrance');
+      ground.body.immovable = true;
 
+      // Here we create the bottom edge of the bank - ground.
+      var ground = platforms.create(1014, game.world.height - 330, 'ground');
       //  This stops it from falling away when you jump on it
       ground.body.immovable = true;
 
-      //  Now let's create two ledges
-      var ledge = platforms.create(400, 400, 'ground');
+      var ground = platforms.create(60, game.world.height - 330, 'ground');
+      ground.body.immovable = true;
+      //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+      ground.scale.setTo(1, 1);
 
-      ledge.body.immovable = true;
+      // create the internal bank walls that cannot move and are half the size of extrnal walls
 
-      ledge = platforms.create(-150, 250, 'ground');
+      var wall = platforms.create(1104, 942, 'inner-wall-h');
 
-      ledge.body.immovable = true;
+      wall.scale.setTo(0.5, 0.5);
+      wall.body.immovable = true;
+
 
        // The player and its settings
       // player = game.add.sprite(32, game.world.height - 550, 'dude');
