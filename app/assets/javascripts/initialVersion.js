@@ -10,7 +10,9 @@ var cursors;
 var stars;
 var diamonds;
 var score = 0;
-var scoreText;
+var scoreText, promptText;
+var style1 = { font: '32px Arial', fill: '#FFF' },
+    style2 = { font: '22px Arial', fill: '#FFF', align: 'centerY' };
 var opaqimg;
 var timer, timerEvent, text
 
@@ -129,34 +131,28 @@ LevelOne.Boot.prototype = {
       diamonds.enableBody = true;
 
       //  Here we'll create 12 of them evenly spaced apart
-      for (var i = 0; i < 12; i++)
+        for (var i = 0; i < 12; i++)
       {
           //  Create a star inside of the 'stars' group
-          var star = stars.create(i * 70, 0, 'star');
+          var star = stars.create(i * 70, 1500, 'star');
 
-          //  Let gravity do its thing
-          star.body.gravity.y = 300;
-
-          //  This just gives each star a slightly random bounce value
-          star.body.bounce.y = 0.7 + Math.random() * 0.2;
       }
 
       for (var i = 0; i < 6; i++)
       {
           //  Create a star inside of the 'stars' group
-          var diamond = diamonds.create(i * 30, 0, 'diamond');
+          var diamond = diamonds.create(i * 50, 1550, 'diamond');
 
-          //  Let gravity do its thing
-          diamond.body.gravity.y = 300;
 
       }
 
-      //  The score
-      // Original Score generator
-      // scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-
-      scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#FFF' });
+      //  The current level score controls
+      scoreText = game.add.text(16, 16, 'score: 0', style1);
       scoreText.fixedToCamera = true
+
+      // promptText variable
+      promptText = game.add.text(420, 506, 'Press (key) to (action)', style2);
+      promptText.fixedToCamera = true
 
       game.camera.follow(player);
       game.camera.deadzone = new Phaser.Rectangle(450, 250, 100, 100);
