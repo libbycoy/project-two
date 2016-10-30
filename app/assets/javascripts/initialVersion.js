@@ -242,7 +242,7 @@ LevelOne.Boot.prototype = {
   },
   render: function () {
     if (timer.running) {
-      game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#ff0");
+      game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#00FFFF");
     }
     else {
       game.debug.text("Done!", 940, 14, "#0f0");
