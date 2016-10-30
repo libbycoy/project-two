@@ -11,12 +11,14 @@ var stars;
 var diamonds;
 var score = 0;
 var scoreText;
+var opaqimg;
 var timer, timerEvent, text
 
 LevelOne.Boot.prototype = {
   preload: function() {
 
         game.load.image('background', 'assets/phaser_background-01.jpg');
+        game.load.image('opacity', 'assets/opacity-02.png');
         //game.load.image('ground', 'assets/platform.png');
         game.load.image('ground', 'assets/walls/ground.png');
         game.load.image('ground-right', 'assets/walls/ground.png');
@@ -57,6 +59,10 @@ LevelOne.Boot.prototype = {
 
       //  The platforms group contains the walls to containethe sprite
       platforms = game.add.group();
+
+      opaqimg = game.add.sprite(1000, 600, 'opacity');
+      opaqimg.fixedToCamera = true;
+      opaqimg.cameraOffset.setTo(0, 0);
 
       //  We will enable physics for any object that is created in this group
       platforms.enableBody = true;
