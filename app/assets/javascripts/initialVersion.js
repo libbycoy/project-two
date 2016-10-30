@@ -113,6 +113,16 @@ LevelOne.Boot.prototype = {
       wall.body.immovable = true;
       var wall = platforms.create(1065, 635, 'inner-wall-h-small');
       wall.body.immovable = true;
+      var wall = platforms.create(1065, 180, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(1473, 410, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(760, 945, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(500, 634, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(760, 845, 'inner-wall-v-small');
+      wall.body.immovable = true;
 
 
       wall.scale.setTo(1,1);
@@ -207,14 +217,14 @@ LevelOne.Boot.prototype = {
       if (cursors.left.isDown)
       {
           //  Move to the left
-          player.body.velocity.x = -150;
+          player.body.velocity.x = -550;
 
           player.animations.play('left');
       }
       else if (cursors.right.isDown)
       {
           //  Move to the right
-          player.body.velocity.x = 150;
+          player.body.velocity.x = 550;
 
           player.animations.play('right');
       }
@@ -228,11 +238,11 @@ LevelOne.Boot.prototype = {
 
       if (cursors.up.isDown)
       {
-          player.body.velocity.y = -150;
+          player.body.velocity.y = -550;
       }
       else if (cursors.down.isDown)
       {
-          player.body.velocity.y = 150;
+          player.body.velocity.y = 550;
       }
   },
   render: function () {
