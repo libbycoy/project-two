@@ -2,6 +2,7 @@ var Heist = Heist || {};
 // Main menu state goes here.
 // var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
 Heist.MainMenu = function (game) {
+};
 
 
 var startButton;
@@ -24,7 +25,6 @@ Heist.MainMenu.prototype = {
 
 
     };
-  };
 
 
       // game.state.add('Boot', mainMenu.Boot);
