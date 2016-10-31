@@ -52,14 +52,14 @@ LevelOne.Boot.prototype = {
       timer = game.time.create();
 
       // Create a delay countdown timer, given params.
-<<<<<<< HEAD
+
       timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 00, this.endTimer, this);
-=======
-      timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
->>>>>>> 9b382ba32956f3bcc5b810382e4b8196c21c0d31
 
       // Start the timer!
       timer.start();
+
+      // create a start time
+      startTime = this.time.now;
 
       //  We're going to be using physics, so enable the Arcade Physics system
       game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -177,8 +177,6 @@ LevelOne.Boot.prototype = {
       {
           //  Create a star inside of the 'stars' group
           var diamond = diamonds.create(i * 70, 1550, 'diamond');
-
-
       }
 
       // Defines maximum possible score, please put all new 'diamonds', 'stars' etc. above
@@ -210,11 +208,13 @@ LevelOne.Boot.prototype = {
 
       promptText.anchor.setTo(0.5, 0.5);
       this.clearPromptText();
-
-
   },
 
   update: function () {
+      var updateTime = function() {
+        game.paused = true;
+        console.log(timer.duration);
+      }
 
        //  Collide the player and the stars with the platforms
       game.physics.arcade.collide(player, platforms);
@@ -261,11 +261,12 @@ LevelOne.Boot.prototype = {
           player.body.velocity.y = 250;
       }
 
-      if (extrct === true && x.isDown) {
-        promptText.text = "YOU GOT AWAY"
-        this.fadePromptText();
-        // game.state.start('state2');
-        game.add.button(game.world.centerX, 500, "Next level")
+        if (extrct === true && x.isDown) {
+          promptText.text = "YOU GOT AWAY"
+          this.fadePromptText();
+          updateTime();
+          // game.state.start('state2');
+          game.add.button(game.world.centerX, 500, "Next level")
       }
 
       if (score == maxPossibleScore) {
@@ -273,14 +274,15 @@ LevelOne.Boot.prototype = {
       }
   },
 
-
   render: function () {
     if (timer.running) {
       game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#00FFFF");
     }
     else {
       game.debug.text("Done!", 940, 14, "#00FFFF");
-      this.timeOut();
+      //this.timeOut();
+
+      return this.timeOut();
 
       //TODO  Make the game end.
     }
