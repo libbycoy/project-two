@@ -13,4 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require phaser
+//= require mainMenu.js
+//= require initialVersion.js
 //= require_tree .

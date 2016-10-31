@@ -1,14 +1,14 @@
 // Main menu state goes here.
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
 
-var mainMenu = function( game ) {};
+var mainMenu = function( ) {};
 
-mainMenu.Boot = function( game ) {};
+mainMenu.Boot = function(  ) {};
 
 mainMenu.Boot.prototype = {
   preload: function() {
 
-        game.load.image('background', 'assets/phaser_background-02.png');
+        game.load.image('menu', 'assets/phaser_background-02.png');
         game.load.spritesheet('button', 'assets/number-buttons-90x90.png', 90, 90);
 
     },
