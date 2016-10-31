@@ -28,6 +28,7 @@ Heist.Preloader.prototype = {
         this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
         this.load.spritesheet('button', 'assets/number-buttons-90x90.png', 90, 90);
   },
+  
   create: function() {
     this.state.start('MainMenu')
   },
