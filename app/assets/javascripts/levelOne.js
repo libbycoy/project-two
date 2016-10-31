@@ -208,7 +208,7 @@ Heist.LevelOne.prototype = {
   },
 
   update: function () {
-    
+
       // var updateTime = function() {
         // this.paused = true;
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
