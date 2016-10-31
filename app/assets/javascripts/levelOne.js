@@ -266,7 +266,7 @@ Heist.LevelOne.prototype = {
 
       if (extrct === true && x.isDown) {
         promptText.text = "YOU GOT AWAY"
-        // game.state.start('state2');
+        // game.state.start('MainMenu2');
         this.add.button(this.world.centerX, 500, "Next level");
         updateTime();
         Heist.totalScore += this.score;
