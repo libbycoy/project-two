@@ -1,3 +1,4 @@
+// var heist = heist || {};
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
 
 var LevelOne = function( game ) {};
@@ -188,7 +189,7 @@ LevelOne.Boot.prototype = {
       scoreText.fixedToCamera = true
 
       // promptText variable
-      promptText = game.add.text(420, 506, 'Press (key) to (action)', style2);
+      promptText = game.add.text(480, 506, 'Press (key) to (action)', style2);
       promptText.fixedToCamera = true
 
       game.camera.follow(player);
@@ -262,6 +263,8 @@ LevelOne.Boot.prototype = {
         this.fadePromptText();
         // game.state.start('state2');
         game.add.button(game.world.centerX, 500, "Next level")
+        totalScore += score;
+        game.paused = true;
       }
 
       if (score == maxPossibleScore) {
@@ -298,8 +301,8 @@ LevelOne.Boot.prototype = {
     return minutes.substr(-2) + ":" + seconds.substr(-2)
   },
   dropOff: function(player, extract) {
-    this.clearPromptText();
     promptText.text = 'Press X to leave.';
+    this.clearPromptText();
   },
   collectStar: function (player, star) {
       // Removes the star from the screen
@@ -310,8 +313,6 @@ LevelOne.Boot.prototype = {
       scoreText.text = '$' + score;
       this.fadePromptText();
       promptText.text = '+$10'
-
-
   },
   collectDiamond: function(player, diamond) {
 
@@ -323,7 +324,6 @@ LevelOne.Boot.prototype = {
       scoreText.text = '$' + score;
       this.fadePromptText();
       promptText.text = '+$50'
-
   },
   fadePromptText: function() {
     promptText.alpha = 0;
