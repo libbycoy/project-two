@@ -4,13 +4,13 @@ var LevelOne = function( game ) {};
 
 LevelOne.Boot = function( game ) {};
 
-var player;
+var player, totalLives;
 var platforms;
 var cursors;
 var stars;
 var diamonds;
 var extractLocation;
-var score = 0;
+var score = 0, totalScore = 0;
 var scoreText, promptText;
 var style1 = { font: '30px Arial', fill: '#00FFFF' },
     style2 = { font: '22px Arial', fill: '#00FFFF', align: 'centerY' };
@@ -36,6 +36,8 @@ LevelOne.Boot.prototype = {
         game.load.image('star', 'assets/star.png');
         game.load.image('diamond', 'assets/diamond.png')
         game.load.image('firstaid', 'assets/firstaid.png')
+        game.load.image('guard', 'assets/baddie.png')
+
         game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     },
 
@@ -89,12 +91,10 @@ LevelOne.Boot.prototype = {
       ground.body.immovable = true;
       var ground = platforms.create(888, game.world.height - 330, 'entrance');
       ground.body.immovable = true;
-
       // Here we create the bottom edge of the bank - ground.
       var ground = platforms.create(1014, game.world.height - 330, 'ground');
       //  This stops it from falling away when you jump on it
       ground.body.immovable = true;
-
       var ground = platforms.create(60, game.world.height - 330, 'ground');
       ground.body.immovable = true;
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -117,6 +117,16 @@ LevelOne.Boot.prototype = {
       var wall = platforms.create(1065, 180, 'inner-wall-v');
       wall.body.immovable = true;
       var wall = platforms.create(1065, 635, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(1065, 180, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(1473, 410, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(760, 945, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(500, 634, 'inner-wall-h-small');
+      wall.body.immovable = true;
+      var wall = platforms.create(760, 845, 'inner-wall-v-small');
       wall.body.immovable = true;
 
 
@@ -165,7 +175,7 @@ LevelOne.Boot.prototype = {
       }
 
       //  The current level score controls
-      scoreText = game.add.text(100, 67, '0', style1);
+      scoreText = game.add.text(100, 67, '$0', style1);
       scoreText.fixedToCamera = true
 
       // promptText variable
@@ -212,14 +222,14 @@ LevelOne.Boot.prototype = {
       if (cursors.left.isDown)
       {
           //  Move to the left
-          player.body.velocity.x = -150;
+          player.body.velocity.x = -250;
 
           player.animations.play('left');
       }
       else if (cursors.right.isDown)
       {
           //  Move to the right
-          player.body.velocity.x = 150;
+          player.body.velocity.x = 250;
 
           player.animations.play('right');
       }
@@ -233,24 +243,31 @@ LevelOne.Boot.prototype = {
 
       if (cursors.up.isDown)
       {
-          player.body.velocity.y = -150;
+          player.body.velocity.y = -250;
       }
       else if (cursors.down.isDown)
       {
-          player.body.velocity.y = 150;
+          player.body.velocity.y = 250;
       }
   },
+
+
   render: function () {
     if (timer.running) {
       game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#00FFFF");
     }
     else {
       game.debug.text("Done!", 940, 14, "#00FFFF");
+      this.timeOut();
+
+      //TODO  Make the game end.
     }
     // For camera debugging only. Plz don't delete.
     // game.debug.cameraInfo(game.camera, 32, 32);
     // game.debug.spriteCoords(player, 32, 500);
   },
+
+
   endTimer: function () {
     // Stop the timer when the delayed event triggers
     timer.stop();
@@ -271,7 +288,7 @@ LevelOne.Boot.prototype = {
 
       //  Add and update the score
       score += 10;
-      scoreText.text = 'Take: $' + score;
+      scoreText.text = '$' + score;
       this.fadePromptText();
       promptText.text = '+$10'
 
@@ -283,18 +300,21 @@ LevelOne.Boot.prototype = {
 
       //  Add and update the score
       score += 50;
-      scoreText.text = 'Take: $' + score;
+      scoreText.text = '$' + score;
       this.fadePromptText();
       promptText.text = '+$50'
   },
-  // TODO Need a way to clear the prompt text from screen.
   fadePromptText: function() {
     promptText.alpha = 0;
-    game.add.tween(promptText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 1000);
+    game.add.tween(promptText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
   },
   clearPromptText: function() {
     promptText.alpha = 0;
-    game.add.tween(promptText).from( { alpha: 1 }, 400, Phaser.Easing.default, true, 600);
+    game.add.tween(promptText).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
+  },
+  timeOut: function () {
+    promptText.alpha = 1;
+    promptText.text = "TIME UP!";
   }
 
 }; // END OF LevelOne
