@@ -1,25 +1,18 @@
 // Main menu state goes here.
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
+// var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
+Heist.MainMenu = function (game) {
 
-var mainMenu = function( game ) {};
+};
 
-mainMenu.Boot = function( game ) {};
+Heist.MainMenu.prototype = {
 
-mainMenu.Boot.prototype = {
-  preload: function() {
-
-        game.load.image('background', 'assets/phaser_background-02.png');
-        game.load.spritesheet('button', 'assets/number-buttons-90x90.png', 90, 90);
-
-    },
-
-    var button;
-    var background;
-
-      create: function () {
-
-        button = game.add.button(game.world.centerX, game.world.centerY, 'button', actionOnClick, this, 1, 0, 2);
+  create: function () {
+        var background = this.add.tilSprite(0, 0, 1920, 1920, 'background');
+        var button = this.add.button(game.world.centerX, game.world.centerY, 'button', actionOnClick, this, 1, 0, 2);
         button.anchor.setTo(0.5, 0.5);
+
+
+
 
       },
 
