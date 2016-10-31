@@ -12,7 +12,7 @@ var stars;
 var diamonds;
 var extractLocation;
 var score = 0, totalScore = 0;
-var scoreText, promptText;
+var scoreText, promptText, timerText;
 var style1 = { font: '30px Arial', fill: '#00FFFF' },
     style2 = { font: '22px Arial', fill: '#00FFFF', align: 'centerY' };
 var opaqimg;
@@ -188,11 +188,15 @@ LevelOne.Boot.prototype = {
 
       //  The current level score controls
       scoreText = game.add.text(100, 67, '$0', style1);
-      scoreText.fixedToCamera = true
+      scoreText.fixedToCamera = true;
 
       // promptText variable
       promptText = game.add.text(480, 506, 'Press (key) to (action)', style2);
-      promptText.fixedToCamera = true
+      promptText.fixedToCamera = true;
+
+      // timerText variable to display the time
+      timerText = game.add.text(900, 20, '', style1);
+      timerText.fixedToCamera = true;
 
       game.camera.follow(player);
       game.camera.deadzone = new Phaser.Rectangle(450, 250, 100, 100);
@@ -274,14 +278,23 @@ LevelOne.Boot.prototype = {
 
   },
 
+  formatTime: function (s) {
+    // Convert into seconds.
+    var minutes = "0" + Math.floor(s/ 60);
+    var seconds = "0" + Math.floor(s - minutes * 60);
+    return minutes.substr(-2) + ":" + seconds.substr(-2);
+  },
+
+  // timer in the top right hand corner and it runs in correct format or declares 'Done!' when not running
   render: function () {
     if (timer.running) {
-      game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 940, 20, "#00FFFF");
+        timerText.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
     }
     else {
-      game.debug.text("Done!", 940, 14, "#00FFFF");
-      //this.timeOut();
+      var endGameTime = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
+      timerText.text = "Done!" + endGameTime ;
 
+      //this.timeOut();
       return this.timeOut();
 
       //TODO  Make the game end.
@@ -291,17 +304,11 @@ LevelOne.Boot.prototype = {
     // game.debug.spriteCoords(player, 32, 500);
   },
 
-
   endTimer: function () {
     // Stop the timer when the delayed event triggers
     timer.stop();
   },
-  formatTime: function (s) {
-    // Convert into seconds.
-    var minutes = "0" + Math.floor(s/ 60);
-    var seconds = "0" + Math.floor(s - minutes * 60);
-    return minutes.substr(-2) + ":" + seconds.substr(-2)
-  },
+
   dropOff: function(player, extract) {
     promptText.text = 'Press X to leave.';
     this.clearPromptText();
