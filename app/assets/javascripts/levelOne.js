@@ -9,15 +9,15 @@ Heist.LevelOne = function(game) {
   this.stars;
   this.diamonds;
   this.extractLocation;
-  this.score = 0
+  this.score = 0;
   this.totalScore = 0;
   this.scoreText;
   this.promptText;
   this.style1 = { font: '30px Arial', fill: '#00FFFF' };
   this.style2 = { font: '22px Arial', fill: '#00FFFF', align: 'centerY' };
   this.opaqimg;
-  this.timer
-  this.timerEvent
+  this.timer;
+  this.timerEvent;
   this.text;
   this.maxPossibleScore;
 
@@ -26,19 +26,19 @@ Heist.LevelOne = function(game) {
 Heist.LevelOne.prototype = {
   create: function () {
 
-
     //create the external walls
-    this.game.scale.pageAlignHorizontally = true;this.game.scale.pageAlignVertically = true;this.game.scale.refresh();
+    this.game.scale.pageAlignHorizontally = true;
+    this.game.scale.pageAlignVertically = true;
+    this.game.scale.refresh();
 
-      // Create a custom timer
-      this.timer = this.time.create();
-
-      // Create a delay countdown timer, given params.
-
-      this.timerEvent = this.timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
-
-      // Start the timer!
-      this.timer.start();
+      // // Create a custom timer
+      // this.timer = this.time.create();
+      //
+      // // Create a delay countdown timer, given params.
+      // this.timerEvent = this.timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
+      //
+      // // Start the timer!
+      // this.timer.start();
 
       //  We're going to be using physics, so enable the Arcade Physics system
       this.physics.startSystem(Phaser.Physics.ARCADE);
@@ -195,6 +195,11 @@ Heist.LevelOne.prototype = {
 
   update: function () {
 
+      var updateTime = function() {
+        this.paused = true;
+        console.log(this.timer.duration * 0.001 + " seconds left on timer");
+      }
+
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
       // this.physics.arcade.collide(player, extractLocation);
@@ -238,13 +243,15 @@ Heist.LevelOne.prototype = {
       }
       else if (cursors.down.isDown) {
           player.body.velocity.y = 250;
+          // console.log(Heist.totalScore);
       }
 
       if (extrct === true && x.isDown) {
         promptText.text = "YOU GOT AWAY"
         // game.state.start('state2');
-        this.add.button(this.world.centerX, 500, "Next level")
-        this.totalScore += this.score;
+        this.add.button(this.world.centerX, 500, "Next level");
+        updateTime();
+        Heist.totalScore += this.score;
         this.paused = true;
       }
 
@@ -256,18 +263,19 @@ Heist.LevelOne.prototype = {
 
 
   render: function () {
-    if (this.timer.running) {
+    // if (this.timer.running) {
       // this.debug.text(this.formatTime(Math.round((this.timerEvent.delay - this.timer.ms) / 1000)), 940, 20, "#00FFFF");
 
       // If statement is working. Console is logging.
-      // console.log("dogs");
-    }
-    else {
-      this.this.debug.text("Done!", 940, 14, "#00FFFF");
-      this.timeOut();
+      // debugger;
+    // }
+    // else {
+    //   this.this.debug.text("Done!", 940, 14, "#00FFFF");
+    //   this.timeOut();
 
       //TODO  Make the game end.
-    }
+    // }
+
     // For camera debugging only. Plz don't delete.
     // game.debug.cameraInfo(game.camera, 32, 32);
     // game.debug.spriteCoords(player, 32, 500);
@@ -280,9 +288,9 @@ Heist.LevelOne.prototype = {
   },
   formatTime: function (s) {
     // Convert into seconds.
-    var minutes = "0" + Math.floor(s/ 60);
-    var seconds = "0" + Math.floor(s - minutes * 60);
-    return minutes.substr(-2) + ":" + seconds.substr(-2)
+    this.minutes = "0" + Math.floor(s/ 60);
+    this.seconds = "0" + Math.floor(s - minutes * 60);
+    return this.minutes.substr(-2) + ":" + this.seconds.substr(-2)
   },
   dropOff: function(player, extract) {
     promptText.text = 'Press X to leave.';

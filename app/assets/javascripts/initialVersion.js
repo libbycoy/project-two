@@ -1,4 +1,4 @@
-// // var heist = heist || {};
+//
 // var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
 //
 // var LevelOne = function( game ) {};
@@ -54,10 +54,13 @@
 //
 //       // Create a delay countdown timer, given params.
 //
-//       timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
+//       timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 00, this.endTimer, this);
 //
 //       // Start the timer!
 //       timer.start();
+//
+//       // create a start time
+//       startTime = this.time.now;
 //
 //       //  We're going to be using physics, so enable the Arcade Physics system
 //       game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -175,8 +178,6 @@
 //       {
 //           //  Create a star inside of the 'stars' group
 //           var diamond = diamonds.create(i * 70, 1550, 'diamond');
-//
-//
 //       }
 //
 //       // Defines maximum possible score, please put all new 'diamonds', 'stars' etc. above
@@ -208,11 +209,13 @@
 //
 //       promptText.anchor.setTo(0.5, 0.5);
 //       this.clearPromptText();
-//
-//
 //   },
 //
 //   update: function () {
+//       var updateTime = function() {
+//         game.paused = true;
+//         console.log(timer.duration * 0.001 + " seconds left on timer");
+//       }
 //
 //        //  Collide the player and the stars with the platforms
 //       game.physics.arcade.collide(player, platforms);
@@ -259,20 +262,17 @@
 //           player.body.velocity.y = 250;
 //       }
 //
+//
 //       if (extrct === true && x.isDown) {
 //         promptText.text = "YOU GOT AWAY"
 //         // game.state.start('state2');
-//         game.add.button(game.world.centerX, 500, "Next level")
+//         game.add.button(game.world.centerX, 500, "Next level");
+//         updateTime();
 //         totalScore += score;
 //         game.paused = true;
 //       }
 //
-//       if (score === maxPossibleScore) {
-//         promptText.text = "You've collected all the money, now get out!"
-//         this.fadePromptText();
-//       }
 //   },
-//
 //
 //   render: function () {
 //     if (timer.running) {
@@ -280,7 +280,9 @@
 //     }
 //     else {
 //       game.debug.text("Done!", 940, 14, "#00FFFF");
-//       this.timeOut();
+//       //this.timeOut();
+//
+//       return this.timeOut();
 //
 //       //TODO  Make the game end.
 //     }
@@ -313,6 +315,10 @@
 //       scoreText.text = '$' + score;
 //       this.fadePromptText();
 //       promptText.text = '+$10'
+//
+//       if (score == maxPossibleScore) {
+//         promptText.text = "You've collected all the money, now get out!"
+//       }
 //   },
 //   collectDiamond: function(player, diamond) {
 //
@@ -324,6 +330,10 @@
 //       scoreText.text = '$' + score;
 //       this.fadePromptText();
 //       promptText.text = '+$50'
+//
+//       if (score == maxPossibleScore) {
+//         promptText.text = "You've collected all the money, now get out!"
+//       }
 //   },
 //   fadePromptText: function() {
 //     promptText.alpha = 0;
