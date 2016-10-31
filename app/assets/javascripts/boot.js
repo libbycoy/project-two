@@ -1,7 +1,7 @@
-Heist = {
+var Heist = {
   //Global variables that persist regardless of state swaps
-  totalScore = 0
-}
+  // totalScore = 0
+};
 
 Heist.Boot = function(game) {};
 
@@ -10,6 +10,6 @@ Heist.Boot.prototype = {
 
     this.state.start('Preloader')
 
-  };
-  
+  }
+
 };
