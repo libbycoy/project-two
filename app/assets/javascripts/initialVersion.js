@@ -49,7 +49,7 @@ LevelOne.Boot.prototype = {
       timer = game.time.create();
 
       // Create a delay countdown timer, given params.
-      timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
+      timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 00, this.endTimer, this);
 
       // Start the timer!
       timer.start();
