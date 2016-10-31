@@ -1,3 +1,4 @@
+// var heist = heist || {};
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
 
 var LevelOne = function( game ) {};
@@ -52,7 +53,12 @@ LevelOne.Boot.prototype = {
       timer = game.time.create();
 
       // Create a delay countdown timer, given params.
+<<<<<<< HEAD
       timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this)
+=======
+
+      timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
+>>>>>>> ab438eb5b9b0073b1e9a56ce86951f45020ff92a
 
       // Start the timer!
       timer.start();
@@ -188,7 +194,7 @@ LevelOne.Boot.prototype = {
       scoreText.fixedToCamera = true
 
       // promptText variable
-      promptText = game.add.text(420, 506, 'Press (key) to (action)', style2);
+      promptText = game.add.text(480, 506, 'Press (key) to (action)', style2);
       promptText.fixedToCamera = true
 
       game.camera.follow(player);
@@ -260,10 +266,10 @@ LevelOne.Boot.prototype = {
 
       if (extrct === true && x.isDown) {
         promptText.text = "YOU GOT AWAY"
-        this.fadePromptText();
-        game.paused = true;
         // game.state.start('state2');
         game.add.button(game.world.centerX, 500, "Next level")
+        totalScore += score;
+        game.paused = true;
       }
 
   },
@@ -296,8 +302,8 @@ LevelOne.Boot.prototype = {
     return minutes.substr(-2) + ":" + seconds.substr(-2)
   },
   dropOff: function(player, extract) {
-    this.clearPromptText();
     promptText.text = 'Press X to leave.';
+    this.clearPromptText();
   },
   collectStar: function (player, star) {
       // Removes the star from the screen
@@ -312,8 +318,6 @@ LevelOne.Boot.prototype = {
       if (score == maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"
       }
-
-
   },
   collectDiamond: function(player, diamond) {
 
@@ -329,7 +333,6 @@ LevelOne.Boot.prototype = {
       if (score == maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"
       }
-
   },
   fadePromptText: function() {
     promptText.alpha = 0;
