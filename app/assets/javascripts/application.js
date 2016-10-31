@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require phaser
-//= require Boot.js
+// = require Boot.js
 //= require Preloader
 //= require MainMenu
 //= require LevelOne
