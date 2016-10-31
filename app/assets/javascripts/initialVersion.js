@@ -214,7 +214,7 @@ LevelOne.Boot.prototype = {
   update: function () {
       var updateTime = function() {
         game.paused = true;
-        console.log(timer.duration);
+        console.log(timer.duration * 0.001 + " seconds left on timer");
       }
 
        //  Collide the player and the stars with the platforms
