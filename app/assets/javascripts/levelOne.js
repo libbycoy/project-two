@@ -20,6 +20,7 @@ Heist.LevelOne = function(game) {
   this.timerEvent;
   this.text;
   this.maxPossibleScore;
+  this.badguy;
 
 };
 
@@ -116,6 +117,15 @@ Heist.LevelOne.prototype = {
 
       wall.scale.setTo(1,1);
 
+      // Code for guard(s) TODO: Get sprites to work. Animate.
+      this.badguy = this.add.sprite(400, 1500, 'guard');
+      this.physics.arcade.enable(this.badguy);
+      this.badguy.body.collideWorldBounds = true;
+      // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
+      // this.badguy.animations.add('moveRight', [2, 3], 4, true )
+      this.badguy.animations.add('walk');
+      this.badguy.animations.play('walk', 8, true)
+
 
        // The player and its settings
       player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude')
@@ -202,9 +212,11 @@ Heist.LevelOne.prototype = {
 
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
-      // this.physics.arcade.collide(player, extractLocation);
+      this.physics.arcade.collide(player, this.badguy)
       this.physics.arcade.collide(stars, platforms);
       this.physics.arcade.collide(diamonds, platforms)
+      this.physics.arcade.collide(this.badguy, platforms)
+
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
@@ -235,7 +247,9 @@ Heist.LevelOne.prototype = {
           //  Stand still
           player.animations.stop();
 
+
           player.frame = 4;
+
       }
 
       if (cursors.up.isDown) {
@@ -243,7 +257,6 @@ Heist.LevelOne.prototype = {
       }
       else if (cursors.down.isDown) {
           player.body.velocity.y = 250;
-          console.log(Heist.totalScore);
       }
 
       if (extrct === true && x.isDown) {
