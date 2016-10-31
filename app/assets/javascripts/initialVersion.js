@@ -15,7 +15,8 @@ var scoreText, promptText;
 var style1 = { font: '32px Arial', fill: '#FFF' },
     style2 = { font: '22px Arial', fill: '#FFF', align: 'centerY' };
 var opaqimg;
-var timer, timerEvent, text
+var timer, timerEvent, text;
+var maxPossibleScore;
 
 LevelOne.Boot.prototype = {
   preload: function() {
@@ -48,7 +49,7 @@ LevelOne.Boot.prototype = {
       timer = game.time.create();
 
       // Create a delay countdown timer, given params.
-      timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
+      timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
 
       // Start the timer!
       timer.start();
@@ -137,7 +138,8 @@ LevelOne.Boot.prototype = {
 
       // stars and diamonds added to group.
       stars = game.add.group();
-      diamonds = game.add.group()
+      diamonds = game.add.group();
+
 
       //  We will enable physics for any star that is created in this group
       stars.enableBody = true;
@@ -158,6 +160,12 @@ LevelOne.Boot.prototype = {
 
 
       }
+
+      // Defines maximum possible score, please put all new 'diamonds', 'stars' etc. above
+      // Used to define end of game and determine final score with timer bonus etc.
+      // Meggan and Shaila know what's goin on
+      // Don't delete
+      maxPossibleScore = ((diamonds.length * 50) + (stars.length * 10));
 
       //  The current level score controls
       scoreText = game.add.text(16, 16, 'score: 0', style1);
@@ -234,6 +242,12 @@ LevelOne.Boot.prototype = {
       {
           player.body.velocity.y = 150;
       }
+
+
+      if (score == maxPossibleScore) {
+        promptText.text = "You've collected all the money, now get out!"
+        promptText.alpha = 1;
+      }
   },
   render: function () {
     if (timer.running) {
@@ -251,10 +265,10 @@ LevelOne.Boot.prototype = {
     timer.stop();
   },
   formatTime: function (s) {
-    // Conver into seconds.
+    // Convert into seconds.
     var minutes = "0" + Math.floor(s/ 60);
     var seconds = "0" + Math.floor(s - minutes * 60);
-    return minutes.substr(-2) + ":" +seconds.substr(-2)
+    return minutes.substr(-2) + ":" + seconds.substr(-2)
   },
   dropOff: function(player, extract) {
     this.clearPromptText();
@@ -270,6 +284,7 @@ LevelOne.Boot.prototype = {
       this.fadePromptText();
       promptText.text = '+$10'
 
+
   },
   collectDiamond: function(player, diamond) {
 
@@ -281,6 +296,7 @@ LevelOne.Boot.prototype = {
       scoreText.text = 'Take: $' + score;
       this.fadePromptText();
       promptText.text = '+$50'
+
   },
   // TODO Need a way to clear the prompt text from screen.
   fadePromptText: function() {
