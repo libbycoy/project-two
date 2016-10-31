@@ -195,10 +195,10 @@ Heist.LevelOne.prototype = {
 
   update: function () {
 
-      var updateTime = function() {
-        this.paused = true;
-        console.log(this.timer.duration * 0.001 + " seconds left on timer");
-      }
+      // var updateTime = function() {
+        // this.paused = true;
+        // console.log(this.timer.duration * 0.001 + " seconds left on timer");
+      // }
 
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
@@ -243,7 +243,7 @@ Heist.LevelOne.prototype = {
       }
       else if (cursors.down.isDown) {
           player.body.velocity.y = 250;
-          // console.log(Heist.totalScore);
+          console.log(Heist.totalScore);
       }
 
       if (extrct === true && x.isDown) {
@@ -255,10 +255,6 @@ Heist.LevelOne.prototype = {
         this.paused = true;
       }
 
-      if (this.score === maxPossibleScore) {
-        promptText.text = "You've collected all the money, now get out!"
-        this.fadePromptText();
-      }
   },
 
 
@@ -305,6 +301,8 @@ Heist.LevelOne.prototype = {
       scoreText.text = '$' + this.score;
       this.fadePromptText();
       promptText.text = '+$10'
+      this.getAll();
+
   },
   collectDiamond: function(player, diamond) {
 
@@ -316,6 +314,7 @@ Heist.LevelOne.prototype = {
       scoreText.text = '$' + this.score;
       this.fadePromptText();
       promptText.text = '+$50'
+      this.getAll();
   },
   fadePromptText: function() {
     promptText.alpha = 0;
@@ -328,6 +327,12 @@ Heist.LevelOne.prototype = {
   timeOut: function () {
     promptText.alpha = 1;
     promptText.text = "TIME UP!";
+  },
+  getAll: function() {
+    if (this.score === maxPossibleScore) {
+        promptText.text = "You've collected all the money, now get out!"
+        this.fadePromptText();
+      }
   }
 
 }; // End of LevelOne
