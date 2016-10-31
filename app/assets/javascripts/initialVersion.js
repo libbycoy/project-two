@@ -52,7 +52,7 @@ LevelOne.Boot.prototype = {
       timer = game.time.create();
 
       // Create a delay countdown timer, given params.
-      timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
+      timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this)
 
       // Start the timer!
       timer.start();
@@ -257,16 +257,15 @@ LevelOne.Boot.prototype = {
           player.body.velocity.y = 250;
       }
 
+
       if (extrct === true && x.isDown) {
         promptText.text = "YOU GOT AWAY"
         this.fadePromptText();
+        game.paused = true;
         // game.state.start('state2');
         game.add.button(game.world.centerX, 500, "Next level")
       }
 
-      if (score == maxPossibleScore) {
-        promptText.text = "You've collected all the money, now get out!"
-      }
   },
 
 
@@ -310,6 +309,10 @@ LevelOne.Boot.prototype = {
       this.fadePromptText();
       promptText.text = '+$10'
 
+      if (score == maxPossibleScore) {
+        promptText.text = "You've collected all the money, now get out!"
+      }
+
 
   },
   collectDiamond: function(player, diamond) {
@@ -322,6 +325,10 @@ LevelOne.Boot.prototype = {
       scoreText.text = '$' + score;
       this.fadePromptText();
       promptText.text = '+$50'
+
+      if (score == maxPossibleScore) {
+        promptText.text = "You've collected all the money, now get out!"
+      }
 
   },
   fadePromptText: function() {
