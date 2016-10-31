@@ -6,9 +6,9 @@
 
 <script type="text/javascript">
   <% if @current_user.present? %>
-    console.log('hello')
     var current_user_id = <%= @current_user.id %>
     var current_user_name = "<%= @current_user.name %>"
+    var current_user_highest_score = "<%= @current_user.highest_score %>"
   <% end %>
 </script>
 
