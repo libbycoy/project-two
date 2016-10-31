@@ -1,3 +1,4 @@
+// var heist = heist || {};
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
 
 var LevelOne = function( game ) {};
@@ -190,7 +191,7 @@ LevelOne.Boot.prototype = {
       scoreText.fixedToCamera = true
 
       // promptText variable
-      promptText = game.add.text(420, 506, 'Press (key) to (action)', style2);
+      promptText = game.add.text(480, 506, 'Press (key) to (action)', style2);
       promptText.fixedToCamera = true
 
       game.camera.follow(player);
@@ -261,17 +262,16 @@ LevelOne.Boot.prototype = {
           player.body.velocity.y = 250;
       }
 
-        if (extrct === true && x.isDown) {
-          promptText.text = "YOU GOT AWAY"
-          this.fadePromptText();
-          updateTime();
-          // game.state.start('state2');
-          game.add.button(game.world.centerX, 500, "Next level")
+
+      if (extrct === true && x.isDown) {
+        promptText.text = "YOU GOT AWAY"
+        // game.state.start('state2');
+        game.add.button(game.world.centerX, 500, "Next level");
+        updateTime();
+        totalScore += score;
+        game.paused = true;
       }
 
-      if (score == maxPossibleScore) {
-        promptText.text = "You've collected all the money, now get out!"
-      }
   },
 
   render: function () {
@@ -303,8 +303,8 @@ LevelOne.Boot.prototype = {
     return minutes.substr(-2) + ":" + seconds.substr(-2)
   },
   dropOff: function(player, extract) {
-    this.clearPromptText();
     promptText.text = 'Press X to leave.';
+    this.clearPromptText();
   },
   collectStar: function (player, star) {
       // Removes the star from the screen
@@ -316,7 +316,9 @@ LevelOne.Boot.prototype = {
       this.fadePromptText();
       promptText.text = '+$10'
 
-
+      if (score == maxPossibleScore) {
+        promptText.text = "You've collected all the money, now get out!"
+      }
   },
   collectDiamond: function(player, diamond) {
 
@@ -329,6 +331,9 @@ LevelOne.Boot.prototype = {
       this.fadePromptText();
       promptText.text = '+$50'
 
+      if (score == maxPossibleScore) {
+        promptText.text = "You've collected all the money, now get out!"
+      }
   },
   fadePromptText: function() {
     promptText.alpha = 0;
