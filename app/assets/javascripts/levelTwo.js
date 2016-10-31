@@ -1,8 +1,8 @@
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
 
-var LevelOne = function( game ) {};
+var LevelTwo = function( game ) {};
 
-LevelOne.Boot = function( game ) {};
+levelTwo.Boot = function( game ) {};
 
 var player, totalLives;
 var platforms;
@@ -18,10 +18,10 @@ var opaqimg;
 var timer, timerEvent, text;
 var maxPossibleScore;
 
-LevelOne.Boot.prototype = {
+levelTwo.Boot.prototype = {
   preload: function() {
 
-        game.load.image('background', 'assets/phaser_background-02.png');
+        game.load.image('background', 'assets/cement-02.png');
         game.load.image('opacity', 'assets/opacity-02.png');
         game.load.image('key', 'assets/key-01.png');
         //game.load.image('ground', 'assets/platform.png');
@@ -260,12 +260,12 @@ LevelOne.Boot.prototype = {
       if (extrct === true && x.isDown) {
         promptText.text = "YOU GOT AWAY"
         this.fadePromptText();
-        // game.state.start('state2');
-        game.add.button(game.world.centerX, 500, "Next level")
+        game.state.start('state2');
       }
 
       if (score == maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"
+        promptText.alpha = 1;
       }
   },
 
@@ -337,6 +337,6 @@ LevelOne.Boot.prototype = {
     promptText.text = "TIME UP!";
   }
 
-}; // END OF LevelOne
-game.state.add('Boot', LevelOne.Boot);
+}; // END OF levelTwo
+game.state.add('Boot', levelTwo.Boot);
 game.state.start('Boot');
