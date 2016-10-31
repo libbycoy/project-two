@@ -20,6 +20,7 @@ Heist.LevelOne = function(game) {
   this.timerEvent;
   this.text;
   this.maxPossibleScore;
+  this.badguy;
 
 };
 
@@ -116,6 +117,15 @@ Heist.LevelOne.prototype = {
 
       wall.scale.setTo(1,1);
 
+      // Code for guard(s) TODO: Get sprites to work. Animate.
+      this.badguy = this.add.sprite(400, 1500, 'guard');
+      this.physics.arcade.enable(this.badguy);
+      this.badguy.body.collideWorldBounds = true;
+      // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
+      // this.badguy.animations.add('moveRight', [2, 3], 4, true )
+      this.badguy.animations.add('walk');
+      this.badguy.animations.play('walk', 8, true)
+
 
        // The player and its settings
       player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude')
@@ -168,11 +178,15 @@ Heist.LevelOne.prototype = {
 
       //  The current level score controls
       scoreText = this.add.text(100, 67, '$0', this.style1);
-      scoreText.fixedToCamera = true
+      scoreText.fixedToCamera = true;
 
       // promptText variable
       promptText = this.add.text(480, 506, 'Press (key) to (action)', this.style2);
-      promptText.fixedToCamera = true
+      promptText.fixedToCamera = true;
+
+      // timerText variable to display the time
+      timerText = this.add.text(900, 20, '', this.style1);
+      timerText.fixedToCamera = true;
 
       this.camera.follow(player);
       this.camera.deadzone = new Phaser.Rectangle(450, 250, 100, 100);
@@ -194,17 +208,20 @@ Heist.LevelOne.prototype = {
   },
 
   update: function () {
+    
+      // var updateTime = function() {
+        // this.paused = true;
+        // console.log(this.timer.duration * 0.001 + " seconds left on timer");
+      // }
 
-      var updateTime = function() {
-        this.paused = true;
-        console.log(this.timer.duration * 0.001 + " seconds left on timer");
-      }
 
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
-      // this.physics.arcade.collide(player, extractLocation);
+      this.physics.arcade.collide(player, this.badguy)
       this.physics.arcade.collide(stars, platforms);
       this.physics.arcade.collide(diamonds, platforms)
+      this.physics.arcade.collide(this.badguy, platforms)
+
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
@@ -235,7 +252,9 @@ Heist.LevelOne.prototype = {
           //  Stand still
           player.animations.stop();
 
+
           player.frame = 4;
+
       }
 
       if (cursors.up.isDown) {
@@ -243,7 +262,6 @@ Heist.LevelOne.prototype = {
       }
       else if (cursors.down.isDown) {
           player.body.velocity.y = 250;
-          // console.log(Heist.totalScore);
       }
 
       if (extrct === true && x.isDown) {
@@ -255,25 +273,21 @@ Heist.LevelOne.prototype = {
         this.paused = true;
       }
 
-      if (this.score === maxPossibleScore) {
-        promptText.text = "You've collected all the money, now get out!"
-        this.fadePromptText();
-      }
   },
 
 
   render: function () {
-    // if (this.timer.running) {
-      // this.debug.text(this.formatTime(Math.round((this.timerEvent.delay - this.timer.ms) / 1000)), 940, 20, "#00FFFF");
-
-      // If statement is working. Console is logging.
-      // debugger;
+    // if (timer.running) {
+    //     timerText.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
     // }
     // else {
-    //   this.this.debug.text("Done!", 940, 14, "#00FFFF");
-    //   this.timeOut();
-
-      //TODO  Make the game end.
+    //   var endGameTime = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
+    //   timerText.text = "Done!" + endGameTime ;
+    //
+    //   //this.timeOut();
+    //   return this.timeOut();
+    //
+    //   //TODO  Make the game end.
     // }
 
     // For camera debugging only. Plz don't delete.
@@ -305,6 +319,8 @@ Heist.LevelOne.prototype = {
       scoreText.text = '$' + this.score;
       this.fadePromptText();
       promptText.text = '+$10'
+      this.getAll();
+
   },
   collectDiamond: function(player, diamond) {
 
@@ -316,6 +332,7 @@ Heist.LevelOne.prototype = {
       scoreText.text = '$' + this.score;
       this.fadePromptText();
       promptText.text = '+$50'
+      this.getAll();
   },
   fadePromptText: function() {
     promptText.alpha = 0;
@@ -328,6 +345,12 @@ Heist.LevelOne.prototype = {
   timeOut: function () {
     promptText.alpha = 1;
     promptText.text = "TIME UP!";
+  },
+  getAll: function() {
+    if (this.score === maxPossibleScore) {
+        promptText.text = "You've collected all the money, now get out!"
+        this.fadePromptText();
+      }
   }
 
 }; // End of LevelOne

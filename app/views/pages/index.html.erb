@@ -10,9 +10,11 @@
     var current_user_name = "<%= @current_user.name %>"
     var current_user_highest_score = "<%= @current_user.highest_score %>"
   <% end %>
-(function (){
-  var game = new Phaser.Game(960, 600, Phaser.AUTO, 'game'
-  );
+</script>
+
+<script>
+(function () {
+  var game = new Phaser.Game(960, 600, Phaser.AUTO, 'game');
 
   game.state.add('Boot', Heist.Boot)
   game.state.add('Preloader', Heist.Preloader)
@@ -22,6 +24,7 @@
   game.state.start('Boot')
 
 })();
+
 </script>
 
 </div>
