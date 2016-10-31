@@ -1,1 +1,1 @@
-// Main menu state goes here. 
+// Main menu state goes here.

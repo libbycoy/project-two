@@ -6,7 +6,7 @@ LevelOne.Boot = function( game ) {};
 
 var player, totalLives;
 var platforms;
-var cursors;
+var cursors, x;
 var stars;
 var diamonds;
 var extractLocation;
@@ -149,6 +149,7 @@ LevelOne.Boot.prototype = {
 
       //  Our controls.
       cursors = game.input.keyboard.createCursorKeys();
+      x = game.input.keyboard.addKey(Phaser.Keyboard.X);
 
       // stars and diamonds added to group.
       stars = game.add.group();
@@ -212,7 +213,7 @@ LevelOne.Boot.prototype = {
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       game.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       game.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
-      game.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
+      var extrct = game.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
 
 
       //  Reset the players velocity (movement)
@@ -248,6 +249,12 @@ LevelOne.Boot.prototype = {
       else if (cursors.down.isDown)
       {
           player.body.velocity.y = 250;
+      }
+
+      if (extrct === true && x.isDown) {
+        promptText.text = "YOU GOT AWAY"
+        this.fadePromptText();
+        game.state.start('state2');
       }
   },
 
@@ -318,6 +325,12 @@ LevelOne.Boot.prototype = {
   }
 
 }; // END OF LevelOne
+game.state.add('state2', {
+  create: function() {
+
+
+  }
+})
 
 game.state.add('Boot', LevelOne.Boot);
 game.state.start('Boot');
