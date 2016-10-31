@@ -261,7 +261,6 @@ LevelOne.Boot.prototype = {
 
       if (score == maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"
-        promptText.alpha = 1;
       }
   },
 
