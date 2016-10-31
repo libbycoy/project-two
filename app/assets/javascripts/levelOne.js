@@ -178,11 +178,15 @@ Heist.LevelOne.prototype = {
 
       //  The current level score controls
       scoreText = this.add.text(100, 67, '$0', this.style1);
-      scoreText.fixedToCamera = true
+      scoreText.fixedToCamera = true;
 
       // promptText variable
       promptText = this.add.text(480, 506, 'Press (key) to (action)', this.style2);
-      promptText.fixedToCamera = true
+      promptText.fixedToCamera = true;
+
+      // timerText variable to display the time
+      timerText = this.add.text(900, 20, '', this.style1);
+      timerText.fixedToCamera = true;
 
       this.camera.follow(player);
       this.camera.deadzone = new Phaser.Rectangle(450, 250, 100, 100);
@@ -204,11 +208,12 @@ Heist.LevelOne.prototype = {
   },
 
   update: function () {
-
+    
       // var updateTime = function() {
         // this.paused = true;
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
       // }
+
 
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
@@ -272,17 +277,17 @@ Heist.LevelOne.prototype = {
 
 
   render: function () {
-    // if (this.timer.running) {
-      // this.debug.text(this.formatTime(Math.round((this.timerEvent.delay - this.timer.ms) / 1000)), 940, 20, "#00FFFF");
-
-      // If statement is working. Console is logging.
-      // debugger;
+    // if (timer.running) {
+    //     timerText.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
     // }
     // else {
-    //   this.this.debug.text("Done!", 940, 14, "#00FFFF");
-    //   this.timeOut();
-
-      //TODO  Make the game end.
+    //   var endGameTime = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
+    //   timerText.text = "Done!" + endGameTime ;
+    //
+    //   //this.timeOut();
+    //   return this.timeOut();
+    //
+    //   //TODO  Make the game end.
     // }
 
     // For camera debugging only. Plz don't delete.
