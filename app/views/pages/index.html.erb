@@ -12,4 +12,19 @@
   <% end %>
 </script>
 
+<script>
+(function () {
+  var game = new Phaser.Game(960, 600, Phaser.AUTO, 'game');
+
+  game.state.add('Boot', Heist.Boot)
+  game.state.add('Preloader', Heist.Preloader)
+  game.state.add('MainMenu', Heist.MainMenu)
+  game.state.add('LevelOne', Heist.LevelOne)
+
+  game.state.start('Boot')
+
+})();
+
+</script>
+
 </div>

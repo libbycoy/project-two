@@ -1,33 +1,31 @@
+var Heist = Heist || {};
 // Main menu state goes here.
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
+// var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
+Heist.MainMenu = function (game) {
+};
 
-var mainMenu = function( game ) {};
 
-mainMenu.Boot = function( game ) {};
+var startButton;
+Heist.MainMenu.prototype = {
 
-mainMenu.Boot.prototype = {
-  preload: function() {
-
-        game.load.image('background', 'assets/phaser_background-02.png');
-        game.load.spritesheet('button', 'assets/number-buttons-90x90.png', 90, 90);
-
-    },
-
-    var button;
-    var background;
-
-      create: function () {
-
-        button = game.add.button(game.world.centerX, game.world.centerY, 'button', actionOnClick, this, 1, 0, 2);
-        button.anchor.setTo(0.5, 0.5);
+  create: function () {
+        var background = this.add.tileSprite(0, 0, 1920, 1920, 'background');
+        startButton = this.add.sprite(480, 300, 'button') // , this.startGame(), this, 1, 0, 2);
+        startButton.inputEnabled = true;
+        startButton.input.pixelPerfectClick = true;
+        startButton.events.onInputDown.add(this.clicked, this);
+        startButton.anchor.setTo(0.5, 0.5);
 
       },
 
-      render: function () {
-        button.setFrames(4, 3, 5);
+      clicked: function (pointer) {
+        console.log("I am being called");
+        this.state.start('LevelOne')
       }
+
 
     };
 
-      game.state.add('Boot', mainMenu.Boot);
-      game.state.start('Boot');
+
+      // game.state.add('Boot', mainMenu.Boot);
+      // game.state.start('Boot');
