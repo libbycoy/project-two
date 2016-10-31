@@ -11,7 +11,9 @@
     var current_user_highest_score = "<%= @current_user.highest_score %>"
   <% end %>
 (function (){
-  var game = new Phaser.Game(960, 600, Phaser.AUTO, 'game');
+  var game = new Phaser.Game(960, 600, Phaser.AUTO, 'game'
+  );
+
   game.state.add('Boot', Heist.Boot)
   game.state.add('Preloader', Heist.Preloader)
   game.state.add('MainMenu', Heist.MainMenu)
