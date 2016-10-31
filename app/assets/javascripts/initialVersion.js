@@ -53,11 +53,8 @@ LevelOne.Boot.prototype = {
       timer = game.time.create();
 
       // Create a delay countdown timer, given params.
-<<<<<<< HEAD
-      timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 00, this.endTimer, this);
-=======
+
       timerEvent = timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
->>>>>>> 9b382ba32956f3bcc5b810382e4b8196c21c0d31
 
       // Start the timer!
       timer.start();
@@ -264,15 +261,15 @@ LevelOne.Boot.prototype = {
 
       if (extrct === true && x.isDown) {
         promptText.text = "YOU GOT AWAY"
-        this.fadePromptText();
         // game.state.start('state2');
         game.add.button(game.world.centerX, 500, "Next level")
         totalScore += score;
         game.paused = true;
       }
 
-      if (score == maxPossibleScore) {
+      if (score === maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"
+        this.fadePromptText();
       }
   },
 
