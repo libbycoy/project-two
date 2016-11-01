@@ -1,5 +1,6 @@
 var Heist = Heist || {};
 
+
 Heist.LevelOne = function(game) {
   this.player;
   this.totalLives;
@@ -23,9 +24,10 @@ Heist.LevelOne = function(game) {
   this.text;
   this.maxPossibleScore;
   this.badguy;
+  this.cop;
+  this.count
   this.outerWall;
   this.outerwalls;
-  this.cop
 
   //Weight limit variable
   this.maxWeight = 0;
@@ -42,13 +44,13 @@ Heist.LevelOne.prototype = {
 
       // Broken Timer pieces /////////////////////////////////////////////////
       // // Create a custom timer
-      // this.timer = this.time.create();
+      this.timer = this.time.create();
       //
       // // Create a delay countdown timer, given params.
       // this.timerEvent = this.timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
       //
       // // Start the timer!
-      // this.timer.start();
+      this.timer.start();
 
       //  We're going to be using physics, so enable the Arcade Physics system
       this.physics.startSystem(Phaser.Physics.ARCADE);
@@ -232,6 +234,12 @@ Heist.LevelOne.prototype = {
       this.outerWall.scale.setTo(1,1);
 
 
+      var intervalID = window.setInterval(myCallback, 500);
+
+      function myCallback() {
+        // console.log('hello');
+      }
+
       // Code for guard(s) TODO: Get sprites to work. Animate.
       this.badguy = this.add.sprite(400, 1500, 'guard');
       this.physics.arcade.enable(this.badguy);
@@ -282,9 +290,9 @@ Heist.LevelOne.prototype = {
       diamonds.enableBody = true;
 
       //  Here we'll create 12 of them evenly spaced apart
-        for (var i = 1; i < 13; i++) {
-          //  Create a star inside of the 'stars' group
-          var star = stars.create(i * 70, 1500, 'star');
+      for (var i = 1; i < 13; i++) {
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(i * 70, 1500, 'star');
 
       }
 
@@ -310,12 +318,12 @@ Heist.LevelOne.prototype = {
       promptText.fixedToCamera = true;
 
       //PrompteText2
-      promptText2 = this.add.text(480, 520, 'Press (key) to (action)', this.style2);
+      promptText2 = this.add.text(480, 520, 'PRINT ME', this.style2);
       promptText2.anchor.setTo(0.5, 0.5);
       promptText2.fixedToCamera = true;
 
       // NotificationText varaible
-      notificationText = this.add.text(480, 480, 'Press (key) to (action)', this.style2);
+      notificationText = this.add.text(480, 480, '', this.style2);
       notificationText.anchor.setTo(0.5, 0.5);
       notificationText.fixedToCamera = true;
 
@@ -338,7 +346,7 @@ Heist.LevelOne.prototype = {
 
 
       this.clearText(promptText);
-      this.clearText(promptText2);
+      // this.clearText(promptText2);
       this.fadeText(notificationText);
 
 
@@ -351,18 +359,28 @@ Heist.LevelOne.prototype = {
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
       // }
 
-
-       //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.badguy);
+      this.physics.arcade.collide(player, this.cop);
       this.physics.arcade.collide(stars, platforms);
+
       this.physics.arcade.collide(diamonds, platforms)
       this.physics.arcade.collide(this.badguy, platforms)
       this.physics.arcade.collide(this.cop, platforms)
       // random generated walls
       this.physics.arcade.collide(player, this.kWall);
+
+      // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
+      //   this.physics.arcade.moveToXY(this.cop, 500, 500);
+      // } else {
+      //   this.physics.arcade.moveToXY(this.cop, 900, 1800);
+      // }
+
+      // console.log(this.cop.position.x, this.cop.position.y);
+      // 600, 1500
+
 
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
@@ -373,10 +391,14 @@ Heist.LevelOne.prototype = {
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
 
+      var timeYay = this.time.now
+
+
 
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
       player.body.velocity.y = 0;
+
 
       if (cursors.left.isDown) {
           //  Move to the left
@@ -401,6 +423,29 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
+      // Diagonal controller ///////////////////////////////////////////
+      // if ( cursors.left.isDown && cursors.down.isDown ) {
+      //   player.body.velocity.x = -550;
+      //   player.body.velocity.y = 550;
+      // } else if ( cursors.right.isDown && cursors.down.isDown ) {
+      //   player.body.velocity.x = 550;
+      //   player.body.velocity.y = 550;
+      // } else if ( cursors.left.isDown && cursors.up.isDown ) {
+      //   player.body.velocity.x = -550;
+      //   player.body.velocity.y = -550;
+      // } else if ( cursors.right.isDown && cursors.up.isDown ) {
+      //   player.body.velocity.x = 550;
+      //   player.body.velocity.y = -550;
+      //   player.animations.play('upRight');
+      // } else {
+      //       //  Stand still
+      //   player.animations.stop();
+      //
+      //   player.frame = 4;
+      // }
+
+
+      // Guard takeout action.
       if (overlap === true && s.isDown) {
           this.killCop();
       }
@@ -408,17 +453,19 @@ Heist.LevelOne.prototype = {
 
       if (extrct === true && x.isDown) {
         promptText2.text = "YOU GOT AWAY"
-        // game.state.start('state2');
-        // this.add.button(this.world.centerX, 500, "levelOneSummary");
-        // updateTime();
         Heist.totalScore += this.score;
         this.paused = true;
         this.state.start('LevelOneSummary')
+        // Capture time:
+        //   var printTime = Math.round(this.time.totalElapsedSeconds());
+        //   someVariable = printTime;
       }
       if (extrct === true && v.isDown) {
         if (this.playerCarryValue > 0 && this.maxWeight > 0) {
             this.pressedV();
             this.pause = this.time.now + 1200
+        } else if (this.pause < this.time.now && this.score === maxPossibleScore) {
+          this.getAll();
         } else if (this.pause < this.time.now && this.maxWeight === 0) {
           notificationText.text = "You don't have anything to secure."
           this.fadeText(notificationText)
@@ -430,6 +477,26 @@ Heist.LevelOne.prototype = {
 
 
   render: function () {
+
+    var secondsElapsed = Math.round(this.time.totalElapsedSeconds());
+
+      // var timeInSeconds = (Math.round(timeYay / 1000)).toString()
+      var minutes = Math.round(secondsElapsed / 60);
+      var seconds = Math.round(secondsElapsed % 60);
+
+      // if (this.timer.running) {
+      //   promptText2.text = Math.round(secondsElapsed)
+      // }
+
+      if (secondsElapsed < 10 ) {
+        promptText2.text = "0:0" + secondsElapsed;
+      } else if ( secondsElapsed < 60) {
+        promptText2.text = "0:" + secondsElapsed;
+      } else if ( secondsElapsed > 60 && seconds < 10) {
+        promptText2.text = minutes + ":0" + seconds;
+      } else if ( secondsElapsed > 60 && seconds >= 10) {
+        promptText2.text = minutes + ":" + seconds;
+      }
     // if (timer.running) {
     //     timerText.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
     // }
@@ -472,7 +539,7 @@ Heist.LevelOne.prototype = {
     this.maxWeight = 0;
   },
   collectStar: function (player, star) {
-    if (this.maxWeight <= 9) {
+    if (this.maxWeight <= 11) {
       this.maxWeight += 1;
       console.log(this.maxWeight);
       // Removes the star from the screen
@@ -490,7 +557,7 @@ Heist.LevelOne.prototype = {
 
   },
   collectDiamond: function(player, diamond) {
-    if (this.maxWeight <= 8) {
+    if (this.maxWeight <= 10) {
       this.maxWeight += 2;
       console.log(this.maxWeight);
       // Removes the diamond from the screen
@@ -538,16 +605,10 @@ Heist.LevelOne.prototype = {
     this.add.tween(textName).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
   },
 
-  // fadeNotificationText: function() {
-  //   notificationText.alpha = 0;
-  //   this.add.tween(notificationText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
-  // },
-
    timeOut: function () {
     promptText.alpha = 1;
     promptText.text = "TIME UP!";
   },
-
   getAll: function() {
     if (this.score === maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"
