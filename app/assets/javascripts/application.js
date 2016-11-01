@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require phaser
 //= require boot
-//= require preloader
+//= require Preloader
 //= require mainMenu
 //= require levelOne
 //= require_tree .
