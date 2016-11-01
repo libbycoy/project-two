@@ -6,10 +6,13 @@ Heist.Preloader = function (game) {
 };
 
 Heist.Preloader.prototype = {
+  
   preload: function () {
-      this.load.image('background', 'assets/phaser_background-02.png');
-      this.load.image('opacity', 'assets/opacity-02.png');
-      this.load.image('key', 'assets/key-01.png');
+        this.load.image('background', 'assets/phaser_background-02.png');
+        this.load.image('opacity', 'assets/opacity-02.png');
+        this.load.image('levelOneBackground', 'assets/menu-back-02.png');
+        this.load.image('levelTwoBackground', 'assets/menu-back-03.png');
+        this.load.image('key', 'assets/key-01.png');
         //this.load.image('ground', 'assets/platform.png');
         this.load.image('ground', 'assets/walls/ground.png');
         this.load.image('ground-right', 'assets/walls/ground.png');
@@ -27,7 +30,7 @@ Heist.Preloader.prototype = {
         this.load.image('background', 'assets/phaser_background-02.png');
         this.load.spritesheet('guard', 'assets/baddie.png', 32, 32, 4);
         this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-        this.load.spritesheet('button', 'assets/number-buttons-90x90.png', 90, 90);
+        this.load.spritesheet('button', 'assets/button_sprite_sheet.png', 193, 71);
   },
 
   create: function() {

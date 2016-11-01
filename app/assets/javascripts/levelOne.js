@@ -278,6 +278,7 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
+<<<<<<< HEAD
       // if (extrct === true && x.isDown) {
       //   promptText.text = "YOU GOT AWAY"
       //   // game.state.start('state2');
@@ -296,6 +297,15 @@ Heist.LevelOne.prototype = {
         }
 
 
+=======
+      if (extrct === true && x.isDown) {
+        promptText.text = "YOU GOT AWAY"
+        // game.state.start('MainMenu2');
+        this.add.button(this.world.centerX, 500, "Next level");
+        updateTime();
+        Heist.totalScore += this.score;
+        this.paused = true;
+>>>>>>> 603a59ef44fc0af23b4f92dc563983851011ba78
       }
 
   },
