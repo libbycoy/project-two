@@ -10,6 +10,9 @@ Heist.MainMenu.prototype = {
 
   create: function () {
         var background = this.add.tileSprite(0, 0, 1920, 1920, 'levelOneBackground');
+        this.game.scale.pageAlignHorizontally = true;
+        this.game.scale.pageAlignVertically = true;
+        this.game.scale.refresh();
         startButton = this.add.sprite(600, 400, 'button') // , this.startGame(), this, 1, 0, 2);
         startButton.inputEnabled = true;
         startButton.input.pixelPerfectClick = true;
