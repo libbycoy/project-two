@@ -181,61 +181,6 @@ Heist.LevelOne.prototype = {
 
       this.outerWall.scale.setTo(1,1);
 
-      // this.ground = this.add.group();
-      // this.ground.enableBody = true;
-
-      //this.ground.create(1014, game.world.height - 330, 'ground');
-      // var ground = platforms.create(60, this.world.height - 1860, 'side-wall');
-      // ground.body.immovable = true;
-      // ground = platforms.create(60, this.world.height - 1860, 'back-wall');
-      // ground.body.immovable = true;
-      // ground = platforms.create(1842, this.world.height - 1860, 'side-wall');
-      // ground.body.immovable = true;
-      // ground = platforms.create(1014, this.world.height - 330, 'entrance');
-      // ground.body.immovable = true;
-      // ground = platforms.create(888, this.world.height - 330, 'entrance');
-      // ground.body.immovable = true;
-      // // Here we create the bottom edge of the bank - ground.
-      // ground = platforms.create(1014, this.world.height - 330, 'ground');
-      // //  This stops it from falling away when you jump on it
-      // ground.body.immovable = true;
-      // ground = platforms.create(60, this.world.height - 330, 'ground');
-      // ground.body.immovable = true;
-      // //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-      // ground.scale.setTo(1, 1);
-
-      // create the internal bank walls that cannot move and are half the size of extrnal walls
-      // this.wall = this.add.group();
-      // this.wall.enableBody = true;
-
-      // var wall = platforms.create(560, 1400, 'inner-wall-h');
-      // wall.body.immovable = true;
-      // wall = platforms.create(560, 635, 'inner-wall-v');
-      // wall.body.immovable = true;
-      // wall = platforms.create(1326, 635, 'inner-wall-v');
-      // wall.body.immovable = true;
-      // wall = platforms.create(300, 60, 'inner-wall-v');
-      // wall.body.immovable = true;
-      // wall = platforms.create(300, 410, 'inner-wall-h');
-      // wall.body.immovable = true;
-      // wall = platforms.create(1065, 180, 'inner-wall-v');
-      // wall.body.immovable = true;
-      // wall = platforms.create(1065, 635, 'inner-wall-h-small');
-      // wall.body.immovable = true;
-      // wall = platforms.create(1065, 180, 'inner-wall-h-small');
-      // wall.body.immovable = true;
-      // wall = platforms.create(1473, 410, 'inner-wall-h-small');
-      // wall.body.immovable = true;
-      // wall = platforms.create(760, 945, 'inner-wall-h-small');
-      // wall.body.immovable = true;
-      // wall = platforms.create(500, 634, 'inner-wall-h-small');
-      // wall.body.immovable = true;
-      // wall = platforms.create(760, 845, 'inner-wall-v-small');
-      // wall.body.immovable = true;
-
-
-      wall.scale.setTo(1,1);
-
 
       // Code for guard(s) TODO: Get sprites to work. Animate.
       this.badguy = this.add.sprite(400, 1500, 'guard');
