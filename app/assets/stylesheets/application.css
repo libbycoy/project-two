@@ -14,6 +14,18 @@
  *= require_self
  */
 
+ @import url('https://fonts.googleapis.com/css?family=Nothing+You+Could+Do');
+
+ body {
+   background-color: #073D76;
+   font-family: 'Nothing you could do';
+ }
+
+ h1 {
+   color: white;
+   font-size: 15px;
+ }
+
 .background-image {
    background-image: url("/assets/phaser_background-01.jpg");
    background-repeat: no-repeat;

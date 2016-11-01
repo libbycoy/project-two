@@ -13,8 +13,8 @@ Heist.LevelOne = function(game) {
   this.totalScore = 0;
   this.scoreText;
   this.promptText;
-  this.style1 = { font: '30px Arial', fill: '#00FFFF' };
-  this.style2 = { font: '22px Arial', fill: '#00FFFF', align: 'centerY' };
+  this.style1 = { font: '25px Nothing You Could Do', fill: '#00FFFF' };
+  this.style2 = { font: '25px Nothing You Could Do', fill: '#00FFFF', align: 'centerY' };
   this.opaqimg;
   this.timer;
   this.timerEvent;
@@ -126,6 +126,14 @@ Heist.LevelOne.prototype = {
       this.badguy.animations.add('walk');
       this.badguy.animations.play('walk', 8, true)
 
+      this.cop = this.add.sprite(600, 1500, 'cop');
+      this.physics.arcade.enable(this.cop);
+      this.cop.body.collideWorldBounds = true;
+      // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
+      // this.badguy.animations.add('moveRight', [2, 3], 4, true )
+      this.cop.animations.add('walk');
+      // this.cop.animations.play('walk', 8, true)
+
 
        // The player and its settings
       player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude')
@@ -208,7 +216,7 @@ Heist.LevelOne.prototype = {
   },
 
   update: function () {
-    
+
       // var updateTime = function() {
         // this.paused = true;
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
@@ -217,7 +225,8 @@ Heist.LevelOne.prototype = {
 
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
-      this.physics.arcade.collide(player, this.badguy)
+      this.physics.arcade.collide(player, this.badguy);
+      this.physics.arcade.collide(player, this.cop)
       this.physics.arcade.collide(stars, platforms);
       this.physics.arcade.collide(diamonds, platforms)
       this.physics.arcade.collide(this.badguy, platforms)
@@ -334,6 +343,18 @@ Heist.LevelOne.prototype = {
       promptText.text = '+$50'
       this.getAll();
   },
+
+  killCop: function(player, cop) {
+
+      // Removes the cop from the screen
+      cop.kill();
+
+      //  Add and update the score
+      this.fadePromptText();
+      promptText.text = 'Fuck da police!'
+      // this.getAll();
+  },
+
   fadePromptText: function() {
     promptText.alpha = 0;
     this.add.tween(promptText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
@@ -342,10 +363,12 @@ Heist.LevelOne.prototype = {
     promptText.alpha = 0;
     this.add.tween(promptText).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
   },
+
   timeOut: function () {
     promptText.alpha = 1;
     promptText.text = "TIME UP!";
   },
+
   getAll: function() {
     if (this.score === maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"

@@ -5,11 +5,13 @@
 <div>
 
 <script type="text/javascript">
+  <h1>
   <% if @current_user.present? %>
     var current_user_id = <%= @current_user.id %>
     var current_user_name = "<%= @current_user.name %>"
     var current_user_highest_score = "<%= @current_user.highest_score %>"
   <% end %>
+  </h1>
 </script>
 
 
