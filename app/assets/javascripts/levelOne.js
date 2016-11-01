@@ -14,15 +14,16 @@ Heist.LevelOne = function(game) {
   this.totalScore = 0;
   this.scoreText;
   this.promptText;
-  this.notificationText;
-  this.style1 = { font: '30px Arial', fill: '#00FFFF' };
-  this.style2 = { font: '22px Arial', fill: '#00FFFF', align: 'centerY' };
+  this.promptText2;
+  this.style1 = { font: '25px Nothing You Could Do', fill: '#00FFFF' };
+  this.style2 = { font: '25px Nothing You Could Do', fill: '#00FFFF', align: 'centerY' };
   this.opaqimg;
   this.timer;
   this.timerEvent;
   this.text;
   this.maxPossibleScore;
   this.badguy;
+  this.cop
 
   //Weight limit variable
   this.maxWeight = 0;
@@ -133,6 +134,15 @@ Heist.LevelOne.prototype = {
       this.badguy.animations.add('walk');
       this.badguy.animations.play('walk', 8, true)
 
+      this.cop = this.add.sprite(600, 1500, 'cop');
+      this.physics.arcade.enable(this.cop);
+      this.cop.body.collideWorldBounds = true;
+      this.cop.anchor.setTo(0.5, 0.5);
+      // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
+      // this.badguy.animations.add('moveRight', [2, 3], 4, true )
+      this.cop.animations.add('walk');
+      // this.cop.animations.play('walk', 8, true)
+
 
        // The player and its settings
       player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude')
@@ -152,6 +162,8 @@ Heist.LevelOne.prototype = {
       cursors = this.input.keyboard.createCursorKeys();
       x = this.input.keyboard.addKey(Phaser.Keyboard.X);
       v = this.input.keyboard.addKey(Phaser.Keyboard.V);
+      s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
 
       // stars and diamonds added to group.
       stars = this.add.group();
@@ -173,7 +185,6 @@ Heist.LevelOne.prototype = {
           //  Create a star inside of the 'stars' group
           var diamond = diamonds.create(i * 70, 1550, 'diamond');
 
-
       }
 
       // Defines maximum possible score, please put all new 'diamonds', 'stars' etc. above
@@ -190,6 +201,11 @@ Heist.LevelOne.prototype = {
       promptText = this.add.text(480, 506, 'Press (key) to (action)', this.style2);
       promptText.anchor.setTo(0.5, 0.5);
       promptText.fixedToCamera = true;
+
+      //PrompteText2
+      promptText2 = this.add.text(480, 520, 'Press (key) to (action)', this.style2);
+      promptText2.anchor.setTo(0.5, 0.5);
+      promptText2.fixedToCamera = true;
 
       // NotificationText varaible
       notificationText = this.add.text(480, 480, 'Press (key) to (action)', this.style2);
@@ -214,8 +230,9 @@ Heist.LevelOne.prototype = {
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
 
-      this.clearPromptText();
-      this.fadeNotificationText();
+      this.clearText(promptText);
+      this.clearText(promptText2);
+      this.fadeText(notificationText);
 
 
   },
@@ -230,15 +247,19 @@ Heist.LevelOne.prototype = {
 
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
-      this.physics.arcade.collide(player, this.badguy)
+      this.physics.arcade.collide(player, this.badguy);
       this.physics.arcade.collide(stars, platforms);
       this.physics.arcade.collide(diamonds, platforms)
       this.physics.arcade.collide(this.badguy, platforms)
+      this.physics.arcade.collide(this.cop, platforms)
 
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
+
+
+      var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
 
 
@@ -269,21 +290,27 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
-      // if (extrct === true && x.isDown) {
-      //   promptText.text = "YOU GOT AWAY"
-      //   // game.state.start('state2');
-      //   this.add.button(this.world.centerX, 500, "Next level");
-      //   updateTime();
-      //   Heist.totalScore += this.score;
-      //   this.paused = true;
-      // }
+      if (overlap === true && s.isDown) {
+          this.killCop();
+      }
+
+
+      if (extrct === true && x.isDown) {
+        promptText2.text = "YOU GOT AWAY"
+        // game.state.start('state2');
+        // this.add.button(this.world.centerX, 500, "levelOneSummary");
+        // updateTime();
+        Heist.totalScore += this.score;
+        this.paused = true;
+        this.state.start('LevelOneSummary')
+      }
       if (extrct === true && v.isDown) {
         if (this.playerCarryValue > 0 && this.maxWeight > 0) {
             this.pressedV();
             this.pause = this.time.now + 1200
         } else if (this.pause < this.time.now && this.maxWeight === 0) {
           notificationText.text = "You don't have anything to secure."
-          this.fadeNotificationText()
+          this.fadeText(notificationText)
           return;
         }
       }
@@ -323,10 +350,10 @@ Heist.LevelOne.prototype = {
   },
   dropOff: function(player, extract) {
     promptText.text = 'Press V to secure money.';
-    this.clearPromptText();
+    this.clearText(promptText);
   },
   pressedV: function() {
-    this.fadeNotificationText()
+    this.fadeText(notificationText)
     notificationText.text = "You secured $" + this.playerCarryValue
     this.score += this.playerCarryValue;
     scoreText.text = '$' + this.score;
@@ -341,11 +368,11 @@ Heist.LevelOne.prototype = {
       star.kill();
 
       this.playerCarryValue += 10;
-      this.fadePromptText();
+      this.fadeText(promptText);
       promptText.text = '+$10'
       this.getAll();
     } else {
-      this.fadeNotificationText();
+      this.fadeText(notificationText);
       notificationText.text = 'You are already carrying too much.'
       return;
     }
@@ -359,36 +386,61 @@ Heist.LevelOne.prototype = {
       diamond.kill();
 
       this.playerCarryValue += 50
-      this.fadePromptText();
+      this.fadeText(promptText);
       promptText.text = '+$50'
       this.getAll();
     } else {
-      this.fadeNotificationText();
+      this.fadeText(notificationText);
       notificationText.text = 'You are already carrying too much.'
       return;
     }
   },
-  fadePromptText: function() {
-    promptText.alpha = 0;
-    this.add.tween(promptText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
+
+  killCop: function(player, cop) {
+      // Removes the cop from the screen
+      this.cop.kill();
+
+      //  Add and update the score
+      this.fadeText(promptText);
+      promptText.text = 'Fuck da police!'
+      // this.getAll();
   },
 
-  clearPromptText: function() {
-    promptText.alpha = 0;
-    this.add.tween(promptText).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
+  moveCop: function(player, cop) {
+
+      // Removes the cop from the screen
+      this.cop.animations.play('walk', 8, true)
+
+      //  Add and update the score
+      this.fadeText(promptText);
+      promptText.text = 'He is gonna get ya!'
+      // this.getAll();
   },
-  fadeNotificationText: function() {
-    notificationText.alpha = 0;
-    this.add.tween(notificationText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
+
+  fadeText: function(textName) {
+    textName.alpha = 0;
+    this.add.tween(textName).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
   },
-  timeOut: function () {
+
+  clearText: function(textName) {
+    textName.alpha = 0;
+    this.add.tween(textName).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
+  },
+
+  // fadeNotificationText: function() {
+  //   notificationText.alpha = 0;
+  //   this.add.tween(notificationText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
+  // },
+
+   timeOut: function () {
     promptText.alpha = 1;
     promptText.text = "TIME UP!";
   },
+
   getAll: function() {
     if (this.score === maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"
-        this.fadePromptText();
+        this.fadeText(promptText);
       }
   }
 

@@ -1,5 +1,6 @@
 var Heist = Heist || {};
 
+
 Heist.Preloader = function (game) {
   this.background = null;
 
@@ -31,6 +32,7 @@ Heist.Preloader.prototype = {
         this.load.spritesheet('guard', 'assets/baddie.png', 32, 32, 4);
         this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
         this.load.spritesheet('button', 'assets/button_sprite_sheet.png', 193, 71);
+        this.load.spritesheet('cop', 'assets/sec_guard.png', 60, 80, 4);
   },
 
   create: function() {
