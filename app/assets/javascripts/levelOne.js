@@ -3,6 +3,7 @@ var Heist = Heist || {};
 Heist.LevelOne = function(game) {
   this.player;
   this.totalLives;
+  this.health = 3;
   this.platforms;
   this.cursors
   this.x;
@@ -23,7 +24,6 @@ Heist.LevelOne = function(game) {
   this.maxPossibleScore;
   this.badguy;
 
-
   //Weight limit variable
   this.maxWeight = 0;
   this.playerCarryValue = 0;
@@ -38,6 +38,7 @@ Heist.LevelOne.prototype = {
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
 
+      // Broken Timer pieces /////////////////////////////////////////////////
       // // Create a custom timer
       // this.timer = this.time.create();
       //
@@ -50,7 +51,7 @@ Heist.LevelOne.prototype = {
       //  We're going to be using physics, so enable the Arcade Physics system
       this.physics.startSystem(Phaser.Physics.ARCADE);
 
-      //  A simple background for our game
+      //  Background sprite and bounds for the game
       this.add.tileSprite(0, 0, 1920, 1920, 'background');
       this.world.setBounds(0, 0, 1920, 1920);
 
@@ -278,7 +279,6 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
-<<<<<<< HEAD
       // if (extrct === true && x.isDown) {
       //   promptText.text = "YOU GOT AWAY"
       //   // game.state.start('state2');
@@ -295,17 +295,6 @@ Heist.LevelOne.prototype = {
           this.fadeNotificationText()
           return;
         }
-
-
-=======
-      if (extrct === true && x.isDown) {
-        promptText.text = "YOU GOT AWAY"
-        // game.state.start('MainMenu2');
-        this.add.button(this.world.centerX, 500, "Next level");
-        updateTime();
-        Heist.totalScore += this.score;
-        this.paused = true;
->>>>>>> 603a59ef44fc0af23b4f92dc563983851011ba78
       }
 
   },
