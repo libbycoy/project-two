@@ -314,6 +314,8 @@ Heist.LevelOne.prototype = {
         if (this.playerCarryValue > 0 && this.maxWeight > 0) {
             this.pressedV();
             this.pause = this.time.now + 1200
+        } else if (this.pause < this.time.now && this.score === maxPossibleScore) {
+          this.getAll();
         } else if (this.pause < this.time.now && this.maxWeight === 0) {
           notificationText.text = "You don't have anything to secure."
           this.fadeText(notificationText)
