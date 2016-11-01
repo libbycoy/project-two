@@ -21,16 +21,19 @@ Heist.LevelOne = function(game) {
   this.text;
   this.maxPossibleScore;
   this.badguy;
+  this.outerWall;
+  this.outerwalls;
 
 };
 
 Heist.LevelOne.prototype = {
   create: function () {
 
-    //create the external walls
+    //centralises the game on the browser page
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
+
 
       // // Create a custom timer
       // this.timer = this.time.create();
@@ -48,7 +51,7 @@ Heist.LevelOne.prototype = {
       this.add.tileSprite(0, 0, 1920, 1920, 'background');
       this.world.setBounds(0, 0, 1920, 1920);
 
-      //  The platforms group contains the walls to containethe sprite
+      //  The platforms group contains the walls to contain the sprite
       platforms = this.add.group();
 
       opaqimg = this.add.sprite(1000, 600, 'opacity');
@@ -62,60 +65,115 @@ Heist.LevelOne.prototype = {
       //  We will enable physics for any object that is created in this group
       platforms.enableBody = true;
 
-      this.ground = this.add.group();
-      this.ground.enableBody = true;
+      // Game walls in via a loop function
+      this.outerWall = this.game.add.group();
+      this.outerWall.enableBody = true;
+      this.innerWall = this.game.add.group();
+      this.innerWall.enableBody = true;
 
-      //this.ground.create(1014, game.world.height - 330, 'ground');
-      var ground = platforms.create(60, this.world.height - 1860, 'side-wall');
-      ground.body.immovable = true;
-      var ground = platforms.create(60, this.world.height - 1860, 'back-wall');
-      ground.body.immovable = true;
-      var ground = platforms.create(1842, this.world.height - 1860, 'side-wall');
-      ground.body.immovable = true;
-      var ground = platforms.create(1014, this.world.height - 330, 'entrance');
-      ground.body.immovable = true;
-      var ground = platforms.create(888, this.world.height - 330, 'entrance');
-      ground.body.immovable = true;
-      // Here we create the bottom edge of the bank - ground.
-      var ground = platforms.create(1014, this.world.height - 330, 'ground');
-      //  This stops it from falling away when you jump on it
-      ground.body.immovable = true;
-      var ground = platforms.create(60, this.world.height - 330, 'ground');
-      ground.body.immovable = true;
-      //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-      ground.scale.setTo(1, 1);
+      var level = [
+          'x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x',
+          '                                                                                     ',
+          'x        o       o                                                                  x',
+          '         o                                                                           ',
+          'x        o                                                                          x',
+          '         o                                                                           ',
+          'x        o                                        oooooo    oooooooooooooo          x',
+          '         o       o                                o                                  ',
+          'x        o       o                                o                                 x',
+          '                 o                                o                                  ',
+          'x                o                                o                                 x',
+          '                 o                                o                                  ',
+          'x                o                                o                                 x',
+          '         oooooooooo    oooooooooooooooooo    oooooo              oooooooooooooo    o ',
+          'x        o                                        o                         o       x',
+          '         o                                        o                         o        ',
+          'x        o                                        o                         o       x',
+          '         o                                        o                         o        ',
+          'x        o       o                                ooooooo    ooooooooo      o       x',
+          '         o       o                                o           o             o        ',
+          'x oo    oo       o                                o           o             o       x',
+          '         o       o      oooooooooooooooooooo    ooo           o             o        ',
+          'x        o       o      o     o                   o                         o       x',
+          '         o       o      o     o                   o                         ooo    o ',
+          'x        o              o     o                   o                                 x',
+          '         o              o     o                   o                                  ',
+          'x        o              o     o        o          o           o                     x',
+          '         o              o              o          o           o                      ',
+          'x                o      o              o          o           o                     x',
+          '                 o      o              o          o           o                      ',
+          'x                o      o              o          o           o                     x',
+          '                 o      o     o        o          o           o                      ',
+          'x        o       o      o     o        o          o           o                     x',
+          '         o       o      o     o        o          o           o                      ',
+          'x        o       o      ooooooo        oooooooooooo           o                     x',
+          '         o       o            o                               o                      ',
+          'x        o       o            o                               o                     x',
+          '         o       o            o                               o                      ',
+          'x        o       o            o                                                     x',
+          '  oooooooooooooooo            o                                                      ',
+          'x                             o                                                     x',
+          '                              o                                           ooo    ooo ',
+          'x                             o                               o           o         x',
+          '                              o                               o           o          ',
+          'x oooooo    oooooo            o                               o           o         x',
+          '                 o                                            o           o          ',
+          'x                o                                            o           o         x',
+          '                 o                                            o                      ',
+          'x                o                                            o                     x',
+          '                 o            o                               o                      ',
+          'x                o            o                               o                     x',
+          '                 o            o                               o           o          ',
+          'x                o            o                               o           o         x',
+          '                 o            ooooooooooooooooooooooooooooooooo           o          ',
+          'x                o                                                        o         x',
+          '                 o                                                        o          ',
+          'x                o                                                        o         x',
+          '                                                                          o          ',
+          'x oooooooo                                                                o         x',
+          '         o                                                                o          ',
+          'x        o                                                                o         x',
+          '         o       o                                                        o          ',
+          'x        o       o                                                        o         x',
+          '         o       o                                                        o          ',
+          'x        o       o                                                        o         x',
+          '         o       o                                                        o          ',
+          'x        o       oooooooooooooooo                                         o         x',
+          '         o       o                                         oooooooooooooooo          ',
+          'x        o       o                                         o              o         x',
+          '                 o                                         o              o          ',
+          'x                o                                         o              o         x',
+          '                 o                                         o                         ',
+          'x                o                                         o                        x',
+          '         o       o                                         o                         ',
+          'x        o       o                                                                  x',
+          '         o       o                                                        o          ',
+          'x        o       o                                                        o         x',
+          '         o       o                                                        o          ',
+          'x x x x x x x x x x x x x x x x x x x x         x x x x x x x x x x x x x x x x x x x',
+          '                                                                                     ',
+          '                                      x         x,                                   ',
+          '                                                                                     ',
+          '                                      x         x,                                   '
+      ];
+        // Create the level by going through the array
+        for (var i = 0; i < level.length; i++) {
+            for (var j = 0; j < level[i].length; j++) {
 
-      // create the internal bank walls that cannot move and are half the size of extrnal walls
-      this.wall = this.add.group();
-      this.wall.enableBody = true;
+                // Create exterior bank walls and add the to the 'walls' group
+                if (level[i][j] == 'x') {
+                    var wall = this.outerWall.create(30+20*j, 30+20*i, 'outerWall');
+                    wall.body.immovable = true;
+                }
+                // Create interior bank walls and add them to the 'walls' group
+                if (level[i][j] == 'o') {
+                    var wall = this.innerWall.create(30+20*j, 30+20*i, 'innerWall');
+                    wall.body.immovable = true;
+                }
+            }
+        }
 
-      var wall = platforms.create(560, 1400, 'inner-wall-h');
-      wall.body.immovable = true;
-      var wall = platforms.create(560, 635, 'inner-wall-v');
-      wall.body.immovable = true;
-      var wall = platforms.create(1326, 635, 'inner-wall-v');
-      wall.body.immovable = true;
-      var wall = platforms.create(300, 60, 'inner-wall-v');
-      wall.body.immovable = true;
-      var wall = platforms.create(300, 410, 'inner-wall-h');
-      wall.body.immovable = true;
-      var wall = platforms.create(1065, 180, 'inner-wall-v');
-      wall.body.immovable = true;
-      var wall = platforms.create(1065, 635, 'inner-wall-h-small');
-      wall.body.immovable = true;
-      var wall = platforms.create(1065, 180, 'inner-wall-h-small');
-      wall.body.immovable = true;
-      var wall = platforms.create(1473, 410, 'inner-wall-h-small');
-      wall.body.immovable = true;
-      var wall = platforms.create(760, 945, 'inner-wall-h-small');
-      wall.body.immovable = true;
-      var wall = platforms.create(500, 634, 'inner-wall-h-small');
-      wall.body.immovable = true;
-      var wall = platforms.create(760, 845, 'inner-wall-v-small');
-      wall.body.immovable = true;
-
-
-      wall.scale.setTo(1,1);
+      this.outerWall.scale.setTo(1,1);
 
       // Code for guard(s) TODO: Get sprites to work. Animate.
       this.badguy = this.add.sprite(400, 1500, 'guard');
@@ -217,6 +275,8 @@ Heist.LevelOne.prototype = {
 
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
+      this.physics.arcade.collide(player, this.innerWall);
+      this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.badguy)
       this.physics.arcade.collide(stars, platforms);
       this.physics.arcade.collide(diamonds, platforms)
