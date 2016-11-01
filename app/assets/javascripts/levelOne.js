@@ -1,5 +1,6 @@
 var Heist = Heist || {};
 
+
 Heist.LevelOne = function(game) {
   this.player;
   this.totalLives;
@@ -125,6 +126,12 @@ Heist.LevelOne.prototype = {
 
       wall.scale.setTo(1,1);
 
+      var intervalID = window.setInterval(myCallback, 500);
+
+      function myCallback() {
+        // console.log('hello');
+      }
+
       // Code for guard(s) TODO: Get sprites to work. Animate.
       this.badguy = this.add.sprite(400, 1500, 'guard');
       this.physics.arcade.enable(this.badguy);
@@ -175,9 +182,9 @@ Heist.LevelOne.prototype = {
       diamonds.enableBody = true;
 
       //  Here we'll create 12 of them evenly spaced apart
-        for (var i = 1; i < 13; i++) {
-          //  Create a star inside of the 'stars' group
-          var star = stars.create(i * 70, 1500, 'star');
+      for (var i = 1; i < 13; i++) {
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(i * 70, 1500, 'star');
 
       }
 
@@ -245,13 +252,23 @@ Heist.LevelOne.prototype = {
       // }
 
 
-       //  Collide the player and the stars with the platforms
+      //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
       this.physics.arcade.collide(player, this.badguy);
+      this.physics.arcade.collide(player, this.cop);
       this.physics.arcade.collide(stars, platforms);
-      this.physics.arcade.collide(diamonds, platforms)
-      this.physics.arcade.collide(this.badguy, platforms)
-      this.physics.arcade.collide(this.cop, platforms)
+      this.physics.arcade.collide(diamonds, platforms);
+      this.physics.arcade.collide(this.badguy, platforms);
+      this.physics.arcade.collide(this.cop, platforms);
+
+      // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
+      //   this.physics.arcade.moveToXY(this.cop, 500, 500);
+      // } else {
+      //   this.physics.arcade.moveToXY(this.cop, 900, 1800);
+      // }
+
+      // console.log(this.cop.position.x, this.cop.position.y);
+      // 600, 1500
 
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
