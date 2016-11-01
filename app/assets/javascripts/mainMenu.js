@@ -19,12 +19,10 @@ Heist.MainMenu.prototype = {
 
       },
 
-
       clicked: function (pointer) {
         console.log("I am being called");
         this.state.start('LevelOne')
       }
-
 
     };
 

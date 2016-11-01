@@ -21,6 +21,12 @@ Heist.LevelOne = function(game) {
   this.text;
   this.maxPossibleScore;
   this.badguy;
+  this.cop
+
+
+  //Weight limit variable
+  this.maxWeight = 0;
+  this.playerCarryValue = 0;
 
 };
 
@@ -129,6 +135,7 @@ Heist.LevelOne.prototype = {
       this.cop = this.add.sprite(600, 1500, 'cop');
       this.physics.arcade.enable(this.cop);
       this.cop.body.collideWorldBounds = true;
+      this.cop.anchor.setTo(0.5, 0.5);
       // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
       // this.badguy.animations.add('moveRight', [2, 3], 4, true )
       this.cop.animations.add('walk');
@@ -152,6 +159,9 @@ Heist.LevelOne.prototype = {
       //  Our controls.
       cursors = this.input.keyboard.createCursorKeys();
       x = this.input.keyboard.addKey(Phaser.Keyboard.X);
+      v = this.input.keyboard.addKey(Phaser.Keyboard.V);
+      s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
 
       // stars and diamonds added to group.
       stars = this.add.group();
@@ -175,7 +185,6 @@ Heist.LevelOne.prototype = {
           //  Create a star inside of the 'stars' group
           var diamond = diamonds.create(i * 70, 1550, 'diamond');
 
-
       }
 
       // Defines maximum possible score, please put all new 'diamonds', 'stars' etc. above
@@ -190,7 +199,13 @@ Heist.LevelOne.prototype = {
 
       // promptText variable
       promptText = this.add.text(480, 506, 'Press (key) to (action)', this.style2);
+      promptText.anchor.setTo(0.5, 0.5);
       promptText.fixedToCamera = true;
+
+      // NotificationText varaible
+      notificationText = this.add.text(480, 480, 'Press (key) to (action)', this.style2);
+      notificationText.anchor.setTo(0.5, 0.5);
+      notificationText.fixedToCamera = true;
 
       // timerText variable to display the time
       timerText = this.add.text(900, 20, '', this.style1);
@@ -209,8 +224,9 @@ Heist.LevelOne.prototype = {
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
-      promptText.anchor.setTo(0.5, 0.5);
+
       this.clearPromptText();
+      this.fadeNotificationText();
 
 
   },
@@ -226,15 +242,18 @@ Heist.LevelOne.prototype = {
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
       this.physics.arcade.collide(player, this.badguy);
-      this.physics.arcade.collide(player, this.cop)
       this.physics.arcade.collide(stars, platforms);
       this.physics.arcade.collide(diamonds, platforms)
       this.physics.arcade.collide(this.badguy, platforms)
+      this.physics.arcade.collide(this.cop, platforms)
 
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
+
+
+      var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
 
 
@@ -273,13 +292,26 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
-      if (extrct === true && x.isDown) {
-        promptText.text = "YOU GOT AWAY"
-        // game.state.start('MainMenu2');
-        this.add.button(this.world.centerX, 500, "Next level");
-        updateTime();
-        Heist.totalScore += this.score;
-        this.paused = true;
+      if (overlap === true && s.isDown) {
+          this.killCop();
+      }
+
+      // if (extrct === true && x.isDown) {
+      //   promptText.text = "YOU GOT AWAY"
+      //   // game.state.start('state2');
+      //   this.add.button(this.world.centerX, 500, "Next level");
+      //   updateTime();
+      //   Heist.totalScore += this.score;
+      //   this.paused = true;
+      // }
+      if (extrct === true && v.isDown) {
+        if (this.playerCarryValue > 0 && this.maxWeight > 0) {
+            this.pressedV();
+        } else {
+          notificationText.text = "You don't have anything to secure."
+          this.fadeNotificationText()
+          return;
+        }
       }
 
   },
@@ -316,38 +348,60 @@ Heist.LevelOne.prototype = {
     return this.minutes.substr(-2) + ":" + this.seconds.substr(-2)
   },
   dropOff: function(player, extract) {
-    promptText.text = 'Press X to leave.';
+    promptText.text = 'Press V to secure money.';
     this.clearPromptText();
   },
+  pressedV: function() {
+    this.fadeNotificationText()
+    notificationText.text = "You secured $" + this.playerCarryValue
+    this.score += this.playerCarryValue;
+    console.log(this.score);
+    scoreText.text = '$' + this.score;
+    this.playerCarryValue = 0;
+    this.maxWeight = 0;
+  },
   collectStar: function (player, star) {
+    if (this.maxWeight <= 9) {
+      this.maxWeight += 1;
+      console.log(this.maxWeight);
       // Removes the star from the screen
       star.kill();
 
       //  Add and update the score
-      this.score += 10;
-      scoreText.text = '$' + this.score;
+      // scoreText.text = '$' + this.score;
+      this.playerCarryValue += 10;
+
       this.fadePromptText();
       promptText.text = '+$10'
       this.getAll();
+    } else {
+      promptText.text = 'You are already carrying too much.'
+      return;
+    }
 
   },
   collectDiamond: function(player, diamond) {
-
+    if (this.maxWeight <= 8) {
+      this.maxWeight += 2;
+      console.log(this.maxWeight);
       // Removes the diamond from the screen
       diamond.kill();
 
       //  Add and update the score
-      this.score += 50;
-      scoreText.text = '$' + this.score;
+      // scoreText.text = '$' + this.score;
+      this.playerCarryValue += 50
       this.fadePromptText();
       promptText.text = '+$50'
       this.getAll();
+    } else {
+      promptText.text = 'You are already carrying too much.'
+      return;
+    }
   },
 
   killCop: function(player, cop) {
-
       // Removes the cop from the screen
-      cop.kill();
+      this.cop.kill();
 
       //  Add and update the score
       this.fadePromptText();
@@ -355,16 +409,33 @@ Heist.LevelOne.prototype = {
       // this.getAll();
   },
 
+  moveCop: function(player, cop) {
+
+      // Removes the cop from the screen
+      this.cop.animations.play('walk', 8, true)
+
+      //  Add and update the score
+      this.fadePromptText();
+      promptText.text = 'He is gonna get ya!'
+      // this.getAll();
+  },
+
   fadePromptText: function() {
     promptText.alpha = 0;
     this.add.tween(promptText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
   },
+
   clearPromptText: function() {
     promptText.alpha = 0;
     this.add.tween(promptText).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
   },
 
-  timeOut: function () {
+  fadeNotificationText: function() {
+    notificationText.alpha = 0;
+    this.add.tween(notificationText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
+  },
+
+   timeOut: function () {
     promptText.alpha = 1;
     promptText.text = "TIME UP!";
   },
