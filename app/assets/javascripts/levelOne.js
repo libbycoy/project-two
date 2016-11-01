@@ -3,6 +3,7 @@ var Heist = Heist || {};
 Heist.LevelOne = function(game) {
   this.player;
   this.totalLives;
+  this.health = 3;
   this.platforms;
   this.cursors
   this.x;
@@ -13,8 +14,9 @@ Heist.LevelOne = function(game) {
   this.totalScore = 0;
   this.scoreText;
   this.promptText;
-  this.style1 = { font: '30px Arial', fill: '#00FFFF' };
-  this.style2 = { font: '22px Arial', fill: '#00FFFF', align: 'centerY' };
+  this.promptText2;
+  this.style1 = { font: '25px Nothing You Could Do', fill: '#00FFFF' };
+  this.style2 = { font: '25px Nothing You Could Do', fill: '#00FFFF', align: 'centerY' };
   this.opaqimg;
   this.timer;
   this.timerEvent;
@@ -23,7 +25,11 @@ Heist.LevelOne = function(game) {
   this.badguy;
   this.outerWall;
   this.outerwalls;
+  this.cop
 
+  //Weight limit variable
+  this.maxWeight = 0;
+  this.playerCarryValue = 0;
 };
 
 Heist.LevelOne.prototype = {
@@ -34,7 +40,7 @@ Heist.LevelOne.prototype = {
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
 
-
+      // Broken Timer pieces /////////////////////////////////////////////////
       // // Create a custom timer
       // this.timer = this.time.create();
       //
@@ -47,7 +53,7 @@ Heist.LevelOne.prototype = {
       //  We're going to be using physics, so enable the Arcade Physics system
       this.physics.startSystem(Phaser.Physics.ARCADE);
 
-      //  A simple background for our game
+      //  Background sprite and bounds for the game
       this.add.tileSprite(0, 0, 1920, 1920, 'background');
       this.world.setBounds(0, 0, 1920, 1920);
 
@@ -175,6 +181,62 @@ Heist.LevelOne.prototype = {
 
       this.outerWall.scale.setTo(1,1);
 
+      // this.ground = this.add.group();
+      // this.ground.enableBody = true;
+
+      //this.ground.create(1014, game.world.height - 330, 'ground');
+      // var ground = platforms.create(60, this.world.height - 1860, 'side-wall');
+      // ground.body.immovable = true;
+      // ground = platforms.create(60, this.world.height - 1860, 'back-wall');
+      // ground.body.immovable = true;
+      // ground = platforms.create(1842, this.world.height - 1860, 'side-wall');
+      // ground.body.immovable = true;
+      // ground = platforms.create(1014, this.world.height - 330, 'entrance');
+      // ground.body.immovable = true;
+      // ground = platforms.create(888, this.world.height - 330, 'entrance');
+      // ground.body.immovable = true;
+      // // Here we create the bottom edge of the bank - ground.
+      // ground = platforms.create(1014, this.world.height - 330, 'ground');
+      // //  This stops it from falling away when you jump on it
+      // ground.body.immovable = true;
+      // ground = platforms.create(60, this.world.height - 330, 'ground');
+      // ground.body.immovable = true;
+      // //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+      // ground.scale.setTo(1, 1);
+
+      // create the internal bank walls that cannot move and are half the size of extrnal walls
+      // this.wall = this.add.group();
+      // this.wall.enableBody = true;
+
+      // var wall = platforms.create(560, 1400, 'inner-wall-h');
+      // wall.body.immovable = true;
+      // wall = platforms.create(560, 635, 'inner-wall-v');
+      // wall.body.immovable = true;
+      // wall = platforms.create(1326, 635, 'inner-wall-v');
+      // wall.body.immovable = true;
+      // wall = platforms.create(300, 60, 'inner-wall-v');
+      // wall.body.immovable = true;
+      // wall = platforms.create(300, 410, 'inner-wall-h');
+      // wall.body.immovable = true;
+      // wall = platforms.create(1065, 180, 'inner-wall-v');
+      // wall.body.immovable = true;
+      // wall = platforms.create(1065, 635, 'inner-wall-h-small');
+      // wall.body.immovable = true;
+      // wall = platforms.create(1065, 180, 'inner-wall-h-small');
+      // wall.body.immovable = true;
+      // wall = platforms.create(1473, 410, 'inner-wall-h-small');
+      // wall.body.immovable = true;
+      // wall = platforms.create(760, 945, 'inner-wall-h-small');
+      // wall.body.immovable = true;
+      // wall = platforms.create(500, 634, 'inner-wall-h-small');
+      // wall.body.immovable = true;
+      // wall = platforms.create(760, 845, 'inner-wall-v-small');
+      // wall.body.immovable = true;
+
+
+      wall.scale.setTo(1,1);
+
+
       // Code for guard(s) TODO: Get sprites to work. Animate.
       this.badguy = this.add.sprite(400, 1500, 'guard');
       this.physics.arcade.enable(this.badguy);
@@ -183,6 +245,15 @@ Heist.LevelOne.prototype = {
       // this.badguy.animations.add('moveRight', [2, 3], 4, true )
       this.badguy.animations.add('walk');
       this.badguy.animations.play('walk', 8, true)
+
+      this.cop = this.add.sprite(600, 1500, 'cop');
+      this.physics.arcade.enable(this.cop);
+      this.cop.body.collideWorldBounds = true;
+      this.cop.anchor.setTo(0.5, 0.5);
+      // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
+      // this.badguy.animations.add('moveRight', [2, 3], 4, true )
+      this.cop.animations.add('walk');
+      // this.cop.animations.play('walk', 8, true)
 
 
        // The player and its settings
@@ -202,6 +273,9 @@ Heist.LevelOne.prototype = {
       //  Our controls.
       cursors = this.input.keyboard.createCursorKeys();
       x = this.input.keyboard.addKey(Phaser.Keyboard.X);
+      v = this.input.keyboard.addKey(Phaser.Keyboard.V);
+      s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
 
       // stars and diamonds added to group.
       stars = this.add.group();
@@ -213,18 +287,15 @@ Heist.LevelOne.prototype = {
       diamonds.enableBody = true;
 
       //  Here we'll create 12 of them evenly spaced apart
-        for (var i = 1; i < 13; i++)
-      {
+        for (var i = 1; i < 13; i++) {
           //  Create a star inside of the 'stars' group
           var star = stars.create(i * 70, 1500, 'star');
 
       }
 
-      for (var i = 1; i < 7; i++)
-      {
+      for (var i = 1; i < 7; i++) {
           //  Create a star inside of the 'stars' group
           var diamond = diamonds.create(i * 70, 1550, 'diamond');
-
 
       }
 
@@ -240,7 +311,18 @@ Heist.LevelOne.prototype = {
 
       // promptText variable
       promptText = this.add.text(480, 506, 'Press (key) to (action)', this.style2);
+      promptText.anchor.setTo(0.5, 0.5);
       promptText.fixedToCamera = true;
+
+      //PrompteText2
+      promptText2 = this.add.text(480, 520, 'Press (key) to (action)', this.style2);
+      promptText2.anchor.setTo(0.5, 0.5);
+      promptText2.fixedToCamera = true;
+
+      // NotificationText varaible
+      notificationText = this.add.text(480, 480, 'Press (key) to (action)', this.style2);
+      notificationText.anchor.setTo(0.5, 0.5);
+      notificationText.fixedToCamera = true;
 
       // timerText variable to display the time
       timerText = this.add.text(900, 20, '', this.style1);
@@ -259,8 +341,10 @@ Heist.LevelOne.prototype = {
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
-      promptText.anchor.setTo(0.5, 0.5);
-      this.clearPromptText();
+
+      this.clearText(promptText);
+      this.clearText(promptText2);
+      this.fadeText(notificationText);
 
 
   },
@@ -277,15 +361,19 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, platforms);
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
-      this.physics.arcade.collide(player, this.badguy)
+      this.physics.arcade.collide(player, this.badguy);
       this.physics.arcade.collide(stars, platforms);
       this.physics.arcade.collide(diamonds, platforms)
       this.physics.arcade.collide(this.badguy, platforms)
+      this.physics.arcade.collide(this.cop, platforms)
 
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
+
+
+      var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
 
 
@@ -293,44 +381,52 @@ Heist.LevelOne.prototype = {
       player.body.velocity.x = 0;
       player.body.velocity.y = 0;
 
-      if (cursors.left.isDown)
-      {
+      if (cursors.left.isDown) {
           //  Move to the left
           player.body.velocity.x = -250;
 
           player.animations.play('left');
-      }
-      else if (cursors.right.isDown)
-      {
+      } else if (cursors.right.isDown) {
           //  Move to the right
           player.body.velocity.x = 250;
 
           player.animations.play('right');
-      }
-      else
-      {
+      } else {
           //  Stand still
           player.animations.stop();
 
-
           player.frame = 4;
-
       }
 
       if (cursors.up.isDown) {
           player.body.velocity.y = -250;
-      }
-      else if (cursors.down.isDown) {
+      } else if (cursors.down.isDown) {
           player.body.velocity.y = 250;
       }
 
+      if (overlap === true && s.isDown) {
+          this.killCop();
+      }
+
+
       if (extrct === true && x.isDown) {
-        promptText.text = "YOU GOT AWAY"
-        // game.state.start('MainMenu2');
-        this.add.button(this.world.centerX, 500, "Next level");
-        updateTime();
+        promptText2.text = "YOU GOT AWAY"
+        // game.state.start('state2');
+        // this.add.button(this.world.centerX, 500, "levelOneSummary");
+        // updateTime();
         Heist.totalScore += this.score;
         this.paused = true;
+        this.state.start('LevelOneSummary')
+      }
+      if (extrct === true && v.isDown) {
+        if (this.playerCarryValue > 0 && this.maxWeight > 0) {
+            this.pressedV();
+            this.pause = this.time.now + 1200
+        } else if (this.pause < this.time.now && this.maxWeight === 0) {
+          notificationText.text = "You don't have anything to secure."
+          this.fadeText(notificationText)
+          return;
+        }
       }
 
   },
@@ -367,49 +463,98 @@ Heist.LevelOne.prototype = {
     return this.minutes.substr(-2) + ":" + this.seconds.substr(-2)
   },
   dropOff: function(player, extract) {
-    promptText.text = 'Press X to leave.';
-    this.clearPromptText();
+    promptText.text = 'Press V to secure money.';
+    this.clearText(promptText);
+  },
+  pressedV: function() {
+    this.fadeText(notificationText)
+    notificationText.text = "You secured $" + this.playerCarryValue
+    this.score += this.playerCarryValue;
+    scoreText.text = '$' + this.score;
+    this.playerCarryValue = 0;
+    this.maxWeight = 0;
   },
   collectStar: function (player, star) {
+    if (this.maxWeight <= 9) {
+      this.maxWeight += 1;
+      console.log(this.maxWeight);
       // Removes the star from the screen
       star.kill();
 
-      //  Add and update the score
-      this.score += 10;
-      scoreText.text = '$' + this.score;
-      this.fadePromptText();
+      this.playerCarryValue += 10;
+      this.fadeText(promptText);
       promptText.text = '+$10'
       this.getAll();
+    } else {
+      this.fadeText(notificationText);
+      notificationText.text = 'You are already carrying too much.'
+      return;
+    }
 
   },
   collectDiamond: function(player, diamond) {
-
+    if (this.maxWeight <= 8) {
+      this.maxWeight += 2;
+      console.log(this.maxWeight);
       // Removes the diamond from the screen
       diamond.kill();
 
-      //  Add and update the score
-      this.score += 50;
-      scoreText.text = '$' + this.score;
-      this.fadePromptText();
+      this.playerCarryValue += 50
+      this.fadeText(promptText);
       promptText.text = '+$50'
       this.getAll();
+    } else {
+      this.fadeText(notificationText);
+      notificationText.text = 'You are already carrying too much.'
+      return;
+    }
   },
-  fadePromptText: function() {
-    promptText.alpha = 0;
-    this.add.tween(promptText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
+
+  killCop: function(player, cop) {
+      // Removes the cop from the screen
+      this.cop.kill();
+
+      //  Add and update the score
+      this.fadeText(promptText);
+      promptText.text = 'Fuck da police!'
+      // this.getAll();
   },
-  clearPromptText: function() {
-    promptText.alpha = 0;
-    this.add.tween(promptText).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
+
+  moveCop: function(player, cop) {
+
+      // Removes the cop from the screen
+      this.cop.animations.play('walk', 8, true)
+
+      //  Add and update the score
+      this.fadeText(promptText);
+      promptText.text = 'He is gonna get ya!'
+      // this.getAll();
   },
-  timeOut: function () {
+
+  fadeText: function(textName) {
+    textName.alpha = 0;
+    this.add.tween(textName).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
+  },
+
+  clearText: function(textName) {
+    textName.alpha = 0;
+    this.add.tween(textName).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
+  },
+
+  // fadeNotificationText: function() {
+  //   notificationText.alpha = 0;
+  //   this.add.tween(notificationText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
+  // },
+
+   timeOut: function () {
     promptText.alpha = 1;
     promptText.text = "TIME UP!";
   },
+
   getAll: function() {
     if (this.score === maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"
-        this.fadePromptText();
+        this.fadeText(promptText);
       }
   }
 

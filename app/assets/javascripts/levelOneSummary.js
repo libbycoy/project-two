@@ -1,13 +1,11 @@
 var Heist = Heist || {};
-// Main menu state goes here.
-// var game = new Phaser.Game(1000, 600, Phaser.AUTO, '' );
 
-Heist.MainMenu = function (game) {
+Heist.LevelOneSummary = function (game) {
 };
 
 
 var startButton;
-Heist.MainMenu.prototype = {
+Heist.LevelOneSummary.prototype = {
 
   create: function () {
         var background = this.add.tileSprite(0, 0, 1920, 1920, 'levelOneBackground');
@@ -19,13 +17,16 @@ Heist.MainMenu.prototype = {
         startButton.input.pixelPerfectClick = true;
         startButton.events.onInputDown.add(this.clicked, this);
         startButton.anchor.setTo(0.5, 0.5);
+        var scoreSummary = this.add.text(100, 67, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+        scoreSummary.fixedToCamera = true;
+        scoreSummary.text = "Total take, $" + Heist.totalScore;
+
 
       },
 
       clicked: function (pointer) {
-        console.log("I am being called");
-        this.state.add('LevelOneSummary', Heist.LevelOneSummary)
-        this.state.start('LevelOne')
+
+        this.state.start('LevelTwo')
       }
 
     };
