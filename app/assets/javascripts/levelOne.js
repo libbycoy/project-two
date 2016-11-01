@@ -13,6 +13,7 @@ Heist.LevelOne = function(game) {
   this.totalScore = 0;
   this.scoreText;
   this.promptText;
+  this.notificationText;
   this.style1 = { font: '30px Arial', fill: '#00FFFF' };
   this.style2 = { font: '22px Arial', fill: '#00FFFF', align: 'centerY' };
   this.opaqimg;
@@ -21,6 +22,11 @@ Heist.LevelOne = function(game) {
   this.text;
   this.maxPossibleScore;
   this.badguy;
+
+
+  //Weight limit variable
+  this.maxWeight = 0;
+  this.playerCarryValue = 0;
 
 };
 
@@ -144,6 +150,7 @@ Heist.LevelOne.prototype = {
       //  Our controls.
       cursors = this.input.keyboard.createCursorKeys();
       x = this.input.keyboard.addKey(Phaser.Keyboard.X);
+      v = this.input.keyboard.addKey(Phaser.Keyboard.V);
 
       // stars and diamonds added to group.
       stars = this.add.group();
@@ -182,7 +189,13 @@ Heist.LevelOne.prototype = {
 
       // promptText variable
       promptText = this.add.text(480, 506, 'Press (key) to (action)', this.style2);
+      promptText.anchor.setTo(0.5, 0.5);
       promptText.fixedToCamera = true;
+
+      // NotificationText varaible
+      notificationText = this.add.text(480, 480, 'Press (key) to (action)', this.style2);
+      notificationText.anchor.setTo(0.5, 0.5);
+      notificationText.fixedToCamera = true;
 
       // timerText variable to display the time
       timerText = this.add.text(900, 20, '', this.style1);
@@ -201,14 +214,15 @@ Heist.LevelOne.prototype = {
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
-      promptText.anchor.setTo(0.5, 0.5);
+
       this.clearPromptText();
+      this.fadeNotificationText();
 
 
   },
 
   update: function () {
-    
+
       // var updateTime = function() {
         // this.paused = true;
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
@@ -264,13 +278,24 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
-      if (extrct === true && x.isDown) {
-        promptText.text = "YOU GOT AWAY"
-        // game.state.start('state2');
-        this.add.button(this.world.centerX, 500, "Next level");
-        updateTime();
-        Heist.totalScore += this.score;
-        this.paused = true;
+      // if (extrct === true && x.isDown) {
+      //   promptText.text = "YOU GOT AWAY"
+      //   // game.state.start('state2');
+      //   this.add.button(this.world.centerX, 500, "Next level");
+      //   updateTime();
+      //   Heist.totalScore += this.score;
+      //   this.paused = true;
+      // }
+      if (extrct === true && v.isDown) {
+        if (this.playerCarryValue > 0 && this.maxWeight > 0) {
+            this.pressedV();
+        } else {
+          notificationText.text = "You don't have anything to secure."
+          this.fadeNotificationText()
+          return;
+        }
+
+
       }
 
   },
@@ -307,40 +332,68 @@ Heist.LevelOne.prototype = {
     return this.minutes.substr(-2) + ":" + this.seconds.substr(-2)
   },
   dropOff: function(player, extract) {
-    promptText.text = 'Press X to leave.';
+    promptText.text = 'Press V to secure money.';
     this.clearPromptText();
   },
+  pressedV: function() {
+    this.fadeNotificationText()
+    notificationText.text = "You secured $" + this.playerCarryValue
+    this.score += this.playerCarryValue;
+    console.log(this.score);
+    scoreText.text = '$' + this.score;
+    this.playerCarryValue = 0;
+    this.maxWeight = 0;
+  },
   collectStar: function (player, star) {
+    if (this.maxWeight <= 9) {
+      this.maxWeight += 1;
+      console.log(this.maxWeight);
       // Removes the star from the screen
       star.kill();
 
       //  Add and update the score
-      this.score += 10;
-      scoreText.text = '$' + this.score;
+      // scoreText.text = '$' + this.score;
+      this.playerCarryValue += 10;
+
       this.fadePromptText();
       promptText.text = '+$10'
       this.getAll();
+    } else {
+      promptText.text = 'You are already carrying too much.'
+      return;
+    }
 
   },
   collectDiamond: function(player, diamond) {
-
+    if (this.maxWeight <= 8) {
+      this.maxWeight += 2;
+      console.log(this.maxWeight);
       // Removes the diamond from the screen
       diamond.kill();
 
       //  Add and update the score
-      this.score += 50;
-      scoreText.text = '$' + this.score;
+      // scoreText.text = '$' + this.score;
+      this.playerCarryValue += 50
       this.fadePromptText();
       promptText.text = '+$50'
       this.getAll();
+    } else {
+      promptText.text = 'You are already carrying too much.'
+      return;
+    }
   },
   fadePromptText: function() {
     promptText.alpha = 0;
     this.add.tween(promptText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
   },
+
   clearPromptText: function() {
     promptText.alpha = 0;
     this.add.tween(promptText).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
+  },
+  fadeNotificationText: function() {
+    notificationText.alpha = 0;
+    this.add.tween(notificationText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
   },
   timeOut: function () {
     promptText.alpha = 1;
