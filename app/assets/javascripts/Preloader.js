@@ -9,7 +9,7 @@ Heist.Preloader = function (game) {
 Heist.Preloader.prototype = {
 
   preload: function () {
-        this.load.image('background', 'assets/phaser_background-02.png');
+        this.load.image('background', 'assets/cement-05.png');
         this.load.image('opacity', 'assets/opacity-02.png');
         this.load.image('levelOneBackground', 'assets/menu-back-02.png');
         this.load.image('levelTwoBackground', 'assets/menu-back-03.png');
