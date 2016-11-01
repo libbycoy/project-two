@@ -23,7 +23,8 @@ Heist.LevelOne = function(game) {
   this.text;
   this.maxPossibleScore;
   this.badguy;
-  this.cop
+  this.cop;
+  this.count
 
   //Weight limit variable
   this.maxWeight = 0;
@@ -41,13 +42,13 @@ Heist.LevelOne.prototype = {
 
       // Broken Timer pieces /////////////////////////////////////////////////
       // // Create a custom timer
-      // this.timer = this.time.create();
+      this.timer = this.time.create();
       //
       // // Create a delay countdown timer, given params.
       // this.timerEvent = this.timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
       //
       // // Start the timer!
-      // this.timer.start();
+      this.timer.start();
 
       //  We're going to be using physics, so enable the Arcade Physics system
       this.physics.startSystem(Phaser.Physics.ARCADE);
@@ -203,12 +204,12 @@ Heist.LevelOne.prototype = {
       promptText.fixedToCamera = true;
 
       //PrompteText2
-      promptText2 = this.add.text(480, 520, 'Press (key) to (action)', this.style2);
+      promptText2 = this.add.text(480, 520, 'PRINT ME', this.style2);
       promptText2.anchor.setTo(0.5, 0.5);
       promptText2.fixedToCamera = true;
 
       // NotificationText varaible
-      notificationText = this.add.text(480, 480, 'Press (key) to (action)', this.style2);
+      notificationText = this.add.text(480, 480, '', this.style2);
       notificationText.anchor.setTo(0.5, 0.5);
       notificationText.fixedToCamera = true;
 
@@ -231,7 +232,7 @@ Heist.LevelOne.prototype = {
 
 
       this.clearText(promptText);
-      this.clearText(promptText2);
+      // this.clearText(promptText2);
       this.fadeText(notificationText);
 
 
@@ -243,7 +244,6 @@ Heist.LevelOne.prototype = {
         // this.paused = true;
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
       // }
-
 
        //  Collide the player and the stars with the platforms
       this.physics.arcade.collide(player, platforms);
@@ -261,6 +261,15 @@ Heist.LevelOne.prototype = {
 
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
+
+      var timeYay = this.time.now
+      var secondsElapsed = this.time.totalElapsedSeconds();
+
+      // var timeInSeconds = (Math.round(timeYay / 1000)).toString()
+      var minutes
+      if (this.timer.running) {
+        promptText2.text = Math.round(secondsElapsed)
+      }
 
 
       //  Reset the players velocity (movement)
@@ -297,9 +306,6 @@ Heist.LevelOne.prototype = {
 
       if (extrct === true && x.isDown) {
         promptText2.text = "YOU GOT AWAY"
-        // game.state.start('state2');
-        // this.add.button(this.world.centerX, 500, "levelOneSummary");
-        // updateTime();
         Heist.totalScore += this.score;
         this.paused = true;
         this.state.start('LevelOneSummary')
@@ -427,16 +433,10 @@ Heist.LevelOne.prototype = {
     this.add.tween(textName).from( { alpha: 1 }, 200, Phaser.Easing.default, true, 100);
   },
 
-  // fadeNotificationText: function() {
-  //   notificationText.alpha = 0;
-  //   this.add.tween(notificationText).from( { alpha: 1 }, 500, Phaser.Easing.easeOut, true, 800);
-  // },
-
    timeOut: function () {
     promptText.alpha = 1;
     promptText.text = "TIME UP!";
   },
-
   getAll: function() {
     if (this.score === maxPossibleScore) {
         promptText.text = "You've collected all the money, now get out!"
