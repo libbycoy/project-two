@@ -458,6 +458,7 @@ Heist.LevelTwo.prototype = {
       if (extrct === true && x.isDown) {
         this.pressedV();
         // promptText2.text = "YOU GOT AWAY"
+        Heist.levelScore += this.score;
         Heist.totalScore += this.score;
         this.paused = true;
         this.state.start('LevelTwoSummary')
@@ -583,7 +584,7 @@ Heist.LevelTwo.prototype = {
     }
   },
   createBadGuy: function(x, y) {
-    this.badguy.create(x, y, 'guard');
+    // this.badguy.create(x, y, 'guard');
   },
 
   killCop: function(player, cop) {
