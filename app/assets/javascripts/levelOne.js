@@ -255,7 +255,7 @@ Heist.LevelOne.prototype = {
       // this.cop.animations.play('walk', 8, true)
 
 
-       // The player and its settings
+      // The player and its settings
       player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude')
       // player.body.setSize(20, 30, 0, 0)
 
