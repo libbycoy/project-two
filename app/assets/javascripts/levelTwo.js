@@ -77,6 +77,10 @@ Heist.LevelTwo.prototype = {
       this.diamonds.enableBody = true;
       this.cops = this.game.add.group();
       this.cops.enableBody = true;
+      this.lasers = this.game.add.group();
+      this.lasers.enableBody = true;
+      this.heart = this.game.add.group();
+      this.heart.enableBody = true;
 
 
       var level = [
@@ -86,8 +90,8 @@ Heist.LevelTwo.prototype = {
           '                                                                                     ',
           '  #               *        *                        *        *         *          #  ',
           '                           *                                           *             ',
-          '  #                                                                               #  ',
-          '                                                                                     ',
+          '  #                        &                                                      #  ',
+          '                                                                             p       ',
           '  #                                             ^                                 #  ',
           '                  *                                 *        *                       ',
           '  #               *        *                        *        *         *          #  ',
@@ -228,6 +232,19 @@ Heist.LevelTwo.prototype = {
                     //gold.enableBody = true;
                 }
 
+                if (level [i][j] == '&'){
+                    var lasers = this.lasers.create(30+20*j, 30+20*i, 'laser');
+                    lasers.body.immovable = true;
+                    //money.enableBody = true;
+                }
+
+                if (level [i][j] == 'p'){
+                    var heart = this.heart.create(30+20*j, 30+20*i, 'heart');
+                    heart.body.immovable = true;
+                    //money.enableBody = true;
+                  }
+
+
                 // Check if current cell is an alphabet letter, and decide whether to draw the
                 // wall for that letter group
                 if (isLetter( level[i][j] ) && testWallBlock( level[i][j] )){
@@ -288,10 +305,12 @@ Heist.LevelTwo.prototype = {
       v = this.input.keyboard.addKey(Phaser.Keyboard.V);
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       g = this.input.keyboard.addKey(Phaser.Keyboard.G);
+      b = this.input.keyboard.addKey(Phaser.Keyboard.B);
 
-      this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
-      this.physics.arcade.enable(this.heart);
-      this.heart.body.collideWorldBounds = true;
+
+      // this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
+      // this.physics.arcade.enable(this.heart);
+      // this.heart.body.collideWorldBounds = true;
 
 
       // add money, gold bars and cops to the group
@@ -348,16 +367,9 @@ Heist.LevelTwo.prototype = {
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
-      lasers = this.game.add.group();
-      lasers.enableBody = true;
+      // lasers = this.game.add.group();
+      // lasers.enableBody = true;
 
-      for (var i = 1; i < 13; i++) {
-
-        var laser = lasers.create(i * 30, 1500, 'laser');
-        laser.anchor.setTo(0.5, 0.5);
-        laser.body.immovable = true
-        laser.angle = i++;
-      }
 
       this.physics.enable(lasers, Phaser.Physics.ARCADE);
       this.physics.arcade.enable([player, lasers]);
@@ -372,6 +384,8 @@ Heist.LevelTwo.prototype = {
         this.createBadGuy(480, 550);
       }
 
+      this.physics.enable(lasers, Phaser.Physics.ARCADE);
+      this.physics.arcade.enable([player, lasers]);
       //
       // cop = this.add.sprite(400, 200, 'cop');
       //
@@ -418,7 +432,7 @@ Heist.LevelTwo.prototype = {
       this.physics.arcade.collide(this.money, platforms);
       this.physics.arcade.collide(this.gold, platforms);
       //this.physics.arcade.collide(this.lasers, player);
-      this.physics.arcade.collide(lasers, player);
+      this.physics.arcade.collide(this.lasers, player);
       // this.physics.arcade.collide(heart, player);
 
 
@@ -521,8 +535,9 @@ Heist.LevelTwo.prototype = {
         }
       }
 
-      if (heartOverlap === true && g.isDown) {
-        lasers.destroy();
+      if (heartOverlap === true && b.isDown) {
+        this.lasers.destroy();
+        // this.heart.kill();
         notificationText.text = "You disabled all lasers."
         this.fadeText(notificationText)
         return;
@@ -601,7 +616,7 @@ Heist.LevelTwo.prototype = {
   },
 
   dropOffHeart: function(player, extractHeart) {
-    promptText.text = 'Press G to disable lasers.';
+    promptText.text = 'Press B to disable lasers.';
     this.clearText(promptText);
   },
 

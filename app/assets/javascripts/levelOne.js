@@ -311,6 +311,7 @@ Heist.LevelOne.prototype = {
       v = this.input.keyboard.addKey(Phaser.Keyboard.V);
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       g = this.input.keyboard.addKey(Phaser.Keyboard.G);
+      b = this.input.keyboard.addKey(Phaser.Keyboard.B);
 
       // this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
       // this.physics.arcade.enable(this.heart);
@@ -544,9 +545,9 @@ Heist.LevelOne.prototype = {
         }
       }
 
-      if (heartOverlap === true && g.isDown) {
+      if (heartOverlap === true && b.isDown) {
         this.lasers.destroy();
-        this.heart.kill();
+        // this.heart.kill();
         notificationText.text = "You disabled all lasers."
         this.fadeText(notificationText)
         return;
@@ -625,7 +626,7 @@ Heist.LevelOne.prototype = {
   },
 
   dropOffHeart: function(player, extractHeart) {
-    promptText.text = 'Press G to disable lasers.';
+    promptText.text = 'Press B to disable lasers.';
     this.clearText(promptText);
   },
 
