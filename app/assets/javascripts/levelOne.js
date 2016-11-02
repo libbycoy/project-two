@@ -30,6 +30,7 @@ Heist.LevelOne = function(game) {
   this.outerWall;
   this.outerwalls;
   this.lasers;
+  this.heart;
 
   //Weight limit variable
   this.maxWeight = 0;
@@ -76,6 +77,10 @@ Heist.LevelOne.prototype = {
       this.diamonds.enableBody = true;
       this.cops = this.game.add.group();
       this.cops.enableBody = true;
+      this.lasers = this.game.add.group();
+      this.lasers.enableBody = true;
+      this.heart = this.game.add.group();
+      this.heart.enableBody = true;
 
 
       var level = [
@@ -94,14 +99,14 @@ Heist.LevelOne.prototype = {
           '#        a       *                                *                                 #',
           '         *       **bbbb******************cccc******             **************dddd** ',
           '#        *       B                                C                         *       #',
-          '         *       B                                C                         *        ',
+          '         *       B                                C                         *      @ ',
           '#        *       B                                C                         *       #',
           '         *       B                                C                         *        ',
           '#        *       *                                *******eeee*********      *       #',
           '         *       *                              ^ *           *             *        ',
           '# **    **       *                                *           *             *     ^ #',
           '         *       *      *********llll**************           *             *        ',
-          '#        *       *      * ^   *                   *           E             *       #',
+          '#        *       *      * ^   *        &          *           E             *       #',
           '         *       *      *     *                   *           E             ***DDDD* ',
           '#        *       b      *     *                   *           E                     #',
           '         *       b      *     *                   *           E                      ',
@@ -221,6 +226,17 @@ Heist.LevelOne.prototype = {
                     money.body.immovable = false;
                     //money.enableBody = true;
                 }
+                if (level [i][j] == '&'){
+                    var lasers = this.lasers.create(30+20*j, 30+20*i, 'laser');
+                    lasers.body.immovable = true;
+                    //money.enableBody = true;
+                }
+
+                if (level [i][j] == '@'){
+                    var heart = this.heart.create(30+20*j, 30+20*i, 'heart');
+                    heart.body.immovable = true;
+                    //money.enableBody = true;
+                }
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
                 // wall for that letter group
@@ -289,9 +305,9 @@ Heist.LevelOne.prototype = {
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       g = this.input.keyboard.addKey(Phaser.Keyboard.G);
 
-      this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
-      this.physics.arcade.enable(this.heart);
-      this.heart.body.collideWorldBounds = true;
+      // this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
+      // this.physics.arcade.enable(this.heart);
+      // this.heart.body.collideWorldBounds = true;
 
 
       // stars and diamonds added to group.
@@ -449,7 +465,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.diamonds, platforms);
       this.physics.arcade.collide(this.money, platforms);
       //this.physics.arcade.collide(this.lasers, player);
-      this.physics.arcade.collide(lasers, player);
+      this.physics.arcade.collide(this.lasers, player);
       // this.physics.arcade.collide(heart, player);
 
 
@@ -558,12 +574,12 @@ Heist.LevelOne.prototype = {
       }
 
       if (heartOverlap === true && g.isDown) {
-        lasers.destroy();
+        this.lasers.destroy();
+        this.heart.kill();
         notificationText.text = "You disabled all lasers."
         this.fadeText(notificationText)
         return;
         }
-
 
       if (g.isDown) {
         this.health =- 1
