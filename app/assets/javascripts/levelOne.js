@@ -609,9 +609,9 @@ Heist.LevelOne.prototype = {
       // Removes the star from the screen
       star.kill();
 
-      this.playerCarryValue += 10;
+      this.playerCarryValue += 1000;
       this.fadeText(promptText);
-      promptText.text = '+$10'
+      promptText.text = '+$1000'
       this.getAll();
     } else {
       this.fadeText(notificationText);
@@ -627,9 +627,9 @@ Heist.LevelOne.prototype = {
       // Removes the diamond from the screen
       diamond.kill();
 
-      this.playerCarryValue += 50
+      this.playerCarryValue += 5000
       this.fadeText(promptText);
-      promptText.text = '+$50'
+      promptText.text = '+$5000'
       this.getAll();
     } else {
       this.fadeText(notificationText);
