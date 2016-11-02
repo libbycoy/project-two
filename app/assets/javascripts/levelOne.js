@@ -28,6 +28,7 @@ Heist.LevelOne = function(game) {
   this.count
   this.outerWall;
   this.outerwalls;
+  this.lasers;
 
   //Weight limit variable
   this.maxWeight = 0;
@@ -36,24 +37,20 @@ Heist.LevelOne = function(game) {
 
 Heist.LevelOne.prototype = {
   create: function () {
-
-    //centralises the game on the browser page
+    //centre the game on the browser page
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
 
-      // Broken Timer pieces /////////////////////////////////////////////////
-      // // Create a custom timer
+
       this.timer = this.time.create();
-      //
-      // // Create a delay countdown timer, given params.
-      // this.timerEvent = this.timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
-      //
+
       // // Start the timer!
       this.timer.start();
 
       //  We're going to be using physics, so enable the Arcade Physics system
       this.physics.startSystem(Phaser.Physics.ARCADE);
+      this.physics.startSystem(Phaser.Physics.BODY);
 
       //  Background sprite and bounds for the game
       this.add.tileSprite(0, 0, 1920, 1920, 'background');
@@ -78,108 +75,163 @@ Heist.LevelOne.prototype = {
       this.outerWall.enableBody = true;
       this.innerWall = this.game.add.group();
       this.innerWall.enableBody = true;
+      this.kWall = this.game.add.group();
+      this.kWall.enableBody = true;
+      this.diamonds = this.game.add.group();
+      this.diamonds.enableBody = true;
 
       var level = [
-          'x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x',
+          '# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #',
           '                                                                                     ',
-          'x        o       o                                                                  x',
-          '         o                                                                           ',
-          'x        o                                                                          x',
-          '         o                                                                           ',
-          'x        o                                        oooooo    oooooooooooooo          x',
-          '         o       o                                o                                  ',
-          'x        o       o                                o                                 x',
-          '                 o                                o                                  ',
-          'x                o                                o                                 x',
-          '                 o                                o                                  ',
-          'x                o                                o                                 x',
-          '         oooooooooo    oooooooooooooooooo    oooooo              oooooooooooooo    o ',
-          'x        o                                        o                         o       x',
-          '         o                                        o                         o        ',
-          'x        o                                        o                         o       x',
-          '         o                                        o                         o        ',
-          'x        o       o                                ooooooo    ooooooooo      o       x',
-          '         o       o                                o           o             o        ',
-          'x oo    oo       o                                o           o             o       x',
-          '         o       o      oooooooooooooooooooo    ooo           o             o        ',
-          'x        o       o      o     o                   o                         o       x',
-          '         o       o      o     o                   o                         ooo    o ',
-          'x        o              o     o                   o                                 x',
-          '         o              o     o                   o                                  ',
-          'x        o              o     o        o          o           o                     x',
-          '         o              o              o          o           o                      ',
-          'x                o      o              o          o           o                     x',
-          '                 o      o              o          o           o                      ',
-          'x                o      o              o          o           o                     x',
-          '                 o      o     o        o          o           o                      ',
-          'x        o       o      o     o        o          o           o                     x',
-          '         o       o      o     o        o          o           o                      ',
-          'x        o       o      ooooooo        oooooooooooo           o                     x',
-          '         o       o            o                               o                      ',
-          'x        o       o            o                               o                     x',
-          '         o       o            o                               o                      ',
-          'x        o       o            o                                                     x',
-          '  oooooooooooooooo            o                                                      ',
-          'x                             o                                                     x',
-          '                              o                                           ooo    ooo ',
-          'x                             o                               o           o         x',
-          '                              o                               o           o          ',
-          'x oooooo    oooooo            o                               o           o         x',
-          '                 o                                            o           o          ',
-          'x                o                                            o           o         x',
-          '                 o                                            o                      ',
-          'x                o                                            o                     x',
-          '                 o            o                               o                      ',
-          'x                o            o                               o                     x',
-          '                 o            o                               o           o          ',
-          'x                o            o                               o           o         x',
-          '                 o            ooooooooooooooooooooooooooooooooo           o          ',
-          'x                o                                                        o         x',
-          '                 o                                                        o          ',
-          'x                o                                                        o         x',
-          '                                                                          o          ',
-          'x oooooooo                                                                o         x',
-          '         o                                                                o          ',
-          'x        o                                                                o         x',
-          '         o       o                                                        o          ',
-          'x        o       o                                                        o         x',
-          '         o       o                                                        o          ',
-          'x        o       o                                                        o         x',
-          '         o       o                                                        o          ',
-          'x        o       oooooooooooooooo                                         o         x',
-          '         o       o                                         oooooooooooooooo          ',
-          'x        o       o                                         o              o         x',
-          '                 o                                         o              o          ',
-          'x                o                                         o              o         x',
-          '                 o                                         o                         ',
-          'x                o                                         o                        x',
-          '         o       o                                         o                         ',
-          'x        o       o                                                                  x',
-          '         o       o                                                        o          ',
-          'x        o       o                                                        o         x',
-          '         o       o                                                        o          ',
-          'x x x x x x x x x x x x x x x x x x x x         x x x x x x x x x x x x x x x x x x x',
+          '#        *       *                                                                  #',
+          '         *       B                                                                   ',
+          '#        *       B                                                                  #',
+          '         *       B                                                                   ',
+          '#        *       B                                ****************************    **#',
+          '         *       *                                *                                  ',
+          '#        *       *                                *                                 #',
+          '         a       *                                *                                  ',
+          '#        a       *                                *                                 #',
+          '         a       *                                *                                  ',
+          '#        a       *                                *                                 #',
+          '         *       **bbbb******************cccc******             **************dddd** ',
+          '#        *       B                                C                         *       #',
+          '         *       B                                C                         *        ',
+          '#        *       B                                C                         *       #',
+          '         *       B                                C                         *        ',
+          '#        *       *                                *******eeee*********      *       #',
+          '         *       *                                *           *             *        ',
+          '# **    **       *                                *           *             *       #',
+          '         *       *      *********llll**************           *             *        ',
+          '#        *       *      *     *                   *           E             *       #',
+          '         *       *      *     *                   *           E             ***DDDD* ',
+          '#        *       b      *     *                   *           E                     #',
+          '         *       b      *     *                   *           E                      ',
+          '#        *       b      *     *        *          *           *                     #',
+          '         *       b      *     *        *          *           *                      ',
+          '#        A       *      *              *          *           *                     #',
+          '         A       *      L              *          *           *                      ',
+          '#        A       *      L              *          *           *                     #',
+          '         A       *      L     *        *    ^     *           *                      ',
+          '#        *       *      L     *        *   ^^^    *           *                     #',
+          '         *       *      *     *        *  ^^^^^   *           *                      ',
+          '#        *       *      *******        ************           *                     #',
+          '         *       *            *                               *                      ',
+          '#        *       *            *                               *                     #',
+          '         *       *            *                               *                      ',
+          '#        *       *            *                               g                     #',
+          '  ****************            *                               g                      ',
+          '#                             *                               g                     #',
+          '                              *                               g           ***FFFF*** ',
+          '#                             *                               *           *         #',
+          '                              *                               *           *          ',
+          '# *****hhhh*******            *                               *           *         #',
+          '                 *            G                               *           *          ',
+          '#                *            G                               *           *         #',
+          '                 *            G                               *           f          ',
+          '#                *            G                               *           f         #',
+          '                 *            *                               *           f          ',
+          '#                *            *                               *           f         #',
+          '                 *            *                               *           *          ',
+          '#                *            *                               *           *         #',
+          '                 *            *********************************           *          ',
+          '#                *                                                        *         #',
+          '                 *                                                        *          ',
+          '#                *                                                        *         #',
+          '                 H                                                        *          ',
+          '# ********       H                                                        *         #',
+          '         *       H                                                        *          ',
+          '#        *       H                                                        *         #',
+          '         *       *                                                        *          ',
+          '#        *       *                                                        *         #',
+          '         *       *                                                        *          ',
+          '#        *       *                                                        *         #',
+          '         *       *                                                        *          ',
+          '#        *       ****************                                         *         #',
+          '         *       *                                         ****************          ',
+          '#        *       *                                         *              *         #',
+          '                 *                                         *              *          ',
+          '#                *                                         *              *         #',
+          '                 *                                         *              K          ',
+          '#                *                                         *              K         #',
+          '         *       *                                         *              K          ',
+          '#        *       *                                         k              K         #',
+          '         *       *                                         k              *          ',
+          '#        *       *                                         k              *         #',
+          '         *       *                                         k              *          ',
+          '# # # # # # # # # # # # # # # # # # # #         # # # # # # # # # # # # # # # # # # #',
           '                                                                                     ',
-          '                                      x         x,                                   ',
+          '                                      #         #,                                   ',
           '                                                                                     ',
-          '                                      x         x,                                   '
+          '                                      #         #,                                   '
       ];
+
+
+        var isLetter = function( c ) {
+          return c.toLowerCase() != c.toUpperCase();
+        }
+
+        // wallDrawLookup stores a hash of keys which are letters of the alphabet, corresponding to wall groups
+        // Uppercase and lowercase letter belong to the same group but are mutually exclusive
+        // i.e. if the 'r' group is drawn, the 'R' group should not be drawn
+        var wallDrawLookup = {};
+
+        // testWallBlock checks whether a coin toss has been made for this letter, and if not does a coin
+        // toss and remembers the result, and also toggles the toss value for the opposite-cased same letter
+        var testWallBlock = function ( letter ) {
+
+          if( typeof wallDrawLookup[letter] == 'undefined' ) {
+
+              // first time seeing this key, so do coin toss, and save result
+              var toss = Math.random() < 0.5;
+              var oppositeGroup;
+
+              // remember coin toss for this letter
+              wallDrawLookup[letter] = toss;
+
+              if( letter === letter.toLowerCase() ){
+                // letter is lowercase, so oppositeGroup must be the uppercase version
+                oppositeGroup = letter.toUpperCase();
+              } else {
+                // letter is uppercase, so oppositeGroup must be the lowercase version
+                oppositeGroup = letter.toLowerCase();
+              }
+
+              wallDrawLookup[oppositeGroup] = !toss;
+          }
+          // else: if the key is already defined, we just return it below
+
+          return wallDrawLookup[letter];
+        };
+
         // Create the level by going through the array
         for (var i = 0; i < level.length; i++) {
             for (var j = 0; j < level[i].length; j++) {
 
                 // Create exterior bank walls and add the to the 'walls' group
-                if (level[i][j] == 'x') {
+                if (level[i][j] == '#') {
                     var wall = this.outerWall.create(30+20*j, 30+20*i, 'outerWall');
                     wall.body.immovable = true;
                 }
                 // Create interior bank walls and add them to the 'walls' group
-                if (level[i][j] == 'o') {
+                if (level[i][j] == '*') {
                     var wall = this.innerWall.create(30+20*j, 30+20*i, 'innerWall');
                     wall.body.immovable = true;
                 }
-            }
-        }
+                if (level [i][j] == '^'){
+                    var diamonds = this.diamonds.create(i * 70, 1550, 'diamonds');
+                    diamonds.body.immovable = false;
+                }
+
+                // Check if current cell is an alphabet letter, and decide whether to draw the
+                // wall for that letter group
+                if (isLetter( level[i][j] ) && testWallBlock( level[i][j] )){
+                    // draw the wall section if our lookup function returns true
+                    var wall = this.kWall.create(30+20*j, 30+20*i, 'innerWall');
+                     wall.body.immovable = true;
+                }// if isLetter
+            }// for j
+        }// for i
 
       this.outerWall.scale.setTo(1,1);
 
@@ -191,11 +243,10 @@ Heist.LevelOne.prototype = {
       }
 
       // Code for guard(s) TODO: Get sprites to work. Animate.
+      this.badguy = this.game.add.group();
       this.badguy = this.add.sprite(400, 1500, 'guard');
       this.physics.arcade.enable(this.badguy);
       this.badguy.body.collideWorldBounds = true;
-      // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
-      // this.badguy.animations.add('moveRight', [2, 3], 4, true )
       this.badguy.animations.add('walk');
       this.badguy.animations.play('walk', 8, true)
 
@@ -246,12 +297,12 @@ Heist.LevelOne.prototype = {
         var star = stars.create(i * 70, 1500, 'star');
 
       }
-
-      for (var i = 1; i < 7; i++) {
-          //  Create a star inside of the 'stars' group
-          var diamond = diamonds.create(i * 70, 1550, 'diamond');
-
-      }
+      //
+      // for (var i = 1; i < 7; i++) {
+      //     //  Create a star inside of the 'stars' group
+      //     var diamond = diamonds.create(i * 70, 1550, 'diamond');
+      //
+      // }
 
       // Defines maximum possible score, please put all new 'diamonds', 'stars' etc. above
       // Used to define end of game and determine final score with timer bonus etc.
@@ -295,10 +346,29 @@ Heist.LevelOne.prototype = {
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
+      this.lasers = this.game.add.group();
+      this.lasers.enableBody = true;
+
+      for (var i = 1; i < 13; i++) {
+
+        var laser = this.lasers.create(i * 30, 1500, 'laser');
+        laser.anchor.setTo(0.5, 0.5);
+        laser.body.immovable = true
+        laser.angle = i++;
+      }
+
+      this.physics.enable(this.lasers, Phaser.Physics.ARCADE);
+      this.physics.arcade.enable([player, this.lasers]);
 
       this.clearText(promptText);
       // this.clearText(promptText2);
       this.fadeText(notificationText);
+
+      var spawnTimer = Math.round(this.time.totalElapsedSeconds());
+
+      if (spawnTimer % 15 === 0) {
+        this.createBadGuy(480, 550);
+      }
 
 
   },
@@ -312,6 +382,7 @@ Heist.LevelOne.prototype = {
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
       // }
 
+       //  Collision for things.
       this.physics.arcade.collide(player, platforms);
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
@@ -320,9 +391,16 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop, this.innerWall, this.copHitWallInner);
       this.physics.arcade.collide(this.cop, this.outerWall, this.copHitWallOuter);
       this.physics.arcade.collide(stars, platforms);
-      this.physics.arcade.collide(diamonds, platforms);
+
+      //this.physics.arcade.collide(diamonds, platforms);
       this.physics.arcade.collide(this.badguy, platforms);
       this.physics.arcade.collide(this.cop, platforms);
+      // random generated walls
+      this.physics.arcade.collide(player, this.kWall);
+      // add diamonds to be used in the map as ^
+      this.physics.arcade.collide(this.diamonds, platforms);
+      this.physics.arcade.collide(this.lasers, player);
+
 
       // if ((this.cop.position.x == 900) && (this.cop.position.y == 1800)) {
       //   this.physics.arcade.moveToXY(this.cop, 500, 500);
@@ -346,13 +424,15 @@ Heist.LevelOne.prototype = {
       // 600, 1500
 
 
+
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
-      this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
-
+      this.physics.arcade.overlap(player, this.diamonds, this.collectDiamond, null, this);
+      //this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
 
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
+
 
 
       //  Reset the players velocity (movement)
@@ -412,18 +492,22 @@ Heist.LevelOne.prototype = {
 
 
       if (extrct === true && x.isDown) {
-        promptText2.text = "YOU GOT AWAY"
+        this.pressedV();
+        // promptText2.text = "YOU GOT AWAY"
         Heist.totalScore += this.score;
         this.paused = true;
         this.state.start('LevelOneSummary')
+        this.state.add('LevelTwo', Heist.LevelTwo)
+
         // Capture time:
         //   var printTime = Math.round(this.time.totalElapsedSeconds());
         //   someVariable = printTime;
       }
       if (extrct === true && v.isDown) {
         if (this.playerCarryValue > 0 && this.maxWeight > 0) {
-            this.pressedV();
-            this.pause = this.time.now + 1200
+          this.printSecureMessage();
+          this.pressedV();
+          this.pause = this.time.now + 1200
         } else if (this.pause < this.time.now && this.score === maxPossibleScore) {
           this.getAll();
         } else if (this.pause < this.time.now && this.maxWeight === 0) {
@@ -491,12 +575,14 @@ Heist.LevelOne.prototype = {
     this.clearText(promptText);
   },
   pressedV: function() {
-    this.fadeText(notificationText)
-    notificationText.text = "You secured $" + this.playerCarryValue
     this.score += this.playerCarryValue;
-    scoreText.text = '$' + this.score;
     this.playerCarryValue = 0;
     this.maxWeight = 0;
+  },
+  printSecureMessage: function () {
+    this.fadeText(notificationText)
+    notificationText.text = "You secured $" + this.playerCarryValue
+    scoreText.text = '$' + this.score;
   },
   collectStar: function (player, star) {
     if (this.maxWeight <= 11) {
@@ -533,6 +619,9 @@ Heist.LevelOne.prototype = {
       return;
     }
   },
+  createBadGuy: function(x, y) {
+    // this.badguy.create(x, y, 'guard');
+  },
 
   killCop: function(player, cop) {
       // Removes the cop from the screen
@@ -543,7 +632,6 @@ Heist.LevelOne.prototype = {
       promptText.text = 'Fuck da police!'
       // this.getAll();
   },
-
   moveCop: function(player, cop) {
 
     // Removes the cop from the screen
@@ -582,6 +670,11 @@ Heist.LevelOne.prototype = {
         promptText.text = "You've collected all the money, now get out!"
         this.fadeText(promptText);
       }
-  }
+  },
+
+  killLaser: function(player, lasers) {
+  promptText.text = "You are close to the lasers!";
+  //  this.paths.kill();
+  },
 
 }; // End of LevelOne
