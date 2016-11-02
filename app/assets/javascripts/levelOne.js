@@ -30,7 +30,6 @@ Heist.LevelOne = function(game) {
   this.outerWall;
   this.outerwalls;
   this.lasers;
-  this.copVelocity = 120;
 
   //Weight limit variable
   this.maxWeight = 0;
@@ -223,15 +222,16 @@ Heist.LevelOne.prototype = {
                     money.body.immovable = false;
                     //money.enableBody = true;
                 }
+                if (level [i][j] == '@'){
+                    var gold = this.gold.create(30+20*j, 30+20*i, 'gold');
+                    gold.body.immovable = false;
+                    //gold.enableBody = true;
+                }
                 if (level[i][j] == '%'){
                   var cop = this.cops.create(30+20*j, 30+20*i, 'cop');
                   // cop.physics.arcade.enable = true;
                   cop.body.immovable = false;
                   // cop.body.velocity.x = 120;
-                if (level [i][j] == '@'){
-                    var gold = this.gold.create(30+20*j, 30+20*i, 'gold');
-                    gold.body.immovable = false;
-                    //gold.enableBody = true;
                 }
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
@@ -300,26 +300,22 @@ Heist.LevelOne.prototype = {
       this.heart.body.collideWorldBounds = true;
 
 
+      // add money, gold bars and cops to the group
       money = this.add.group();
       gold = this.add.group();
       cops = this.add.group();
 
-
-
-      diamonds.enableBody = true;
-      money.enableBody = true;
+      // create a cop
       cops.enableBody = true;
 
       for (var i = 1; i < 4; i++) {
         var cop = cops.create(i * 150, 1500, 'cop');
-        cop.body.velocity.x = this.copVelocity;
+        cop.body.velocity.x = 120;
       }
-
 
       // Defines maximum possible score, please put all new 'collectables', ie gold, money, etc. above
       // Used to define end of game and determine final score with timer bonus etc.
       maxPossibleScore = ((this.gold.length * 10) + (this.money.length * 10)) ;
-
 
       //  The current level score controls
       scoreText = this.add.text(100, 67, '$0', this.style1);
@@ -382,6 +378,24 @@ Heist.LevelOne.prototype = {
         this.createBadGuy(480, 550);
       }
 
+      //
+      // cop = this.add.sprite(400, 200, 'cop');
+      //
+      // this.physics.enable([this.outerWall,cop], Phaser.Physics.ARCADE);
+      //
+      // this.physics.arcade.collide(cop, this.outerWall);
+      // //  This gets it moving
+      // cop.body.velocity.setTo(200, 200);
+      //
+      // //  This makes the game world bounce-able
+      // cop.body.collideWorldBounds = true;
+      //
+      //
+      //
+      // //  This sets the image bounce energy for the horizontal
+      // //  and vertical vectors (as an x,y point). "1" is 100% energy return
+      // cop.body.bounce.setTo(1, 1);
+
 
   },
 
@@ -404,8 +418,6 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, cops);
       this.physics.arcade.collide(cops, this.innerWall, this.copHitWallInner);
       this.physics.arcade.collide(cops, this.outerWall, this.copHitWallOuter);
-      this.physics.arcade.collide(this.cop, this.outerWall);
-      this.physics.arcade.collide(this.cop, this.innerWall);
       this.physics.arcade.collide(this.heart, platforms);
       this.physics.arcade.collide(this.badguy, platforms);
       this.physics.arcade.collide(this.cop, platforms);
@@ -416,7 +428,16 @@ Heist.LevelOne.prototype = {
       // this.physics.arcade.collide(heart, player);
 
 
+      // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
+      //   this.physics.arcade.moveToXY(this.cop, 500, 500);
+      // } else {
+      //   this.physics.arcade.moveToXY(this.cop, 900, 1800);
+      // }
 
+      // console.log(this.cop.position.x, this.cop.position.y);
+      // 600, 1500
+
+      //  Checks to see if the player overlaps with any of the gold or money or heart, if he does call a 'collect' function
       this.physics.arcade.overlap(player, this.money, this.collectMoney, null, this);
       this.physics.arcade.overlap(player, this.gold, this.collectGold, null, this);
       this.physics.arcade.overlap(player, this.heart, this.heartPrompt, null, this);
@@ -600,7 +621,6 @@ Heist.LevelOne.prototype = {
     this.fadeText(notificationText)
     notificationText.text = "You secured $" + this.playerCarryValue
   },
-
 
   collectMoney: function(player, money) {
     if (this.maxWeight <= 10) {
