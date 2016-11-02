@@ -285,6 +285,10 @@ Heist.LevelOne.prototype = {
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       g = this.input.keyboard.addKey(Phaser.Keyboard.G);
 
+      this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
+      this.physics.arcade.enable(this.heart);
+      this.heart.body.collideWorldBounds = true;
+
 
       // stars and diamonds added to group.
       stars = this.add.group();
@@ -373,19 +377,19 @@ Heist.LevelOne.prototype = {
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
-      this.lasers = this.game.add.group();
-      this.lasers.enableBody = true;
+      lasers = this.game.add.group();
+      lasers.enableBody = true;
 
       for (var i = 1; i < 13; i++) {
 
-        var laser = this.lasers.create(i * 30, 1500, 'laser');
+        var laser = lasers.create(i * 30, 1500, 'laser');
         laser.anchor.setTo(0.5, 0.5);
         laser.body.immovable = true
         laser.angle = i++;
       }
 
-      this.physics.enable(this.lasers, Phaser.Physics.ARCADE);
-      this.physics.arcade.enable([player, this.lasers]);
+      this.physics.enable(lasers, Phaser.Physics.ARCADE);
+      this.physics.arcade.enable([player, lasers]);
 
       this.clearText(promptText);
       // this.clearText(promptText2);
@@ -418,6 +422,8 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(cops, this.innerWall, this.copHitWallInner);
       this.physics.arcade.collide(cops, this.outerWall, this.copHitWallOuter);
       this.physics.arcade.collide(stars, platforms);
+      this.physics.arcade.collide(this.heart, platforms);
+
 
       //this.physics.arcade.collide(diamonds, platforms);
       this.physics.arcade.collide(this.badguy, platforms);
@@ -426,18 +432,21 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.kWall);
       // add diamonds to be used in the map as ^
       this.physics.arcade.collide(this.diamonds, platforms);
-      this.physics.arcade.collide(this.lasers, player);
+      this.physics.arcade.collide(lasers, player);
 
+      // this.physics.arcade.collide(heart, player);
 
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       this.physics.arcade.overlap(player, this.diamonds, this.collectDiamond, null, this);
       //this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
+      this.physics.arcade.overlap(player, this.heart, this.heartPrompt, null, this);
+
 
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
-
+      var heartOverlap = this.physics.arcade.overlap(player, this.heart, this.dropOffHeart, null, this)
 
 
       //  Reset the players velocity (movement)
@@ -522,6 +531,14 @@ Heist.LevelOne.prototype = {
         }
       }
 
+      if (heartOverlap === true && g.isDown) {
+        lasers.destroy();
+        notificationText.text = "You disabled all lasers."
+        this.fadeText(notificationText)
+        return;
+        }
+
+
       if (g.isDown) {
         this.health =- 1
       }
@@ -595,6 +612,12 @@ Heist.LevelOne.prototype = {
     promptText.text = 'Press V to secure money.';
     this.clearText(promptText);
   },
+
+  dropOffHeart: function(player, extractHeart) {
+    promptText.text = 'Press SPACEBAR to disable lasers.';
+    this.clearText(promptText);
+  },
+
   pressedV: function() {
     this.score += this.playerCarryValue;
     this.playerCarryValue = 0;
@@ -623,6 +646,7 @@ Heist.LevelOne.prototype = {
     }
 
   },
+
   collectDiamond: function(player, diamond) {
     if (this.maxWeight <= 10) {
       this.maxWeight += 2;
@@ -693,9 +717,13 @@ Heist.LevelOne.prototype = {
       }
   },
 
-  killLaser: function(player, lasers) {
-  promptText.text = "You are close to the lasers!";
+  killLasers: function(player, lasers) {
+    console.log('this should kill lasers');
   //  this.paths.kill();
   },
+
+  heartPrompt: function(player, heart) {
+    console.log('you are over the heart');
+  }
 
 }; // End of LevelOne
