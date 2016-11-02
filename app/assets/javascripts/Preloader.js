@@ -10,7 +10,7 @@ Heist.Preloader.prototype = {
 
   preload: function () {
         this.load.image('blueCar', 'assets/BlueCar.png')
-        this.load.image('background', 'assets/cement-05.png');
+        this.load.image('background', 'assets/cement-06.png');
         this.load.image('opacity', 'assets/opacity-02.png');
         this.load.image('levelOneBackground', 'assets/menu-back-02.png');
         this.load.image('levelTwoBackground', 'assets/menu-back-03.png');
@@ -18,6 +18,7 @@ Heist.Preloader.prototype = {
         this.load.image('star', 'assets/star.png');
         this.load.image('money', 'assets/money.gif');
         this.load.image('diamond', 'assets/diamond.png');
+        this.load.image('diamonds', 'assets/diamond.png');
         this.load.image('firstaid', 'assets/firstaid.png');
         this.load.image('background', 'assets/phaser_background-02.png');
         this.load.spritesheet('guard', 'assets/baddie.png', 32, 32, 4);
@@ -25,6 +26,7 @@ Heist.Preloader.prototype = {
         this.load.spritesheet('button', 'assets/button_sprite_sheet.png', 193, 71);
         this.load.image('outerWall', 'assets/walls/outer-wall-block.png');
         this.load.image('innerWall', 'assets/walls/inner-wall-block.png');
+        this.load.image('laser', 'assets/laser-01.png');
         this.load.spritesheet('cop', 'assets/sec_guard.png', 60, 80, 4);
   },
 
