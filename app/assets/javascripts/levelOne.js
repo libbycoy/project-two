@@ -246,12 +246,6 @@ Heist.LevelOne.prototype = {
       }
 
       // Code for guard(s) TODO: Get sprites to work. Animate.
-      this.badguy = this.game.add.group();
-      this.badguy = this.add.sprite(400, 1500, 'guard');
-      this.physics.arcade.enable(this.badguy);
-      this.badguy.body.collideWorldBounds = true;
-      this.badguy.animations.add('walk');
-      this.badguy.animations.play('walk', 8, true)
 
       // this.cop = this.add.sprite(600, 1500, 'cop');
       // this.physics.arcade.enable(this.cop);
@@ -297,29 +291,12 @@ Heist.LevelOne.prototype = {
       diamonds.enableBody = true;
       cops.enableBody = true;
 
-      //  Here we'll create 12 of them evenly spaced apart
-      for (var i = 1; i < 13; i++) {
-        //  Create a star inside of the 'stars' group
-        var star = stars.create(i * 70, 1500, 'star');
-
-      }
 
       for (var i = 1; i < 4; i++) {
         var cop = cops.create(i * 150, 1500, 'cop');
         cop.body.velocity.x = 120;
       }
 
-
-
-      // this.cop = this.add.sprite(600, 1500, 'cop');
-      // this.physics.arcade.enable(this.cop);
-      // this.cop.body.collideWorldBounds = true;
-      // this.cop.anchor.setTo(0.5, 0.5);
-      // // this.cop.body.velocity.x=120;
-      // // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
-      // // this.badguy.animations.add('moveRight', [2, 3], 4, true )
-      // this.cop.animations.add('walk');
-      // // this.cop.animations.play('walk', 8, true)
 
 
 
@@ -397,6 +374,24 @@ Heist.LevelOne.prototype = {
         this.createBadGuy(480, 550);
       }
 
+      //
+      // cop = this.add.sprite(400, 200, 'cop');
+      //
+      // this.physics.enable([this.outerWall,cop], Phaser.Physics.ARCADE);
+      //
+      // this.physics.arcade.collide(cop, this.outerWall);
+      // //  This gets it moving
+      // cop.body.velocity.setTo(200, 200);
+      //
+      // //  This makes the game world bounce-able
+      // cop.body.collideWorldBounds = true;
+      //
+      //
+      //
+      // //  This sets the image bounce energy for the horizontal
+      // //  and vertical vectors (as an x,y point). "1" is 100% energy return
+      // cop.body.bounce.setTo(1, 1);
+
 
   },
 
@@ -414,10 +409,13 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.badguy);
+      this.physics.arcade.collide(this.cop, this.outerWall);
       this.physics.arcade.collide(player, cops);
       this.physics.arcade.collide(cops, this.innerWall, this.copHitWallInner);
       this.physics.arcade.collide(cops, this.outerWall, this.copHitWallOuter);
       this.physics.arcade.collide(stars, platforms);
+
+
 
       //this.physics.arcade.collide(diamonds, platforms);
       this.physics.arcade.collide(this.badguy, platforms);
@@ -665,11 +663,11 @@ Heist.LevelOne.prototype = {
   },
 
   copHitWallInner: function(cop, innerWall){
-    cop.body.velocity.x = (cop.body.velocity.x + 1) * -120;
+    cop.body.velocity.x = -120;
   },
 
   copHitWallOuter: function(cop, outerWall){
-    cop.body.velocity.x*= -1*(120);
+    cop.body.velocity.x = 120;
   },
 
   fadeText: function(textName) {
