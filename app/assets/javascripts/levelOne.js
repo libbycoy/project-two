@@ -457,6 +457,7 @@ Heist.LevelOne.prototype = {
         Heist.totalScore += this.score;
         this.paused = true;
         this.state.start('LevelOneSummary')
+        this.state.add('LevelTwo', Heist.LevelTwo)
 
         // Capture time:
         //   var printTime = Math.round(this.time.totalElapsedSeconds());
@@ -579,7 +580,7 @@ Heist.LevelOne.prototype = {
     }
   },
   createBadGuy: function(x, y) {
-    this.badguy.create(x, y, 'guard');
+    // this.badguy.create(x, y, 'guard');
   },
 
   killCop: function(player, cop) {

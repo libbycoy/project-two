@@ -1,11 +1,11 @@
 var Heist = Heist || {};
 
-Heist.LevelOneSummary = function (game) {
+Heist.LevelTwoSummary = function (game) {
 };
 
 
 var startButton;
-Heist.LevelOneSummary.prototype = {
+Heist.LevelTwoSummary.prototype = {
 
   create: function () {
     // Align canvas to middle.
@@ -29,9 +29,7 @@ Heist.LevelOneSummary.prototype = {
 
       clicked: function (pointer) {
 
-        this.state.start('LevelTwo')
-        this.state.add('LevelTwoSummary', Heist.LevelTwoSummary)
-
+        this.state.start('LevelThree')
       }
 
     };
