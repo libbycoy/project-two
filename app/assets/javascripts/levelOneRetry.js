@@ -1,11 +1,11 @@
 var Heist = Heist || {};
 
-Heist.LevelTwoSummary = function (game) {
+Heist.LevelOneRetry = function (game) {
 };
 
 
 var startButton;
-Heist.LevelTwoSummary.prototype = {
+Heist.LevelOneRetry.prototype = {
 
   create: function () {
     // Align canvas to middle.
@@ -25,21 +25,17 @@ Heist.LevelTwoSummary.prototype = {
     livesLeft.text = "You have " + Heist.playerLives + " lives left"
 
 
-    var levelScoreSummary = this.add.text(100, 97, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
-    levelScoreSummary.fixedToCamera = true;
-    levelScoreSummary.text = "You got $" + Heist.levelScore + " this level"
-
-
-    var totalScoreSummary = this.add.text(100, 67, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
-    totalScoreSummary.fixedToCamera = true;
-    totalScoreSummary.text = "This run: $" + Heist.totalScore;
+    var ded = this.add.text(100, 97, 'You lost a life', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    ded.fixedToCamera = true;
 
 
       },
 
       clicked: function (pointer) {
+        this.state.add('LevelOne', Heist.LevelOne)
+        this.state.start('LevelOne')
+        Heist.levelScore = 0;
 
-        this.state.start('LevelThree')
       }
 
     };

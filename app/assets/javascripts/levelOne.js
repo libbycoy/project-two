@@ -8,6 +8,7 @@ Heist.LevelOne = function(game) {
   this.platforms;
   this.cursors
   this.x;
+  this.g;
   this.stars;
   this.diamonds;
   this.extractLocation;
@@ -59,14 +60,6 @@ Heist.LevelOne.prototype = {
       //  The platforms group contains the walls to contain the sprite
       platforms = this.add.group();
 
-      opaqimg = this.add.sprite(1000, 600, 'opacity');
-      opaqimg.fixedToCamera = true;
-      opaqimg.cameraOffset.setTo(0, 0);
-
-      keyimg = this.add.sprite(150, 95, 'key');
-      keyimg.fixedToCamera = true;
-      keyimg.cameraOffset.setTo(20, 20);
-
       //  We will enable physics for any object that is created in this group
       platforms.enableBody = true;
 
@@ -79,6 +72,11 @@ Heist.LevelOne.prototype = {
       this.kWall.enableBody = true;
       this.money = this.game.add.group();
       this.money.enableBody = true;
+      this.diamonds = this.game.add.group();
+      this.diamonds.enableBody = true;
+      this.cops = this.game.add.group();
+      this.cops.enableBody = true;
+
 
       var level = [
           '# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #',
@@ -236,6 +234,14 @@ Heist.LevelOne.prototype = {
 
       this.outerWall.scale.setTo(1,1);
 
+      opaqimg = this.add.sprite(1000, 600, 'opacity');
+      opaqimg.fixedToCamera = true;
+      opaqimg.cameraOffset.setTo(0, 0);
+
+      keyimg = this.add.sprite(150, 95, 'key');
+      keyimg.fixedToCamera = true;
+      keyimg.cameraOffset.setTo(20, 20);
+
 
       var intervalID = window.setInterval(myCallback, 500);
 
@@ -251,17 +257,18 @@ Heist.LevelOne.prototype = {
       this.badguy.animations.add('walk');
       this.badguy.animations.play('walk', 8, true)
 
-      this.cop = this.add.sprite(600, 1500, 'cop');
-      this.physics.arcade.enable(this.cop);
-      this.cop.body.collideWorldBounds = true;
-      this.cop.anchor.setTo(0.5, 0.5);
-      // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
-      // this.badguy.animations.add('moveRight', [2, 3], 4, true )
-      this.cop.animations.add('walk');
-      // this.cop.animations.play('walk', 8, true)
+      // this.cop = this.add.sprite(600, 1500, 'cop');
+      // this.physics.arcade.enable(this.cop);
+      // this.cop.body.collideWorldBounds = true;
+      // this.cop.anchor.setTo(0.5, 0.5);
+      // // this.cop.body.velocity.x=120;
+      // // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
+      // // this.badguy.animations.add('moveRight', [2, 3], 4, true )
+      // this.cop.animations.add('walk');
+      // // this.cop.animations.play('walk', 8, true)
 
 
-       // The player and its settings
+      // The player and its settings
       player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude')
       // player.body.setSize(20, 30, 0, 0)
 
@@ -280,12 +287,19 @@ Heist.LevelOne.prototype = {
       x = this.input.keyboard.addKey(Phaser.Keyboard.X);
       v = this.input.keyboard.addKey(Phaser.Keyboard.V);
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      g = this.input.keyboard.addKey(Phaser.Keyboard.G);
+
+      this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
+      this.physics.arcade.enable(this.heart);
+      this.heart.body.collideWorldBounds = true;
 
 
       // stars and diamonds added to group.
       stars = this.add.group();
       diamonds = this.add.group();
       money = this.add.group();
+      cops = this.add.group();
+
 
 
       //  We will enable physics for any star that is created in this group
@@ -299,6 +313,36 @@ Heist.LevelOne.prototype = {
       //   var star = stars.create(i * 70, 1500, 'star');
       //
       // }
+      cops.enableBody = true;
+
+      //  Here we'll create 12 of them evenly spaced apart
+      for (var i = 1; i < 13; i++) {
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(i * 70, 1500, 'star');
+
+      }
+
+      for (var i = 1; i < 4; i++) {
+        var cop = cops.create(i * 150, 1500, 'cop');
+        cop.body.velocity.x = 120;
+      }
+
+
+
+      // this.cop = this.add.sprite(600, 1500, 'cop');
+      // this.physics.arcade.enable(this.cop);
+      // this.cop.body.collideWorldBounds = true;
+      // this.cop.anchor.setTo(0.5, 0.5);
+      // // this.cop.body.velocity.x=120;
+      // // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
+      // // this.badguy.animations.add('moveRight', [2, 3], 4, true )
+      // this.cop.animations.add('walk');
+      // // this.cop.animations.play('walk', 8, true)
+
+
+
+
+
       //
       // for (var i = 1; i < 7; i++) {
       //     //  Create a star inside of the 'stars' group
@@ -336,7 +380,7 @@ Heist.LevelOne.prototype = {
       timerText.fixedToCamera = true;
 
       this.camera.follow(player);
-      this.camera.deadzone = new Phaser.Rectangle(450, 250, 100, 100);
+      this.camera.deadzone = new Phaser.Rectangle(450, 250, 10, 10);
 
       // Appearing Text
       // var fadeText1 = game.time.events.add(2000, function() {    game.add.tween("myTex").to({y: 0}, 1500, Phaser.Easing.Linear.None, true); game.add.tween("myText").to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);}, this);
@@ -348,19 +392,19 @@ Heist.LevelOne.prototype = {
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
-      this.lasers = this.game.add.group();
-      this.lasers.enableBody = true;
+      lasers = this.game.add.group();
+      lasers.enableBody = true;
 
       for (var i = 1; i < 13; i++) {
 
-        var laser = this.lasers.create(i * 30, 1500, 'laser');
+        var laser = lasers.create(i * 30, 1500, 'laser');
         laser.anchor.setTo(0.5, 0.5);
         laser.body.immovable = true
         laser.angle = i++;
       }
 
-      this.physics.enable(this.lasers, Phaser.Physics.ARCADE);
-      this.physics.arcade.enable([player, this.lasers]);
+      this.physics.enable(lasers, Phaser.Physics.ARCADE);
+      this.physics.arcade.enable([player, lasers]);
 
       this.clearText(promptText);
       // this.clearText(promptText2);
@@ -377,6 +421,8 @@ Heist.LevelOne.prototype = {
 
   update: function () {
 
+      var timeYay = this.time.now
+
       // var updateTime = function() {
         // this.paused = true;
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
@@ -387,8 +433,12 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.badguy);
-      this.physics.arcade.collide(player, this.cop);
+      this.physics.arcade.collide(player, cops);
+      this.physics.arcade.collide(cops, this.innerWall, this.copHitWallInner);
+      this.physics.arcade.collide(cops, this.outerWall, this.copHitWallOuter);
       this.physics.arcade.collide(stars, platforms);
+      this.physics.arcade.collide(this.heart, platforms);
+
 
       //this.physics.arcade.collide(diamonds, platforms);
       this.physics.arcade.collide(this.badguy, platforms);
@@ -398,7 +448,9 @@ Heist.LevelOne.prototype = {
       // add diamonds to be used in the map as ^
       this.physics.arcade.collide(this.diamonds, platforms);
       this.physics.arcade.collide(this.money, platforms);
-      this.physics.arcade.collide(this.lasers, player);
+      //this.physics.arcade.collide(this.lasers, player);
+      this.physics.arcade.collide(lasers, player);
+      // this.physics.arcade.collide(heart, player);
 
 
       // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
@@ -411,17 +463,18 @@ Heist.LevelOne.prototype = {
       // 600, 1500
 
 
-
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       this.physics.arcade.overlap(player, this.diamonds, this.collectDiamond, null, this);
       this.physics.arcade.overlap(player, this.money, this.collectMoney, null, this);
       //this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
+      this.physics.arcade.overlap(player, this.heart, this.heartPrompt, null, this);
+
 
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
+      var heartOverlap = this.physics.arcade.overlap(player, this.heart, this.dropOffHeart, null, this)
 
-      var timeYay = this.time.now
 
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
@@ -478,10 +531,10 @@ Heist.LevelOne.prototype = {
           this.killCop();
       }
 
-
       if (extrct === true && x.isDown) {
         this.pressedV();
         // promptText2.text = "YOU GOT AWAY"
+        Heist.levelScore += this.score;
         Heist.totalScore += this.score;
         this.paused = true;
         this.state.start('LevelOneSummary')
@@ -502,6 +555,30 @@ Heist.LevelOne.prototype = {
           notificationText.text = "You don't have anything to secure."
           this.fadeText(notificationText)
           return;
+        }
+      }
+
+      if (heartOverlap === true && g.isDown) {
+        lasers.destroy();
+        notificationText.text = "You disabled all lasers."
+        this.fadeText(notificationText)
+        return;
+        }
+
+
+      if (g.isDown) {
+        this.health =- 1
+      }
+
+      if (this.health < 1) {
+        if ( Heist.playerLives === 0){
+          this.state.add('Ded', Heist.Ded)
+          this.state.start('Ded')
+
+        } else {
+          this.state.add('LevelOneRetry', Heist.LevelOneRetry)
+          this.state.start('LevelOneRetry')
+          Heist.playerLives -= 1
         }
       }
 
@@ -562,15 +639,21 @@ Heist.LevelOne.prototype = {
     promptText.text = 'Press V to secure money.';
     this.clearText(promptText);
   },
+
+  dropOffHeart: function(player, extractHeart) {
+    promptText.text = 'Press G to disable lasers.';
+    this.clearText(promptText);
+  },
+
   pressedV: function() {
     this.score += this.playerCarryValue;
     this.playerCarryValue = 0;
     this.maxWeight = 0;
+    scoreText.text = '$' + this.score;
   },
   printSecureMessage: function () {
     this.fadeText(notificationText)
     notificationText.text = "You secured $" + this.playerCarryValue
-    scoreText.text = '$' + this.score;
   },
   collectStar: function (player, star) {
     if (this.maxWeight <= 11) {
@@ -590,6 +673,7 @@ Heist.LevelOne.prototype = {
     }
 
   },
+
   collectDiamond: function(player, diamond) {
     if (this.maxWeight <= 10) {
       this.maxWeight += 2;
@@ -637,13 +721,21 @@ Heist.LevelOne.prototype = {
   },
   moveCop: function(player, cop) {
 
-      // Removes the cop from the screen
-      this.cop.animations.play('walk', 8, true)
+    // Removes the cop from the screen
+    this.cop.animations.play('walk', 8, true)
 
-      //  Add and update the score
-      this.fadeText(promptText);
-      promptText.text = 'He is gonna get ya!'
-      // this.getAll();
+    //  Add and update the score
+    this.fadeText(promptText);
+    promptText.text = 'He is gonna get ya!'
+    // this.getAll();
+  },
+
+  copHitWallInner: function(cop, innerWall){
+    cop.body.velocity.x = (cop.body.velocity.x + 1) * -120;
+  },
+
+  copHitWallOuter: function(cop, outerWall){
+    cop.body.velocity.x*= -1*(120);
   },
 
   fadeText: function(textName) {
@@ -667,9 +759,13 @@ Heist.LevelOne.prototype = {
       }
   },
 
-  killLaser: function(player, lasers) {
-  promptText.text = "You are close to the lasers!";
+  killLasers: function(player, lasers) {
+    console.log('this should kill lasers');
   //  this.paths.kill();
   },
+
+  heartPrompt: function(player, heart) {
+    console.log('you are over the heart');
+  }
 
 }; // End of LevelOne

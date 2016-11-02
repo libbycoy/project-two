@@ -25,7 +25,9 @@ Heist.MainMenu.prototype = {
       clicked: function (pointer) {
         console.log("I am being called");
         this.state.add('LevelOneSummary', Heist.LevelOneSummary)
+        this.state.add('LevelOne', Heist.LevelOne)
         this.state.start('LevelOne')
+        Heist.playerLives = 3;
       }
 
     };

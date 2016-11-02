@@ -20,9 +20,19 @@ Heist.LevelOneSummary.prototype = {
     startButton.events.onInputDown.add(this.clicked, this);
     startButton.anchor.setTo(0.5, 0.5);
 
-    var scoreSummary = this.add.text(100, 67, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
-    scoreSummary.fixedToCamera = true;
-    scoreSummary.text = "Total take, $" + Heist.totalScore;
+    var livesLeft = this.add.text(100, 127, '', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    livesLeft.fixedToCamera = true;
+    livesLeft.text = "You have " + Heist.playerLives + " lives left"
+
+
+    var levelScoreSummary = this.add.text(100, 97, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    levelScoreSummary.fixedToCamera = true;
+    levelScoreSummary.text = "You got $" + Heist.levelScore + " this level"
+
+
+    var totalScoreSummary = this.add.text(100, 67, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    totalScoreSummary.fixedToCamera = true;
+    totalScoreSummary.text = "This run: $" + Heist.totalScore;
 
 
       },
@@ -31,6 +41,7 @@ Heist.LevelOneSummary.prototype = {
 
         this.state.start('LevelTwo')
         this.state.add('LevelTwoSummary', Heist.LevelTwoSummary)
+        Heist.levelScore = 0;
 
       }
 

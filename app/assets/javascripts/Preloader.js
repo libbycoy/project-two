@@ -28,6 +28,7 @@ Heist.Preloader.prototype = {
         this.load.image('outerWall', 'assets/walls/outer-wall-block.png');
         this.load.image('innerWall', 'assets/walls/inner-wall-block.png');
         this.load.image('laser', 'assets/laser-01.png');
+        this.load.image('heart', 'assets/heart.png');
         this.load.spritesheet('cop', 'assets/sec_guard.png', 60, 80, 4);
   },
 
