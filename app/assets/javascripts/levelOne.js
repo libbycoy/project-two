@@ -317,25 +317,17 @@ Heist.LevelOne.prototype = {
       // }
       cops.enableBody = true;
 
-<<<<<<< HEAD
       //  Here we'll create 12 of them evenly spaced apart
       // for (var i = 1; i < 13; i++) {
       //   //  Create a star inside of the 'stars' group
       //   var star = stars.create(i * 70, 1500, 'star');
       //
       // }
-=======
->>>>>>> 1f2bd06d770580de2f55ab4eb759ab4f132a4462
 
       for (var i = 1; i < 4; i++) {
         var cop = cops.create(i * 150, 1500, 'cop');
         cop.body.velocity.x = 120;
       }
-
-
-
-
-
 
       //
       // for (var i = 1; i < 7; i++) {
