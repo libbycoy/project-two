@@ -43,7 +43,6 @@ Heist.LevelOne.prototype = {
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
 
-
       this.timer = this.time.create();
 
       // // Start the timer!
@@ -63,7 +62,7 @@ Heist.LevelOne.prototype = {
       //  We will enable physics for any object that is created in this group
       platforms.enableBody = true;
 
-      // Game walls in via a loop function
+      // Game walls and features in via a loop function
       this.outerWall = this.game.add.group();
       this.outerWall.enableBody = true;
       this.innerWall = this.game.add.group();
@@ -166,7 +165,7 @@ Heist.LevelOne.prototype = {
           '                                      #         #,                                   '
       ];
 
-
+        // the following code looks at random walls being placed where the letters are on the map above
         var isLetter = function( c ) {
           return c.toLowerCase() != c.toUpperCase();
         }
@@ -295,51 +294,21 @@ Heist.LevelOne.prototype = {
       this.heart.body.collideWorldBounds = true;
 
 
-      // stars and diamonds added to group.
-      stars = this.add.group();
-      diamonds = this.add.group();
+      // add money, gold bars and cops to the group
       money = this.add.group();
       gold = this.add.group();
       cops = this.add.group();
 
-
-
-      //  We will enable physics for any star that is created in this group
-      // stars.enableBody = true;
-      // diamonds.enableBody = true;
-      // money.enableBody = true;
-
-      //  Here we'll create 12 of them evenly spaced apart
-      // for (var i = 1; i < 13; i++) {
-      //   //  Create a star inside of the 'stars' group
-      //   var star = stars.create(i * 70, 1500, 'star');
-      //
-      // }
+      // create a cop
       cops.enableBody = true;
-
-      //  Here we'll create 12 of them evenly spaced apart
-      // for (var i = 1; i < 13; i++) {
-      //   //  Create a star inside of the 'stars' group
-      //   var star = stars.create(i * 70, 1500, 'star');
-      //
-      // }
 
       for (var i = 1; i < 4; i++) {
         var cop = cops.create(i * 150, 1500, 'cop');
         cop.body.velocity.x = 120;
       }
 
-      //
-      // for (var i = 1; i < 7; i++) {
-      //     //  Create a star inside of the 'stars' group
-      //     var diamond = diamonds.create(i * 70, 1550, 'diamond');
-      //
-      // }
-
-      // Defines maximum possible score, please put all new 'diamonds', 'stars' etc. above
+      // Defines maximum possible score, please put all new 'collectables', ie gold, money, etc. above
       // Used to define end of game and determine final score with timer bonus etc.
-      // Meggan and Shaila know what's goin on
-      // Don't delete
       maxPossibleScore = ((this.gold.length * 10) + (this.money.length * 10)) ;
 
       //  The current level score controls
@@ -365,6 +334,7 @@ Heist.LevelOne.prototype = {
       timerText = this.add.text(900, 20, '', this.style1);
       timerText.fixedToCamera = true;
 
+      // allows the screen to adjust with the movement of the player an dcreates a deadzone around it
       this.camera.follow(player);
       this.camera.deadzone = new Phaser.Rectangle(450, 250, 10, 10);
 
@@ -436,24 +406,15 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, platforms);
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
+      this.physics.arcade.collide(player, this.kWall);
       this.physics.arcade.collide(player, this.badguy);
       this.physics.arcade.collide(this.cop, this.outerWall);
       this.physics.arcade.collide(player, cops);
       this.physics.arcade.collide(cops, this.innerWall, this.copHitWallInner);
       this.physics.arcade.collide(cops, this.outerWall, this.copHitWallOuter);
-      this.physics.arcade.collide(stars, platforms);
       this.physics.arcade.collide(this.heart, platforms);
-
-
-
-
-      //this.physics.arcade.collide(diamonds, platforms);
       this.physics.arcade.collide(this.badguy, platforms);
       this.physics.arcade.collide(this.cop, platforms);
-      // random generated walls
-      this.physics.arcade.collide(player, this.kWall);
-      // add diamonds to be used in the map as ^
-      //this.physics.arcade.collide(this.diamonds, platforms);
       this.physics.arcade.collide(this.money, platforms);
       this.physics.arcade.collide(this.gold, platforms);
       //this.physics.arcade.collide(this.lasers, player);
@@ -470,24 +431,18 @@ Heist.LevelOne.prototype = {
       // console.log(this.cop.position.x, this.cop.position.y);
       // 600, 1500
 
-      //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-      this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
-      //this.physics.arcade.overlap(player, this.diamonds, this.collectDiamond, null, this);
+      //  Checks to see if the player overlaps with any of the gold or money or heart, if he does call a 'collect' function
       this.physics.arcade.overlap(player, this.money, this.collectMoney, null, this);
       this.physics.arcade.overlap(player, this.gold, this.collectGold, null, this);
-      //this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
       this.physics.arcade.overlap(player, this.heart, this.heartPrompt, null, this);
-
 
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
       var heartOverlap = this.physics.arcade.overlap(player, this.heart, this.dropOffHeart, null, this)
 
-
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
       player.body.velocity.y = 0;
-
 
       if (cursors.left.isDown) {
           //  Move to the left
@@ -573,7 +528,6 @@ Heist.LevelOne.prototype = {
         return;
         }
 
-
       if (g.isDown) {
         this.health =- 1
       }
@@ -589,7 +543,6 @@ Heist.LevelOne.prototype = {
           Heist.playerLives -= 1
         }
       }
-
   },
 
 
@@ -632,7 +585,6 @@ Heist.LevelOne.prototype = {
     // game.debug.spriteCoords(player, 32, 500);
   },
 
-
   endTimer: function () {
     // Stop the timer when the delayed event triggers
     timer.stop();
@@ -663,6 +615,7 @@ Heist.LevelOne.prototype = {
     this.fadeText(notificationText)
     notificationText.text = "You secured $" + this.playerCarryValue
   },
+
   collectStar: function (player, star) {
     if (this.maxWeight <= 11) {
       this.maxWeight += 1;
@@ -699,6 +652,7 @@ Heist.LevelOne.prototype = {
       return;
     }
   },
+
   collectMoney: function(player, money) {
     if (this.maxWeight <= 10) {
       this.maxWeight += 1;
@@ -714,6 +668,7 @@ Heist.LevelOne.prototype = {
       return;
     }
   },
+
   collectGold: function(player, gold) {
     if (this.maxWeight <= 10) {
       this.maxWeight += 1;
