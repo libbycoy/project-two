@@ -436,7 +436,6 @@ Heist.LevelOne.prototype = {
 
       // this.physics.arcade.collide(heart, player);
 
-
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       this.physics.arcade.overlap(player, this.diamonds, this.collectDiamond, null, this);
@@ -614,7 +613,7 @@ Heist.LevelOne.prototype = {
   },
 
   dropOffHeart: function(player, extractHeart) {
-    promptText.text = 'Press SPACEBAR to disable lasers.';
+    promptText.text = 'Press G to disable lasers.';
     this.clearText(promptText);
   },
 
