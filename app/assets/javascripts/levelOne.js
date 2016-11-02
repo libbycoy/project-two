@@ -8,6 +8,7 @@ Heist.LevelOne = function(game) {
   this.platforms;
   this.cursors
   this.x;
+  this.g;
   this.stars;
   this.diamonds;
   this.extractLocation;
@@ -58,14 +59,6 @@ Heist.LevelOne.prototype = {
 
       //  The platforms group contains the walls to contain the sprite
       platforms = this.add.group();
-
-      opaqimg = this.add.sprite(1000, 600, 'opacity');
-      opaqimg.fixedToCamera = true;
-      opaqimg.cameraOffset.setTo(0, 0);
-
-      keyimg = this.add.sprite(150, 95, 'key');
-      keyimg.fixedToCamera = true;
-      keyimg.cameraOffset.setTo(20, 20);
 
       //  We will enable physics for any object that is created in this group
       platforms.enableBody = true;
@@ -237,6 +230,14 @@ Heist.LevelOne.prototype = {
 
       this.outerWall.scale.setTo(1,1);
 
+      opaqimg = this.add.sprite(1000, 600, 'opacity');
+      opaqimg.fixedToCamera = true;
+      opaqimg.cameraOffset.setTo(0, 0);
+
+      keyimg = this.add.sprite(150, 95, 'key');
+      keyimg.fixedToCamera = true;
+      keyimg.cameraOffset.setTo(20, 20);
+
 
       var intervalID = window.setInterval(myCallback, 500);
 
@@ -282,6 +283,7 @@ Heist.LevelOne.prototype = {
       x = this.input.keyboard.addKey(Phaser.Keyboard.X);
       v = this.input.keyboard.addKey(Phaser.Keyboard.V);
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      g = this.input.keyboard.addKey(Phaser.Keyboard.G);
 
 
       // stars and diamonds added to group.
@@ -359,7 +361,7 @@ Heist.LevelOne.prototype = {
       timerText.fixedToCamera = true;
 
       this.camera.follow(player);
-      this.camera.deadzone = new Phaser.Rectangle(450, 250, 100, 100);
+      this.camera.deadzone = new Phaser.Rectangle(450, 250, 10, 10);
 
       // Appearing Text
       // var fadeText1 = game.time.events.add(2000, function() {    game.add.tween("myTex").to({y: 0}, 1500, Phaser.Easing.Linear.None, true); game.add.tween("myText").to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);}, this);
@@ -493,10 +495,10 @@ Heist.LevelOne.prototype = {
           this.killCop();
       }
 
-
       if (extrct === true && x.isDown) {
         this.pressedV();
         // promptText2.text = "YOU GOT AWAY"
+        Heist.levelScore += this.score;
         Heist.totalScore += this.score;
         this.paused = true;
         this.state.start('LevelOneSummary')
@@ -517,6 +519,22 @@ Heist.LevelOne.prototype = {
           notificationText.text = "You don't have anything to secure."
           this.fadeText(notificationText)
           return;
+        }
+      }
+
+      if (g.isDown) {
+        this.health =- 1
+      }
+
+      if (this.health < 1) {
+        if ( Heist.playerLives === 0){
+          this.state.add('Ded', Heist.Ded)
+          this.state.start('Ded')
+
+        } else {
+          this.state.add('LevelOneRetry', Heist.LevelOneRetry)
+          this.state.start('LevelOneRetry')
+          Heist.playerLives -= 1
         }
       }
 
@@ -581,11 +599,11 @@ Heist.LevelOne.prototype = {
     this.score += this.playerCarryValue;
     this.playerCarryValue = 0;
     this.maxWeight = 0;
+    scoreText.text = '$' + this.score;
   },
   printSecureMessage: function () {
     this.fadeText(notificationText)
     notificationText.text = "You secured $" + this.playerCarryValue
-    scoreText.text = '$' + this.score;
   },
   collectStar: function (player, star) {
     if (this.maxWeight <= 11) {
