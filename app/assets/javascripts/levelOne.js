@@ -203,6 +203,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.enable(this.cop);
       this.cop.body.collideWorldBounds = true;
       this.cop.anchor.setTo(0.5, 0.5);
+      this.cop.body.velocity.x=120;
       // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
       // this.badguy.animations.add('moveRight', [2, 3], 4, true )
       this.cop.animations.add('walk');
@@ -304,6 +305,8 @@ Heist.LevelOne.prototype = {
 
   update: function () {
 
+      var timeYay = this.time.now
+
       // var updateTime = function() {
         // this.paused = true;
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
@@ -314,16 +317,30 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.badguy);
       this.physics.arcade.collide(player, this.cop);
+      this.physics.arcade.collide(this.cop, this.innerWall, this.copHitWallInner);
+      this.physics.arcade.collide(this.cop, this.outerWall, this.copHitWallOuter);
       this.physics.arcade.collide(stars, platforms);
       this.physics.arcade.collide(diamonds, platforms);
       this.physics.arcade.collide(this.badguy, platforms);
       this.physics.arcade.collide(this.cop, platforms);
 
-      // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
+      // if ((this.cop.position.x == 900) && (this.cop.position.y == 1800)) {
       //   this.physics.arcade.moveToXY(this.cop, 500, 500);
-      // } else {
+      // } else if ((this.cop.position.x == 500) && (this.cop.position.y == 500)) {
       //   this.physics.arcade.moveToXY(this.cop, 900, 1800);
+      // } else {
+      //
       // }
+
+
+      // if (this.cop.position.x <= 800) {
+      //   this.physics.arcade.moveToXY(this.cop, 800, 1500);
+      // } else {
+      //   this.physics.arcade.moveToXY(this.cop, 600, 1500);
+      // }
+
+
+
 
       // console.log(this.cop.position.x, this.cop.position.y);
       // 600, 1500
@@ -336,9 +353,6 @@ Heist.LevelOne.prototype = {
 
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
-
-      var timeYay = this.time.now
-
 
 
       //  Reset the players velocity (movement)
@@ -532,13 +546,21 @@ Heist.LevelOne.prototype = {
 
   moveCop: function(player, cop) {
 
-      // Removes the cop from the screen
-      this.cop.animations.play('walk', 8, true)
+    // Removes the cop from the screen
+    this.cop.animations.play('walk', 8, true)
 
-      //  Add and update the score
-      this.fadeText(promptText);
-      promptText.text = 'He is gonna get ya!'
-      // this.getAll();
+    //  Add and update the score
+    this.fadeText(promptText);
+    promptText.text = 'He is gonna get ya!'
+    // this.getAll();
+  },
+
+  copHitWallInner: function(cop, innerWall){
+    this.cop.body.velocity.x*= -1;
+  },
+
+  copHitWallOuter: function(cop, outerWall){
+    this.cop.body.velocity.x*= -1;
   },
 
   fadeText: function(textName) {
