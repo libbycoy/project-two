@@ -462,7 +462,6 @@ Heist.LevelOne.prototype = {
       // console.log(this.cop.position.x, this.cop.position.y);
       // 600, 1500
 
-
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       this.physics.arcade.overlap(player, this.diamonds, this.collectDiamond, null, this);
