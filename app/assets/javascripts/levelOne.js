@@ -80,6 +80,8 @@ Heist.LevelOne.prototype = {
       this.innerWall.enableBody = true;
       this.kWall = this.game.add.group();
       this.kWall.enableBody = true;
+      this.diamonds = this.game.add.group();
+      this.diamonds.enableBody = true;
 
       var level = [
           '# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #',
@@ -88,14 +90,14 @@ Heist.LevelOne.prototype = {
           '         *       B                                                                   ',
           '#        *       B                                                                  #',
           '         *       B                                                                   ',
-          '#        *       B                                ****************************CCCC**#',
+          '#        *       B                                ****************************    **#',
           '         *       *                                *                                  ',
           '#        *       *                                *                                 #',
           '         a       *                                *                                  ',
           '#        a       *                                *                                 #',
           '         a       *                                *                                  ',
           '#        a       *                                *                                 #',
-          '         *       **bbbb******************ccc******              **************dddd** ',
+          '         *       **bbbb******************ccc*******             **************dddd** ',
           '#        *       B                                C                         *       #',
           '         *       B                                C                         *        ',
           '#        *       B                                C                         *       #',
@@ -110,12 +112,12 @@ Heist.LevelOne.prototype = {
           '         *       b      *     *                   *           E                      ',
           '#        *       b      *     *        *          *           *                     #',
           '         *       b      *     *        *          *           *                      ',
-          '#        A       *      *     *        *          *           *                     #',
+          '#        A       *      *              *          *           *                     #',
           '         A       *      L              *          *           *                      ',
           '#        A       *      L              *          *           *                     #',
-          '         A       *      L     *        *          *           *                      ',
-          '#        *       *      L     *        *          *           *                     #',
-          '         *       *      *     *        *          *           *                      ',
+          '         A       *      L     *        *    ^     *           *                      ',
+          '#        *       *      L     *        *   ^^^    *           *                     #',
+          '         *       *      *     *        *  ^^^^^   *           *                      ',
           '#        *       *      *******        ************           *                     #',
           '         *       *            *                               *                      ',
           '#        *       *            *                               *                     #',
@@ -219,6 +221,10 @@ Heist.LevelOne.prototype = {
                     var wall = this.innerWall.create(30+20*j, 30+20*i, 'innerWall');
                     wall.body.immovable = true;
                 }
+                if (level [i][j] == '^'){
+                    var diamonds = this.diamonds.create(i * 70, 1550, 'diamonds');
+                    diamonds.body.immovable = false;
+                }
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
                 // wall for that letter group
@@ -227,7 +233,6 @@ Heist.LevelOne.prototype = {
                     var wall = this.kWall.create(30+20*j, 30+20*i, 'innerWall');
                      wall.body.immovable = true;
                 }// if isLetter
-
             }// for j
         }// for i
 
@@ -295,12 +300,12 @@ Heist.LevelOne.prototype = {
         var star = stars.create(i * 70, 1500, 'star');
 
       }
-
-      for (var i = 1; i < 7; i++) {
-          //  Create a star inside of the 'stars' group
-          var diamond = diamonds.create(i * 70, 1550, 'diamond');
-
-      }
+      //
+      // for (var i = 1; i < 7; i++) {
+      //     //  Create a star inside of the 'stars' group
+      //     var diamond = diamonds.create(i * 70, 1550, 'diamond');
+      //
+      // }
 
       // Defines maximum possible score, please put all new 'diamonds', 'stars' etc. above
       // Used to define end of game and determine final score with timer bonus etc.
@@ -366,11 +371,13 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.cop);
       this.physics.arcade.collide(stars, platforms);
 
-      this.physics.arcade.collide(diamonds, platforms)
-      this.physics.arcade.collide(this.badguy, platforms)
-      this.physics.arcade.collide(this.cop, platforms)
+      //this.physics.arcade.collide(diamonds, platforms);
+      this.physics.arcade.collide(this.badguy, platforms);
+      this.physics.arcade.collide(this.cop, platforms);
       // random generated walls
       this.physics.arcade.collide(player, this.kWall);
+      // add diamonds to be used in the map as ^
+      this.physics.arcade.collide(this.diamonds, platforms);
 
       // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
       //   this.physics.arcade.moveToXY(this.cop, 500, 500);
@@ -385,8 +392,8 @@ Heist.LevelOne.prototype = {
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
-      this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
-
+      this.physics.arcade.overlap(player, this.diamonds, this.collectDiamond, null, this);
+      //this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
 
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)

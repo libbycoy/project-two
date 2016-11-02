@@ -17,6 +17,7 @@ Heist.Preloader.prototype = {
         this.load.image('star', 'assets/star.png');
         this.load.image('money', 'assets/money.gif');
         this.load.image('diamond', 'assets/diamond.png');
+        this.load.image('diamonds', 'assets/diamond.png');
         this.load.image('firstaid', 'assets/firstaid.png');
         this.load.image('background', 'assets/phaser_background-02.png');
         this.load.spritesheet('guard', 'assets/baddie.png', 32, 32, 4);
