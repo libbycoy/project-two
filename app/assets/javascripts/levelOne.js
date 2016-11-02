@@ -77,22 +77,22 @@ Heist.LevelOne.prototype = {
       this.innerWall.enableBody = true;
       this.kWall = this.game.add.group();
       this.kWall.enableBody = true;
-      this.diamonds = this.game.add.group();
-      this.diamonds.enableBody = true;
+      this.money = this.game.add.group();
+      this.money.enableBody = true;
 
       var level = [
           '# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #',
           '                                                                                     ',
-          '#        *       *                                                                  #',
+          '#      ^ *       *                                                                  #',
           '         *       B                                                                   ',
-          '#        *       B                                                                  #',
+          '#        *       B                                           ^                      #',
           '         *       B                                                                   ',
           '#        *       B                                ****************************    **#',
           '         *       *                                *                                  ',
-          '#        *       *                                *                                 #',
+          '#        *       *                              ^ *                                 #',
           '         a       *                                *                                  ',
-          '#        a       *                                *                                 #',
-          '         a       *                                *                                  ',
+          '#        a     ^ *                                *                                 #',
+          '         a       *                                *               ^                  ',
           '#        a       *                                *                                 #',
           '         *       **bbbb******************cccc******             **************dddd** ',
           '#        *       B                                C                         *       #',
@@ -100,64 +100,64 @@ Heist.LevelOne.prototype = {
           '#        *       B                                C                         *       #',
           '         *       B                                C                         *        ',
           '#        *       *                                *******eeee*********      *       #',
-          '         *       *                                *           *             *        ',
-          '# **    **       *                                *           *             *       #',
+          '         *       *                              ^ *           *             *        ',
+          '# **    **       *                                *           *             *     ^ #',
           '         *       *      *********llll**************           *             *        ',
-          '#        *       *      *     *                   *           E             *       #',
+          '#        *       *      * ^   *                   *           E             *       #',
           '         *       *      *     *                   *           E             ***DDDD* ',
           '#        *       b      *     *                   *           E                     #',
           '         *       b      *     *                   *           E                      ',
-          '#        *       b      *     *        *          *           *                     #',
-          '         *       b      *     *        *          *           *                      ',
-          '#        A       *      *              *          *           *                     #',
-          '         A       *      L              *          *           *                      ',
-          '#        A       *      L              *          *           *                     #',
-          '         A       *      L     *        *    ^     *           *                      ',
-          '#        *       *      L     *        *   ^^^    *           *                     #',
-          '         *       *      *     *        *  ^^^^^   *           *                      ',
+          '#        *       b      *              *          *           *                     #',
+          '         *       b      *              *          *           *                      ',
+          '#        A       *      *              *    ^     *           *                     #',
+          '         A       *      L              *   ^^^    *           *                      ',
+          '#        A       *      L     *        *  ^^^^^   *           *                     #',
+          '         A       *      L     *        * ^^^^^^^  *           *                      ',
+          '#        *       *      L     *        *^^^^^^^^^ *           *                     #',
+          '         *       *      *     *        *          *           *                      ',
           '#        *       *      *******        ************           *                     #',
           '         *       *            *                               *                      ',
           '#        *       *            *                               *                     #',
-          '         *       *            *                               *                      ',
+          '  ^      *       *            *                               *                      ',
           '#        *       *            *                               g                     #',
           '  ****************            *                               g                      ',
           '#                             *                               g                     #',
           '                              *                               g           ***FFFF*** ',
-          '#                             *                               *           *         #',
+          '#                             *^                              *           *         #',
           '                              *                               *           *          ',
-          '# *****hhhh*******            *                               *           *         #',
+          '# *****hhhh*******          ^ *                               *           *         #',
           '                 *            G                               *           *          ',
           '#                *            G                               *           *         #',
           '                 *            G                               *           f          ',
           '#                *            G                               *           f         #',
           '                 *            *                               *           f          ',
           '#                *            *                               *           f         #',
-          '                 *            *                               *           *          ',
+          '                 *            *                             ^ *           *          ',
           '#                *            *                               *           *         #',
           '                 *            *********************************           *          ',
           '#                *                                                        *         #',
           '                 *                                                        *          ',
-          '#                *                                                        *         #',
+          '#                *                                                        *^        #',
           '                 H                                                        *          ',
           '# ********       H                                                        *         #',
-          '         *       H                                                        *          ',
+          '  ^      *       H                                                        *          ',
           '#        *       H                                                        *         #',
           '         *       *                                                        *          ',
           '#        *       *                                                        *         #',
           '         *       *                                                        *          ',
-          '#        *       *                                                        *         #',
-          '         *       *                                                        *          ',
+          '#        *       *             ^                                          *         #',
+          '         *       *                                                      ^ *          ',
           '#        *       ****************                                         *         #',
           '         *       *                                         ****************          ',
           '#        *       *                                         *              *         #',
           '                 *                                         *              *          ',
           '#                *                                         *              *         #',
           '                 *                                         *              K          ',
-          '#                *                                         *              K         #',
+          '#                *^                                        *              K         #',
           '         *       *                                         *              K          ',
           '#        *       *                                         k              K         #',
           '         *       *                                         k              *          ',
-          '#        *       *                                         k              *         #',
+          '#      ^ *       *                                         k            ^ *^        #',
           '         *       *                                         k              *          ',
           '# # # # # # # # # # # # # # # # # # # #         # # # # # # # # # # # # # # # # # # #',
           '                                                                                     ',
@@ -219,8 +219,9 @@ Heist.LevelOne.prototype = {
                     wall.body.immovable = true;
                 }
                 if (level [i][j] == '^'){
-                    var diamonds = this.diamonds.create(i * 70, 1550, 'diamonds');
-                    diamonds.body.immovable = false;
+                    var money = this.money.create(30+20*j, 30+20*i, 'money');
+                    money.body.immovable = false;
+                    //money.enableBody = true;
                 }
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
@@ -284,18 +285,20 @@ Heist.LevelOne.prototype = {
       // stars and diamonds added to group.
       stars = this.add.group();
       diamonds = this.add.group();
+      money = this.add.group();
 
 
       //  We will enable physics for any star that is created in this group
       stars.enableBody = true;
       diamonds.enableBody = true;
+      money.enableBody = true;
 
       //  Here we'll create 12 of them evenly spaced apart
-      for (var i = 1; i < 13; i++) {
-        //  Create a star inside of the 'stars' group
-        var star = stars.create(i * 70, 1500, 'star');
-
-      }
+      // for (var i = 1; i < 13; i++) {
+      //   //  Create a star inside of the 'stars' group
+      //   var star = stars.create(i * 70, 1500, 'star');
+      //
+      // }
       //
       // for (var i = 1; i < 7; i++) {
       //     //  Create a star inside of the 'stars' group
@@ -307,7 +310,7 @@ Heist.LevelOne.prototype = {
       // Used to define end of game and determine final score with timer bonus etc.
       // Meggan and Shaila know what's goin on
       // Don't delete
-      maxPossibleScore = ((diamonds.length * 50) + (stars.length * 10));
+      maxPossibleScore = ((diamonds.length * 50) + (stars.length * 10) + (this.money.length * 10)) ;
 
       //  The current level score controls
       scoreText = this.add.text(100, 67, '$0', this.style1);
@@ -394,6 +397,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.kWall);
       // add diamonds to be used in the map as ^
       this.physics.arcade.collide(this.diamonds, platforms);
+      this.physics.arcade.collide(this.money, platforms);
       this.physics.arcade.collide(this.lasers, player);
 
 
@@ -411,6 +415,7 @@ Heist.LevelOne.prototype = {
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
       this.physics.arcade.overlap(player, this.diamonds, this.collectDiamond, null, this);
+      this.physics.arcade.overlap(player, this.money, this.collectMoney, null, this);
       //this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
 
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
@@ -602,6 +607,21 @@ Heist.LevelOne.prototype = {
       return;
     }
   },
+  collectMoney: function(player, money) {
+    if (this.maxWeight <= 10) {
+      this.maxWeight += 1;
+      money.kill();
+
+      this.playerCarryValue += 10000
+      this.fadeText(promptText);
+      promptText.text = '+$10000'
+      this.getAll();
+    } else {
+      this.fadeText(notificationText);
+      notificationText.text = 'You are already carrying too much.'
+      return;
+    }
+  },
   createBadGuy: function(x, y) {
     // this.badguy.create(x, y, 'guard');
   },
@@ -612,7 +632,7 @@ Heist.LevelOne.prototype = {
 
       //  Add and update the score
       this.fadeText(promptText);
-      promptText.text = 'Fuck da police!'
+      promptText.text = 'Take that you police scum!'
       // this.getAll();
   },
   moveCop: function(player, cop) {
