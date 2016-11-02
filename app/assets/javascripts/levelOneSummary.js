@@ -30,6 +30,8 @@ Heist.LevelOneSummary.prototype = {
       clicked: function (pointer) {
 
         this.state.start('LevelTwo')
+        this.state.add('LevelTwoSummary', Heist.LevelTwoSummary)
+
       }
 
     };

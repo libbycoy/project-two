@@ -28,6 +28,7 @@ Heist.LevelOne = function(game) {
   this.count
   this.outerWall;
   this.outerwalls;
+  this.lasers;
 
   //Weight limit variable
   this.maxWeight = 0;
@@ -36,24 +37,20 @@ Heist.LevelOne = function(game) {
 
 Heist.LevelOne.prototype = {
   create: function () {
-
-    //centralises the game on the browser page
+    //centre the game on the browser page
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
 
-      // Broken Timer pieces /////////////////////////////////////////////////
-      // // Create a custom timer
+
       this.timer = this.time.create();
-      //
-      // // Create a delay countdown timer, given params.
-      // this.timerEvent = this.timer.add(Phaser.Timer.MINUTE * 5 + Phaser.Timer.SECOND * 0, this.endTimer, this);
-      //
+
       // // Start the timer!
       this.timer.start();
 
       //  We're going to be using physics, so enable the Arcade Physics system
       this.physics.startSystem(Phaser.Physics.ARCADE);
+      this.physics.startSystem(Phaser.Physics.BODY);
 
       //  Background sprite and bounds for the game
       this.add.tileSprite(0, 0, 1920, 1920, 'background');
@@ -97,7 +94,7 @@ Heist.LevelOne.prototype = {
           '#        a       *                                *                                 #',
           '         a       *                                *                                  ',
           '#        a       *                                *                                 #',
-          '         *       **bbbb******************ccc*******             **************dddd** ',
+          '         *       **bbbb******************cccc******             **************dddd** ',
           '#        *       B                                C                         *       #',
           '         *       B                                C                         *        ',
           '#        *       B                                C                         *       #',
@@ -246,11 +243,10 @@ Heist.LevelOne.prototype = {
       }
 
       // Code for guard(s) TODO: Get sprites to work. Animate.
+      this.badguy = this.game.add.group();
       this.badguy = this.add.sprite(400, 1500, 'guard');
       this.physics.arcade.enable(this.badguy);
       this.badguy.body.collideWorldBounds = true;
-      // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
-      // this.badguy.animations.add('moveRight', [2, 3], 4, true )
       this.badguy.animations.add('walk');
       this.badguy.animations.play('walk', 8, true)
 
@@ -349,10 +345,29 @@ Heist.LevelOne.prototype = {
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
+      this.lasers = this.game.add.group();
+      this.lasers.enableBody = true;
+
+      for (var i = 1; i < 13; i++) {
+
+        var laser = this.lasers.create(i * 30, 1500, 'laser');
+        laser.anchor.setTo(0.5, 0.5);
+        laser.body.immovable = true
+        laser.angle = i++;
+      }
+
+      this.physics.enable(this.lasers, Phaser.Physics.ARCADE);
+      this.physics.arcade.enable([player, this.lasers]);
 
       this.clearText(promptText);
       // this.clearText(promptText2);
       this.fadeText(notificationText);
+
+      var spawnTimer = Math.round(this.time.totalElapsedSeconds());
+
+      if (spawnTimer % 15 === 0) {
+        this.createBadGuy(480, 550);
+      }
 
 
   },
@@ -364,6 +379,7 @@ Heist.LevelOne.prototype = {
         // console.log(this.timer.duration * 0.001 + " seconds left on timer");
       // }
 
+       //  Collision for things.
       this.physics.arcade.collide(player, platforms);
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
@@ -378,6 +394,8 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.kWall);
       // add diamonds to be used in the map as ^
       this.physics.arcade.collide(this.diamonds, platforms);
+      this.physics.arcade.collide(this.lasers, player);
+
 
       // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
       //   this.physics.arcade.moveToXY(this.cop, 500, 500);
@@ -399,8 +417,6 @@ Heist.LevelOne.prototype = {
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
 
       var timeYay = this.time.now
-
-
 
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
@@ -459,18 +475,22 @@ Heist.LevelOne.prototype = {
 
 
       if (extrct === true && x.isDown) {
-        promptText2.text = "YOU GOT AWAY"
+        this.pressedV();
+        // promptText2.text = "YOU GOT AWAY"
         Heist.totalScore += this.score;
         this.paused = true;
         this.state.start('LevelOneSummary')
+        this.state.add('LevelTwo', Heist.LevelTwo)
+
         // Capture time:
         //   var printTime = Math.round(this.time.totalElapsedSeconds());
         //   someVariable = printTime;
       }
       if (extrct === true && v.isDown) {
         if (this.playerCarryValue > 0 && this.maxWeight > 0) {
-            this.pressedV();
-            this.pause = this.time.now + 1200
+          this.printSecureMessage();
+          this.pressedV();
+          this.pause = this.time.now + 1200
         } else if (this.pause < this.time.now && this.score === maxPossibleScore) {
           this.getAll();
         } else if (this.pause < this.time.now && this.maxWeight === 0) {
@@ -538,12 +558,14 @@ Heist.LevelOne.prototype = {
     this.clearText(promptText);
   },
   pressedV: function() {
-    this.fadeText(notificationText)
-    notificationText.text = "You secured $" + this.playerCarryValue
     this.score += this.playerCarryValue;
-    scoreText.text = '$' + this.score;
     this.playerCarryValue = 0;
     this.maxWeight = 0;
+  },
+  printSecureMessage: function () {
+    this.fadeText(notificationText)
+    notificationText.text = "You secured $" + this.playerCarryValue
+    scoreText.text = '$' + this.score;
   },
   collectStar: function (player, star) {
     if (this.maxWeight <= 11) {
@@ -580,6 +602,9 @@ Heist.LevelOne.prototype = {
       return;
     }
   },
+  createBadGuy: function(x, y) {
+    // this.badguy.create(x, y, 'guard');
+  },
 
   killCop: function(player, cop) {
       // Removes the cop from the screen
@@ -590,7 +615,6 @@ Heist.LevelOne.prototype = {
       promptText.text = 'Fuck da police!'
       // this.getAll();
   },
-
   moveCop: function(player, cop) {
 
       // Removes the cop from the screen
@@ -621,6 +645,11 @@ Heist.LevelOne.prototype = {
         promptText.text = "You've collected all the money, now get out!"
         this.fadeText(promptText);
       }
-  }
+  },
+
+  killLaser: function(player, lasers) {
+  promptText.text = "You are close to the lasers!";
+  //  this.paths.kill();
+  },
 
 }; // End of LevelOne
