@@ -512,7 +512,7 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
-      // Diagonal controller ///////////////////////////////////////////
+      // Diagonal movement controller ///////////////////////////////////////////
       // if ( cursors.left.isDown && cursors.down.isDown ) {
       //   player.body.velocity.x = -550;
       //   player.body.velocity.y = 550;

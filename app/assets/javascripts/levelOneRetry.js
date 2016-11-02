@@ -35,6 +35,7 @@ Heist.LevelOneRetry.prototype = {
         this.state.add('LevelOne', Heist.LevelOne)
         this.state.start('LevelOne')
         Heist.levelScore = 0;
+        this.timer.restart();
 
       }
 
