@@ -28,6 +28,7 @@ Heist.LevelOne = function(game) {
   this.count
   this.outerWall;
   this.outerwalls;
+  this.lasers;
 
   //Weight limit variable
   this.maxWeight = 0;
@@ -339,6 +340,19 @@ Heist.LevelOne.prototype = {
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
+      this.lasers = this.game.add.group();
+      this.lasers.enableBody = true;
+
+      for (var i = 1; i < 13; i++) {
+
+        var laser = this.lasers.create(i * 30, 1500, 'laser');
+        laser.anchor.setTo(0.5, 0.5);
+        laser.body.immovable = true
+        laser.angle = i++;
+      }
+
+      this.physics.enable(this.lasers, Phaser.Physics.ARCADE);
+      this.physics.arcade.enable([player, this.lasers]);
 
       this.clearText(promptText);
       // this.clearText(promptText2);
@@ -373,6 +387,8 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop, platforms)
       // random generated walls
       this.physics.arcade.collide(player, this.kWall);
+      this.physics.arcade.collide(this.lasers, player);
+
 
       // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
       //   this.physics.arcade.moveToXY(this.cop, 500, 500);
@@ -622,6 +638,11 @@ Heist.LevelOne.prototype = {
         promptText.text = "You've collected all the money, now get out!"
         this.fadeText(promptText);
       }
-  }
+  },
+
+  killLaser: function(player, lasers) {
+  promptText.text = "You are close to the lasers!";
+  //  this.paths.kill();
+  },
 
 }; // End of LevelOne
