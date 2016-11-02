@@ -79,6 +79,8 @@ Heist.LevelOne.prototype = {
       this.kWall.enableBody = true;
       this.diamonds = this.game.add.group();
       this.diamonds.enableBody = true;
+      this.cops = this.game.add.group();
+      this.cops.enableBody = true;
 
       var level = [
           '# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #',
@@ -250,15 +252,15 @@ Heist.LevelOne.prototype = {
       this.badguy.animations.add('walk');
       this.badguy.animations.play('walk', 8, true)
 
-      this.cop = this.add.sprite(600, 1500, 'cop');
-      this.physics.arcade.enable(this.cop);
-      this.cop.body.collideWorldBounds = true;
-      this.cop.anchor.setTo(0.5, 0.5);
-      this.cop.body.velocity.x=120;
-      // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
-      // this.badguy.animations.add('moveRight', [2, 3], 4, true )
-      this.cop.animations.add('walk');
-      // this.cop.animations.play('walk', 8, true)
+      // this.cop = this.add.sprite(600, 1500, 'cop');
+      // this.physics.arcade.enable(this.cop);
+      // this.cop.body.collideWorldBounds = true;
+      // this.cop.anchor.setTo(0.5, 0.5);
+      // // this.cop.body.velocity.x=120;
+      // // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
+      // // this.badguy.animations.add('moveRight', [2, 3], 4, true )
+      // this.cop.animations.add('walk');
+      // // this.cop.animations.play('walk', 8, true)
 
 
        // The player and its settings
@@ -285,11 +287,13 @@ Heist.LevelOne.prototype = {
       // stars and diamonds added to group.
       stars = this.add.group();
       diamonds = this.add.group();
+      cops = this.add.group();
 
 
       //  We will enable physics for any star that is created in this group
       stars.enableBody = true;
       diamonds.enableBody = true;
+      cops.enableBody = true;
 
       //  Here we'll create 12 of them evenly spaced apart
       for (var i = 1; i < 13; i++) {
@@ -297,6 +301,27 @@ Heist.LevelOne.prototype = {
         var star = stars.create(i * 70, 1500, 'star');
 
       }
+
+      for (var i = 1; i < 4; i++) {
+        var cop = cops.create(i * 150, 1500, 'cop');
+        cop.body.velocity.x = 120;
+      }
+
+
+
+      // this.cop = this.add.sprite(600, 1500, 'cop');
+      // this.physics.arcade.enable(this.cop);
+      // this.cop.body.collideWorldBounds = true;
+      // this.cop.anchor.setTo(0.5, 0.5);
+      // // this.cop.body.velocity.x=120;
+      // // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
+      // // this.badguy.animations.add('moveRight', [2, 3], 4, true )
+      // this.cop.animations.add('walk');
+      // // this.cop.animations.play('walk', 8, true)
+
+
+
+
       //
       // for (var i = 1; i < 7; i++) {
       //     //  Create a star inside of the 'stars' group
@@ -387,9 +412,9 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.badguy);
-      this.physics.arcade.collide(player, this.cop);
-      this.physics.arcade.collide(this.cop, this.innerWall, this.copHitWallInner);
-      this.physics.arcade.collide(this.cop, this.outerWall, this.copHitWallOuter);
+      this.physics.arcade.collide(player, cops);
+      this.physics.arcade.collide(cops, this.innerWall, this.copHitWallInner);
+      this.physics.arcade.collide(cops, this.outerWall, this.copHitWallOuter);
       this.physics.arcade.collide(stars, platforms);
 
       //this.physics.arcade.collide(diamonds, platforms);
@@ -400,28 +425,6 @@ Heist.LevelOne.prototype = {
       // add diamonds to be used in the map as ^
       this.physics.arcade.collide(this.diamonds, platforms);
       this.physics.arcade.collide(this.lasers, player);
-
-
-      // if ((this.cop.position.x == 900) && (this.cop.position.y == 1800)) {
-      //   this.physics.arcade.moveToXY(this.cop, 500, 500);
-      // } else if ((this.cop.position.x == 500) && (this.cop.position.y == 500)) {
-      //   this.physics.arcade.moveToXY(this.cop, 900, 1800);
-      // } else {
-      //
-      // }
-
-
-      // if (this.cop.position.x <= 800) {
-      //   this.physics.arcade.moveToXY(this.cop, 800, 1500);
-      // } else {
-      //   this.physics.arcade.moveToXY(this.cop, 600, 1500);
-      // }
-
-
-
-
-      // console.log(this.cop.position.x, this.cop.position.y);
-      // 600, 1500
 
 
 
@@ -644,11 +647,11 @@ Heist.LevelOne.prototype = {
   },
 
   copHitWallInner: function(cop, innerWall){
-    this.cop.body.velocity.x*= -1;
+    cop.body.velocity.x = (cop.body.velocity.x + 1) * -120;
   },
 
   copHitWallOuter: function(cop, outerWall){
-    this.cop.body.velocity.x*= -1;
+    cop.body.velocity.x*= -1*(120);
   },
 
   fadeText: function(textName) {
