@@ -9,7 +9,8 @@ Heist.LevelOne = function(game) {
   this.cursors
   this.x;
   this.g;
-  this.diamonds;
+  this.gold;
+  this.money;
   this.extractLocation;
   this.score = 0;
   this.totalScore = 0;
@@ -43,7 +44,6 @@ Heist.LevelOne.prototype = {
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
 
-
       this.timer = this.time.create();
 
       // // Start the timer!
@@ -63,7 +63,7 @@ Heist.LevelOne.prototype = {
       //  We will enable physics for any object that is created in this group
       platforms.enableBody = true;
 
-      // Game walls in via a loop function
+      // Game walls and features in via a loop function
       this.outerWall = this.game.add.group();
       this.outerWall.enableBody = true;
       this.innerWall = this.game.add.group();
@@ -72,6 +72,8 @@ Heist.LevelOne.prototype = {
       this.kWall.enableBody = true;
       this.money = this.game.add.group();
       this.money.enableBody = true;
+      this.gold = this.game.add.group();
+      this.gold.enableBody = true;
       this.diamonds = this.game.add.group();
       this.diamonds.enableBody = true;
       this.cops = this.game.add.group();
@@ -107,12 +109,12 @@ Heist.LevelOne.prototype = {
           '         *       b      *     *                   *           E                      ',
           '#        *       b      *              *          *           *                     #',
           '         *       b      *              *          *           *                      ',
-          '#        A       *      *              *    ^     *           *                     #',
-          '         A       *      L              *   ^^^    *           *                      ',
-          '#        A       *      L     *        *  ^^^^^   *           *                     #',
-          '         A       *      L     *        * ^^^^^^^  *           *                      ',
-          '#        *       *      L     *        *^^^^^^^^^ *           *                     #',
-          '         *       *      *     *        *          *           *                      ',
+          '#        A       *      *              *          *           *                     #',
+          '         A       *      L              *    @     *           *                      ',
+          '#        A       *      L     *        *   @@@    *           *                     #',
+          '         A       *      L     *        *  @@@@@   *           *                      ',
+          '#        *       *      L     *        * @@@@@@@  *           *                     #',
+          '         *       *      *     *        *@@@@@@@@@ *           *                      ',
           '#        *       *      *******        ************           *                     #',
           '         *       *            *                               *                      ',
           '#        *       *            *                               *                     #',
@@ -164,7 +166,7 @@ Heist.LevelOne.prototype = {
           '                                      #         #,                                   '
       ];
 
-
+        // the following code looks at random walls being placed where the letters are on the map above
         var isLetter = function( c ) {
           return c.toLowerCase() != c.toUpperCase();
         }
@@ -226,6 +228,10 @@ Heist.LevelOne.prototype = {
                   // cop.physics.arcade.enable = true;
                   cop.body.immovable = false;
                   // cop.body.velocity.x = 120;
+                if (level [i][j] == '@'){
+                    var gold = this.gold.create(30+20*j, 30+20*i, 'gold');
+                    gold.body.immovable = false;
+                    //gold.enableBody = true;
                 }
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
@@ -294,23 +300,15 @@ Heist.LevelOne.prototype = {
       this.heart.body.collideWorldBounds = true;
 
 
-
-      diamonds = this.add.group();
       money = this.add.group();
+      gold = this.add.group();
       cops = this.add.group();
+
 
 
       diamonds.enableBody = true;
       money.enableBody = true;
-
-      //  Here we'll create 12 of them evenly spaced apart
-      // for (var i = 1; i < 13; i++) {
-      //   //  Create a star inside of the 'stars' group
-      //   var star = stars.create(i * 70, 1500, 'star');
-      //
-      // }
       cops.enableBody = true;
-
 
       for (var i = 1; i < 4; i++) {
         var cop = cops.create(i * 150, 1500, 'cop');
@@ -318,10 +316,10 @@ Heist.LevelOne.prototype = {
       }
 
 
+      // Defines maximum possible score, please put all new 'collectables', ie gold, money, etc. above
+      // Used to define end of game and determine final score with timer bonus etc.
+      maxPossibleScore = ((this.gold.length * 10) + (this.money.length * 10)) ;
 
-
-      // Defines maximum possible score, please put all new 'diamonds', 'stars' etc. aboves
-      maxPossibleScore = ((diamonds.length * 50) + (this.money.length * 10)) ;
 
       //  The current level score controls
       scoreText = this.add.text(100, 67, '$0', this.style1);
@@ -346,6 +344,7 @@ Heist.LevelOne.prototype = {
       timerText = this.add.text(900, 20, '', this.style1);
       timerText.fixedToCamera = true;
 
+      // allows the screen to adjust with the movement of the player an dcreates a deadzone around it
       this.camera.follow(player);
       this.camera.deadzone = new Phaser.Rectangle(450, 250, 10, 10);
 
@@ -399,6 +398,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, platforms);
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
+      this.physics.arcade.collide(player, this.kWall);
       this.physics.arcade.collide(player, this.badguy);
       this.physics.arcade.collide(this.cop, this.outerWall);
       this.physics.arcade.collide(player, cops);
@@ -407,48 +407,27 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop, this.outerWall);
       this.physics.arcade.collide(this.cop, this.innerWall);
       this.physics.arcade.collide(this.heart, platforms);
-
-
-
-
-      //this.physics.arcade.collide(diamonds, platforms);
       this.physics.arcade.collide(this.badguy, platforms);
       this.physics.arcade.collide(this.cop, platforms);
-      // random generated walls
-      this.physics.arcade.collide(player, this.kWall);
-      // add diamonds to be used in the map as ^
-      this.physics.arcade.collide(this.diamonds, platforms);
       this.physics.arcade.collide(this.money, platforms);
+      this.physics.arcade.collide(this.gold, platforms);
       //this.physics.arcade.collide(this.lasers, player);
       this.physics.arcade.collide(lasers, player);
       // this.physics.arcade.collide(heart, player);
 
 
-      // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
-      //   this.physics.arcade.moveToXY(this.cop, 500, 500);
-      // } else {
-      //   this.physics.arcade.moveToXY(this.cop, 900, 1800);
-      // }
 
-      // console.log(this.cop.position.x, this.cop.position.y);
-      // 600, 1500
-
-      //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-      this.physics.arcade.overlap(player, this.diamonds, this.collectDiamond, null, this);
       this.physics.arcade.overlap(player, this.money, this.collectMoney, null, this);
-      //this.physics.arcade.overlap(player, diamonds, this.collectDiamond, null, this);
+      this.physics.arcade.overlap(player, this.gold, this.collectGold, null, this);
       this.physics.arcade.overlap(player, this.heart, this.heartPrompt, null, this);
-
 
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
       var heartOverlap = this.physics.arcade.overlap(player, this.heart, this.dropOffHeart, null, this)
 
-
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
       player.body.velocity.y = 0;
-
 
       if (cursors.left.isDown) {
           //  Move to the left
@@ -534,7 +513,6 @@ Heist.LevelOne.prototype = {
         return;
         }
 
-
       if (g.isDown) {
         this.health =- 1
       }
@@ -550,7 +528,6 @@ Heist.LevelOne.prototype = {
           Heist.playerLives -= 1
         }
       }
-
   },
 
 
@@ -593,7 +570,6 @@ Heist.LevelOne.prototype = {
     // game.debug.spriteCoords(player, 32, 500);
   },
 
-
   endTimer: function () {
     // Stop the timer when the delayed event triggers
     timer.stop();
@@ -605,7 +581,7 @@ Heist.LevelOne.prototype = {
     return this.minutes.substr(-2) + ":" + this.seconds.substr(-2)
   },
   dropOff: function(player, extract) {
-    promptText.text = 'Press V to secure money.';
+    promptText.text = 'Press V to secure loot.';
     this.clearText(promptText);
   },
 
@@ -625,23 +601,7 @@ Heist.LevelOne.prototype = {
     notificationText.text = "You secured $" + this.playerCarryValue
   },
 
-  collectDiamond: function(player, diamond) {
-    if (this.maxWeight <= 10) {
-      this.maxWeight += 2;
-      console.log(this.maxWeight);
-      // Removes the diamond from the screen
-      diamond.kill();
 
-      this.playerCarryValue += 50
-      this.fadeText(promptText);
-      promptText.text = '+$50'
-      this.getAll();
-    } else {
-      this.fadeText(notificationText);
-      notificationText.text = 'You are already carrying too much.'
-      return;
-    }
-  },
   collectMoney: function(player, money) {
     if (this.maxWeight <= 10) {
       this.maxWeight += 1;
@@ -650,6 +610,22 @@ Heist.LevelOne.prototype = {
       this.playerCarryValue += 10000
       this.fadeText(promptText);
       promptText.text = '+$10000'
+      this.getAll();
+    } else {
+      this.fadeText(notificationText);
+      notificationText.text = 'You are already carrying too much.'
+      return;
+    }
+  },
+
+  collectGold: function(player, gold) {
+    if (this.maxWeight <= 10) {
+      this.maxWeight += 1;
+      gold.kill();
+
+      this.playerCarryValue += 50000
+      this.fadeText(promptText);
+      promptText.text = '+$50000'
       this.getAll();
     } else {
       this.fadeText(notificationText);
@@ -705,7 +681,7 @@ Heist.LevelOne.prototype = {
   },
   getAll: function() {
     if (this.score === maxPossibleScore) {
-        promptText.text = "You've collected all the money, now get out!"
+        promptText.text = "You've collected all the loot, now get out!"
         this.fadeText(promptText);
       }
   },
