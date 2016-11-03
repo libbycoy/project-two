@@ -727,14 +727,14 @@ Heist.LevelOne.prototype = {
   },
 
   copHitWallInner: function(cop, innerWall){
-    // cop.body.velocity.x = -120;
-    cop.body.velocity = (120, 120);
-    cop.body.bounce.setTo(1,0);
+    cop.body.velocity.x = -120;
+    // cop.body.velocity = (120, 120);
+    // cop.body.bounce.setTo(1,0);
   },
 
   copHitWallOuter: function(cop, outerWall){
     cop.body.velocity.x = 120;
-    cop.body.bounce.setTo(1,0);
+    // cop.body.bounce.setTo(1,0);
   },
 
   fadeText: function(textName) {
