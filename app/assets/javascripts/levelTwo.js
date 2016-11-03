@@ -18,8 +18,10 @@ Heist.LevelTwo = function(game) {
   this.promptText;
   this.promptText2;
   this.timeDisplay;
-  this.style1 = { font: '25px Nothing You Could Do', fill: '#00FFFF' };
-  this.style2 = { font: '25px Nothing You Could Do', fill: '#00FFFF', align: 'centerY' };
+  this.style1 = { font: '37px Alegreya Sans SC', fill: '#FF0000'};
+  this.style2 = { font: '37px Alegreya Sans SC', fill: '#FF0000', align: 'centerY' };
+  this.style2.stroke = '#FFFFFF';
+  this.style2.strokeThickness = 6;
   this.opaqimg;
   this.timer;
   this.timerEvent;
@@ -372,7 +374,7 @@ Heist.LevelTwo.prototype = {
       extractLocation = this.add.group();
       extractLocation.enableBody = true;
       // extractLocation.body.immovable = true;
-      var extract = extractLocation.create(this.world.centerX - 700, this.world.height - 800, 'firstaid');
+      var extract = extractLocation.create(this.world.centerX - 700, this.world.height - 800, 'redCar');
 
       // lasers = this.game.add.group();
       // lasers.enableBody = true;

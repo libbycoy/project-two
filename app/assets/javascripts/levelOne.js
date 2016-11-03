@@ -18,8 +18,13 @@ Heist.LevelOne = function(game) {
   this.promptText;
   this.promptText2;
   this.timeDisplay;
-  this.style1 = { font: '25px Nothing You Could Do', fill: '#00FFFF' };
-  this.style2 = { font: '25px Nothing You Could Do', fill: '#00FFFF', align: 'centerY' };
+  this.style1 = { font: '20px Alegreya Sans SC', fill: '#FFFFFF' };
+  this.style2 = { font: '25px Alegreya Sans SC', fill: '#041F3B', align: 'centerY' };
+  this.style2.stroke = '#FFFFFF';
+  this.style2.strokeThickness = 5;
+  this.style3 = { font: '38px Alegreya Sans SC', fill: '#073D76', boundsAlignV: "middle" };
+  this.style3.stroke = '#FFFFFF';
+  this.style3.strokeThickness = 5;
   this.opaqimg;
   this.timer;
   this.timerEvent;
@@ -280,7 +285,8 @@ Heist.LevelOne.prototype = {
 
 
       // The player and its settings
-      player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude')
+      player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude');
+      player.scale.set(1.2);
       // player.body.setSize(20, 30, 0, 0)
 
       //  We need to enable physics on the player
@@ -368,7 +374,7 @@ Heist.LevelOne.prototype = {
       maxPossibleScore = ((this.gold.length * 10) + (this.money.length * 10)) ;
 
       //  The current level score controls
-      scoreText = this.add.text(100, 67, '$0', this.style1);
+      scoreText = this.add.text(100, 73, '$0', this.style1);
       scoreText.fixedToCamera = true;
 
       // promptText variable
@@ -387,7 +393,7 @@ Heist.LevelOne.prototype = {
       timeDisplay.fixedToCamera = true;
 
       // NotificationText varaible
-      notificationText = this.add.text(480, 480, '', this.style2);
+      notificationText = this.add.text(480, 480, '', this.style3);
       notificationText.anchor.setTo(0.5, 0.5);
       notificationText.fixedToCamera = true;
 
