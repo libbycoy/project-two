@@ -5,6 +5,8 @@ Heist.LevelOneSummary = function (game) {
 
 
 var startButton;
+this.police;
+this.anim;
 Heist.LevelOneSummary.prototype = {
 
   create: function () {
@@ -33,6 +35,12 @@ Heist.LevelOneSummary.prototype = {
     var totalScoreSummary = this.add.text(100, 295, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
     totalScoreSummary.fixedToCamera = true;
     totalScoreSummary.text = "This run: $" + Heist.totalScore;
+
+    this.police = this.add.sprite(700, 350, 'police', 4000);
+    this.police.scale.set(1.5);
+    this.police.smoothed = true;
+    this.anim = this.police.animations.add('walk');
+    this.anim.play(5, true);
 
 
       },
