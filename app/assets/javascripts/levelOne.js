@@ -386,7 +386,7 @@ Heist.LevelOne.prototype = {
       extractLocation = this.add.group();
       extractLocation.enableBody = true;
       // extractLocation.body.immovable = true;
-      var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 430, 'firstaid')
+      var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
 
       lasers = this.game.add.group();
       lasers.enableBody = true;
@@ -461,6 +461,22 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.overlap(player, this.money, this.collectMoney, null, this);
       this.physics.arcade.overlap(player, this.gold, this.collectGold, null, this);
       this.physics.arcade.overlap(player, this.heart, this.heartPrompt, null, this);
+
+      if (Math.abs(player.x - this.cop.x) <= 100 && Math.abs(player.y - this.cop.y) <= 100){
+        this.physics.arcade.moveToObject(this.cop, player, 5000, 1000);
+      }
+
+      if (Math.abs(player.x - this.cop2.x) <= 200 && Math.abs(player.y - this.cop2.y) <= 200) {
+        this.physics.arcade.moveToObject(this.cop2, player, 8000, 1000);
+      }
+
+      if (Math.abs(player.x - this.cop3.x) <= 100 && Math.abs(player.y - this.cop3.y) <= 100) {
+        this.physics.arcade.moveToObject(this.cop3, player, 5000, 1000);
+      }
+
+      if (Math.abs(player.x - this.cop4.x) <= 200 && Math.abs(player.y - this.cop4.y) <= 200) {
+        this.physics.arcade.moveToObject(this.cop4, player, 10000, 1000);
+      }
 
 
       // var dogOverlap = this.physics.arcade.overlap(player, this.dog, this.moveDog, null, this)
