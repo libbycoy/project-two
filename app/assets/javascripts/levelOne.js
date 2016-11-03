@@ -249,14 +249,14 @@ Heist.LevelOne.prototype = {
                     //gold.enableBody = true;
                 }
 
-                if (level[i][j] == '%'){
-                  var cop = this.cops.create(30+20*j, 30+20*i, 'cop');
+                // if (level[i][j] == '%'){
+                  // var cop = this.cops.create(30+20*j, 30+20*i, 'cop');
                   // cop.physics.arcade.enable = true;
-                  cop.body.immovable = false;
-                  cop.body.setCircle(25);
+                  // cop.body.immovable = false;
+                  // cop.body.setCircle(25);
 
                   // cop.body.velocity.x = 120;
-                }
+                // }
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
                 // wall for that letter group
@@ -357,12 +357,12 @@ Heist.LevelOne.prototype = {
       gold = this.add.group();
 
 
-      for (var i = 1; i < 4; i++) {
-        var cop = this.cops.create(i * 150, 1500, 'cop');
-        cop.body.velocity.x = 120;
-        cop.body.setCircle(25);
+      // for (var i = 1; i < 4; i++) {
+        // var cop = this.cops.create(i * 150, 1500, 'cop');
+        // cop.body.velocity.x = 120;
+        // cop.body.setCircle(25);
 
-      }
+      // }
       // Defines maximum possible score, please put all new 'collectables', ie gold, money, etc. above
       // Used to define end of game and determine final score with timer bonus etc.
       maxPossibleScore = ((this.gold.length * 10) + (this.money.length * 10)) ;

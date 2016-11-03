@@ -22,7 +22,7 @@ Heist.LevelOneSummary.prototype = {
 
     var livesLeft = this.add.text(100, 375, '', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
     livesLeft.fixedToCamera = true;
-    livesLeft.text = "You have " + Heist.playerLives + " lives left"
+    livesLeft.text = "You have " + Heist.playerLives + this.lifeOrLives(Heist.playerLives) + " left"
 
 
     var levelScoreSummary = this.add.text(100, 335, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
@@ -43,6 +43,14 @@ Heist.LevelOneSummary.prototype = {
         this.state.add('LevelTwoSummary', Heist.LevelTwoSummary)
         Heist.levelScore = 0;
 
+      },
+
+      lifeOrLives: function(num) {
+        if (num === 1){
+          return " life"
+        } else {
+          return " lives"
+        }
       }
 
     };
