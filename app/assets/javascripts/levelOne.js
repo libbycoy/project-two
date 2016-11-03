@@ -4,7 +4,7 @@ var Heist = Heist || {};
 Heist.LevelOne = function(game) {
   this.player;
   this.totalLives;
-  this.health = 100;
+  this.health = 10;
   this.platforms;
   this.cursors;
   this.x;
@@ -492,6 +492,8 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.dog, this.kWall, this.dogHitWallInner);
       this.physics.arcade.collide(this.dog, this.innerWall, this.dogHitWallInner);
       this.physics.arcade.collide(this.dog, this.outerWall, this.dogHitWallOuter);
+      this.physics.arcade.collide(this.dog, player, this.getHurtBoi );
+      // this.physics.arcade.collide(player, this.dog, this.getHurtBoi);
 
 
       //  Checks to see if the player overlaps with any of the gold or money or heart, if he does call a 'collect' function
@@ -615,10 +617,10 @@ Heist.LevelOne.prototype = {
         }
 
       if (g.isDown) {
-        this.health -= 1
+        Heist.health -= 1
       }
 
-      if (this.health < 1) {
+      if (Heist.health < 1) {
         if ( Heist.playerLives === 0){
           this.state.add('Ded', Heist.Ded)
           this.state.start('Ded')
@@ -832,6 +834,11 @@ Heist.LevelOne.prototype = {
 
   heartPrompt: function(player, heart) {
     console.log('you are over the heart');
+  },
+  getHurtBoi: function() {
+    Heist.health -= 1;
+    console.log(Heist.health);
+    console.log("Lost one health");
   }
 
 

@@ -34,9 +34,8 @@ Heist.LevelOneRetry.prototype = {
       clicked: function (pointer) {
         this.state.add('LevelOne', Heist.LevelOne)
         this.state.start('LevelOne')
+        Heist.health = 10;
         Heist.levelScore = 0;
-        this.timer.restart();
-
       },
 
       lifeOrLives: function(num) {
