@@ -13,7 +13,7 @@ Heist.LevelOneRetry.prototype = {
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
 
-    var background = this.add.tileSprite(0, 0, 1920, 1920, 'levelTwoBackground');
+    var background = this.add.tileSprite(0, 0, 1920, 1920, 'levelOneBackground');
     startButton = this.add.sprite(600, 400, 'button') // , this.startGame(), this, 1, 0, 2);
     startButton.inputEnabled = true;
     startButton.input.pixelPerfectClick = true;
@@ -34,7 +34,7 @@ Heist.LevelOneRetry.prototype = {
       clicked: function (pointer) {
         this.state.add('LevelOne', Heist.LevelOne)
         this.state.start('LevelOne')
-        Heist.health = 10;
+        Heist.health = 80;
         Heist.levelScore = 0;
       },
 

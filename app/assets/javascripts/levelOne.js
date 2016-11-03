@@ -4,7 +4,7 @@ var Heist = Heist || {};
 Heist.LevelOne = function(game) {
   this.player;
   this.totalLives;
-  this.health = 10;
+  // this.health = 90;
   this.platforms;
   this.cursors;
   this.x;
@@ -458,7 +458,8 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop, platforms);
       this.physics.arcade.collide(this.cop, this.innerWall);
       this.physics.arcade.collide(this.cop, this.outerWall);
-      this.physics.arcade.collide(this.cop, player);
+      this.physics.arcade.collide(this.cop, player, this.getHurtBoi );
+
 
 
       //Test for health loss on collision.
@@ -468,17 +469,17 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop2, platforms);
       this.physics.arcade.collide(this.cop2, this.innerWall);
       this.physics.arcade.collide(this.cop2, this.outerWall);
-      this.physics.arcade.collide(this.cop2, player);
+      this.physics.arcade.collide(this.cop2, player, this.getHurtBoi );
       this.physics.arcade.collide(this.cop2, this.kWall);
       this.physics.arcade.collide(this.cop3, platforms);
       this.physics.arcade.collide(this.cop3, this.innerWall);
       this.physics.arcade.collide(this.cop3, this.outerWall);
-      this.physics.arcade.collide(this.cop3, player);
+      this.physics.arcade.collide(this.cop3, player, this.getHurtBoi );
       this.physics.arcade.collide(this.cop3, this.kWall);
       this.physics.arcade.collide(this.cop4, platforms);
       this.physics.arcade.collide(this.cop4, this.innerWall);
       this.physics.arcade.collide(this.cop4, this.outerWall);
-      this.physics.arcade.collide(this.cop4, player);
+      this.physics.arcade.collide(this.cop4, player, this.getHurtBoi );
       this.physics.arcade.collide(this.cop4, this.kWall);
       this.physics.arcade.collide(this.money, platforms);
       this.physics.arcade.collide(this.gold, platforms);
@@ -488,12 +489,12 @@ Heist.LevelOne.prototype = {
 
       this.physics.arcade.collide(this.dog, platforms);
       // this.physics.arcade.collide(this.dog, this.outerWall);
-      this.physics.arcade.collide(player, this.dog);
+      this.physics.arcade.collide(this.dog, player, this.getHurtBoi );
+      this.physics.arcade.collide(player, this.dog, this.getHurtBoi);
       this.physics.arcade.collide(this.dog, this.kWall, this.dogHitWallInner);
       this.physics.arcade.collide(this.dog, this.innerWall, this.dogHitWallInner);
       this.physics.arcade.collide(this.dog, this.outerWall, this.dogHitWallOuter);
-      this.physics.arcade.collide(this.dog, player, this.getHurtBoi );
-      // this.physics.arcade.collide(player, this.dog, this.getHurtBoi);
+
 
 
       //  Checks to see if the player overlaps with any of the gold or money or heart, if he does call a 'collect' function
@@ -838,7 +839,6 @@ Heist.LevelOne.prototype = {
   getHurtBoi: function() {
     Heist.health -= 1;
     console.log(Heist.health);
-    console.log("Lost one health");
   }
 
 

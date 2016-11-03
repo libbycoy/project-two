@@ -52,6 +52,12 @@ Heist.LevelTwoSummary.prototype = {
         }
       }
 
+      //TODO Make AJAX call to pass
+
+      //route
+      //action
+      //Ajax call
+
     };
 
 
