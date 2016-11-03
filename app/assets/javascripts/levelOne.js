@@ -77,6 +77,10 @@ Heist.LevelOne.prototype = {
       this.diamonds.enableBody = true;
       this.cops = this.game.add.group();
       this.cops.enableBody = true;
+      this.lasers = this.game.add.group();
+      this.lasers.enableBody = true;
+      this.heart = this.game.add.group();
+      this.heart.enableBody = true;
 
 
       var level = [
@@ -95,14 +99,14 @@ Heist.LevelOne.prototype = {
           '#        a       *                                *                                 #',
           '         *       **bbbb******************cccc******             **************dddd** ',
           '#        *       B                                C                         *       #',
-          '         *       B                                C                         *        ',
+          '         *       B                                C                         *     p  ',
           '#        *       B                                C                         *       #',
           '         *       B                                C                         *        ',
           '#        *       *                                *******eeee*********      *       #',
           '         *       *                              ^ *           *             *        ',
           '# **    **       *                                *           *             *     ^ #',
           '         *       *      *********llll**************           *             *        ',
-          '#        *       *      * ^   *                   *           E             *       #',
+          '#        *       *      * ^   *        &          *           E             *       #',
           '         *       *      *     *                   *           E             ***DDDD* ',
           '#        *       b      *     *                   *           E                     #',
           '         *       b      *     *                   *           E                      ',
@@ -222,6 +226,19 @@ Heist.LevelOne.prototype = {
                     money.body.immovable = false;
                     //money.enableBody = true;
                 }
+
+                if (level [i][j] == '&'){
+                    var lasers = this.lasers.create(30+20*j, 30+20*i, 'laser');
+                    lasers.body.immovable = true;
+                    //money.enableBody = true;
+                }
+
+                if (level [i][j] == 'p'){
+                    var heart = this.heart.create(30+20*j, 30+20*i, 'heart');
+                    heart.body.immovable = true;
+                    //money.enableBody = true;
+                  }
+
                 if (level [i][j] == '@'){
                     var gold = this.gold.create(30+20*j, 30+20*i, 'gold');
                     gold.body.immovable = false;
@@ -294,10 +311,11 @@ Heist.LevelOne.prototype = {
       v = this.input.keyboard.addKey(Phaser.Keyboard.V);
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       g = this.input.keyboard.addKey(Phaser.Keyboard.G);
+      b = this.input.keyboard.addKey(Phaser.Keyboard.B);
 
-      this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
-      this.physics.arcade.enable(this.heart);
-      this.heart.body.collideWorldBounds = true;
+      // this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
+      // this.physics.arcade.enable(this.heart);
+      // this.heart.body.collideWorldBounds = true;
 
 
       // add money, gold bars and cops to the group
@@ -357,13 +375,6 @@ Heist.LevelOne.prototype = {
       lasers = this.game.add.group();
       lasers.enableBody = true;
 
-      for (var i = 1; i < 13; i++) {
-
-        var laser = lasers.create(i * 30, 1500, 'laser');
-        laser.anchor.setTo(0.5, 0.5);
-        laser.body.immovable = true
-        laser.angle = i++;
-      }
 
       this.physics.enable(lasers, Phaser.Physics.ARCADE);
       this.physics.arcade.enable([player, lasers]);
@@ -424,7 +435,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.money, platforms);
       this.physics.arcade.collide(this.gold, platforms);
       //this.physics.arcade.collide(this.lasers, player);
-      this.physics.arcade.collide(lasers, player);
+      this.physics.arcade.collide(this.lasers, player);
       // this.physics.arcade.collide(heart, player);
 
 
@@ -473,7 +484,7 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
-      // Diagonal controller ///////////////////////////////////////////
+      // Diagonal movement controller ///////////////////////////////////////////
       // if ( cursors.left.isDown && cursors.down.isDown ) {
       //   player.body.velocity.x = -550;
       //   player.body.velocity.y = 550;
@@ -527,8 +538,9 @@ Heist.LevelOne.prototype = {
         }
       }
 
-      if (heartOverlap === true && g.isDown) {
-        lasers.destroy();
+      if (heartOverlap === true && b.isDown) {
+        this.lasers.destroy();
+        // this.heart.kill();
         notificationText.text = "You disabled all lasers."
         this.fadeText(notificationText)
         return;
@@ -607,7 +619,7 @@ Heist.LevelOne.prototype = {
   },
 
   dropOffHeart: function(player, extractHeart) {
-    promptText.text = 'Press G to disable lasers.';
+    promptText.text = 'Press B to disable lasers.';
     this.clearText(promptText);
   },
 
@@ -620,6 +632,43 @@ Heist.LevelOne.prototype = {
   printSecureMessage: function () {
     this.fadeText(notificationText)
     notificationText.text = "You secured $" + this.playerCarryValue
+  },
+
+  collectStar: function (player, star) {
+    if (this.maxWeight <= 11) {
+      this.maxWeight += 1;
+      console.log(this.maxWeight);
+      // Removes the star from the screen
+      star.kill();
+
+      this.playerCarryValue += 1000;
+      this.fadeText(promptText);
+      promptText.text = '+$1000'
+      this.getAll();
+    } else {
+      this.fadeText(notificationText);
+      notificationText.text = 'You are already carrying too much.'
+      return;
+    }
+
+  },
+
+  collectDiamond: function(player, diamond) {
+    if (this.maxWeight <= 10) {
+      this.maxWeight += 2;
+      console.log(this.maxWeight);
+      // Removes the diamond from the screen
+      diamond.kill();
+
+      this.playerCarryValue += 5000
+      this.fadeText(promptText);
+      promptText.text = '+$5000'
+      this.getAll();
+    } else {
+      this.fadeText(notificationText);
+      notificationText.text = 'You are already carrying too much.'
+      return;
+    }
   },
 
   collectMoney: function(player, money) {

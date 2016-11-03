@@ -1,11 +1,11 @@
 var Heist = Heist || {};
 
-Heist.LevelOneRetry = function (game) {
+Heist.LevelTwoRetry = function (game) {
 };
 
 
 var startButton;
-Heist.LevelOneRetry.prototype = {
+Heist.LevelTwoRetry.prototype = {
 
   create: function () {
     // Align canvas to middle.
@@ -32,15 +32,11 @@ Heist.LevelOneRetry.prototype = {
       },
 
       clicked: function (pointer) {
-        this.state.add('LevelOne', Heist.LevelOne)
-        this.state.start('LevelOne')
+        this.state.add('LevelTwo', Heist.LevelOne)
+        this.state.start('LevelTwo')
         Heist.levelScore = 0;
         this.timer.restart();
 
       }
 
     };
-
-
-      // this.state.add('Boot', mainMenu.Boot);
-      // game.state.start('Boot');
