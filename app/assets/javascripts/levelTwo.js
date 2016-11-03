@@ -17,6 +17,7 @@ Heist.LevelTwo = function(game) {
   this.scoreText;
   this.promptText;
   this.promptText2;
+  this.timeDisplay;
   this.style1 = { font: '25px Nothing You Could Do', fill: '#00FFFF' };
   this.style2 = { font: '25px Nothing You Could Do', fill: '#00FFFF', align: 'centerY' };
   this.opaqimg;
@@ -88,59 +89,59 @@ Heist.LevelTwo.prototype = {
           '                                                                                     ',
           '  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  ',
           '                                                                                     ',
-          '  #               *        *                        *        *         *          #  ',
-          '                  &        *                        &                  *             ',
-          '  #                        &                                                      #  ',
-          '                                                                             p       ',
-          '  #                                             ^                                 #  ',
-          '                  *                                 *        *                       ',
+          '  #  ^^           *        *                        *        *         *          #  ',
+          '     ^            a        *                                 &         *             ',
+          '  #               a        b                                                      #  ',
+          '                  a        b                                                 p       ',
+          '  #               a        b                    ^                                 #  ',
+          '                  *        b                        *        *                       ',
           '  #               *        *                        *        *         *          #  ',
           '            *******        *                        *        *    ^    *             ',
           '  #         *              ****       ************************         *          #  ',
-          '            *              *             *                             ***    ****   ',
-          '  #         *              *             *                             *          #  ',
-          '            *              *             *                             *             ',
+          '            *              *           ^ *                             ***    ****   ',
+          '  # ^       *              *           ^ *                             *          #  ',
+          '    ^^      *              *             *                             *             ',
           '  # **    ***              *             *                             *          #  ',
           '            *              *             *          *                  *             ',
           '  #         *              *             *          *                  *          #  ',
           '            *              *             ************                  *             ',
           '  #         *              *             *          *                  *        ^ #  ',
-          '                     *     *             *          *                  *             ',
-          '  #                  *    ^*             *          *                  *          #  ',
-          '                     *     *             *          &                  *             ',
-          '  #                  *     *             *                             *          #  ',
-          '            *        *     *             *                             *             ',
-          '  #         *        *     *             *                             *          #  ',
-          '            *        *     *             *          *                  *             ',
-          '  #         *        *     *             ************                  *          #  ',
+          '            A        *     *             *          *                  *             ',
+          '  #         A        *    ^*             *          *                  *          #  ',
+          '            A        *     *             *                             *             ',
+          '  #         A        *     *             *                             *          #  ',
+          '            *        *     B             *                             *             ',
+          '  # ^       *        *     B             *                             *          #  ',
+          '    ^       *        *     B             *          *                  *             ',
+          '  # ^^      *        *     B             ************                  *          #  ',
           '    *********        *********************                             *             ',
           '  #         *             *              *                             *          #  ',
           '            *             *              *                             *             ',
           '  #         *             *              *                             *          #  ',
-          '                          *                     *************    *******             ',
-          '  #               #       *                                                       #  ',
-          '                          *                                                          ',
-          '  #                       *                                                       #  ',
-          '    ^       *             *              *                                           ',
+          '            C             *                     *************dddd*******             ',
+          '  #         C     #       *                     D                                 #  ',
+          '            C             *                     D                                    ',
+          '  #         C             *                     D                                 #  ',
+          '    ^       *             *              *      D                                    ',
           '  #         *             *              *      *       *****************    *****#  ',
           '            *             *              *      *       *                            ',
           '  # **    ***      ***********************      *       *                         #  ',
           '            *      *                 *          *       *                            ',
-          '  #         *      *                 *          *       *                         #  ',
-          '            *      *                 *          *       *                            ',
-          '  #         *      *                 *          *       *      **********    *****#  ',
-          '                   *                 *       %  *       *      *                     ',
-          '  #                *                 *          *       *      *                  #  ',
-          '                                     *                  *      *                     ',
-          '  #                                  *                  *      *                  #  ',
+          '  #         *      *         ^^^     *          *       *                         #  ',
+          '            *      *       ^^^ ^^^   *          *       *                            ',
+          '  #         *      *       ^^^ ^^^   *          *       *      **********&   *****#  ',
+          '            c      *       ^^^ ^^^   *       %  *       *      *                     ',
+          '  #         c      *                 *          *       *      *                  #  ',
+          '            c                        *                  *      *                     ',
+          '  #         c                        *                  *      *                  #  ',
           '            *                        *                  *      *                     ',
           '  #         *                        *                  *      *                  #  ',
           '            *      *                 *          *       *      *                     ',
           '  #         *      *                 *          *       *      *                  #  ',
-          '    ***    ******************************    *******************                     ',
+          '    ***    ******************************&   *******************                     ',
           '  #                                             *                                 #  ',
           '                                                *                                    ',
-          '  #                                                                               #  ',
+          '  #                                             &                                 #  ',
           '                                                                                     ',
           '  #                                                                               #  ',
           '                                                                                     ',
@@ -150,21 +151,21 @@ Heist.LevelTwo.prototype = {
           '                                                *                                    ',
           '          Z      Z        #               ^     *                                 #  ',
           '          Z      Z                              *                       ^            ',
-          '          Z      Z        #                     *                                 #  ',
+          '          Z      Z        #  @@@    @@@    @@@  *                                 #  ',
           '          Z      Z                              *                                    ',
-          '          Z      Z        #                     *                                 #  ',
+          '          Z      Z        #  @@@    @@@    @@@  *                                 #  ',
           '          Z      Z                              *                                    ',
-          '          Z      Z        #                     *                                 #  ',
+          '          Z      Z        #  @@@    @@@    @@@  *                                 #  ',
           '          Z      Z                              *                                    ',
-          '          Z      Z        #                     *                                 #  ',
+          '          Z      Z        #  @@@    @@@    @@@  *                                 #  ',
           '          Z      Z                              *                                    ',
           '          Z      Z        #                                                       #  ',
           '          Z      Z                                                                   ',
           '          Z      Z        #                                             ^  ^      #  ',
           '          Z      Z                                                                   ',
           '          Z      Z        #                     *                                 #  ',
-          '          Z      Z                              *                                    ',
-          '          Z      Z        #                     *                                 #  ',
+          '          Z      Z             ^^^        @@@   *                                    ',
+          '          Z      Z        #               @@@   *                                 #  ',
           '          Z      Z                              *                                    ',
           '          Z      Z        # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  '
       ];
@@ -286,7 +287,7 @@ Heist.LevelTwo.prototype = {
 
 
       // The player and its settings
-      player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude')
+      player = this.add.sprite(this.world.centerX - 620, this.world.height - 700, 'dude')
       // player.body.setSize(20, 30, 0, 0)
 
       //  We need to enable physics on the player
@@ -340,9 +341,15 @@ Heist.LevelTwo.prototype = {
       promptText.fixedToCamera = true;
 
       //PrompteText2
-      promptText2 = this.add.text(480, 520, 'PRINT ME', this.style2);
+      promptText2 = this.add.text(480, 520, '', this.style2);
       promptText2.anchor.setTo(0.5, 0.5);
       promptText2.fixedToCamera = true;
+
+      //Timer display:
+      timeDisplay = this.add.text(900, 40, '0:00', this.style2);
+      timeDisplay.anchor.setTo(0.5, 0.5);
+      timeDisplay.fixedToCamera = true;
+
 
       // NotificationText varaible
       notificationText = this.add.text(480, 480, '', this.style2);
@@ -365,7 +372,7 @@ Heist.LevelTwo.prototype = {
       extractLocation = this.add.group();
       extractLocation.enableBody = true;
       // extractLocation.body.immovable = true;
-      var extract = extractLocation.create(this.world.centerX + 100, this.world.height - 390, 'firstaid')
+      var extract = extractLocation.create(this.world.centerX - 700, this.world.height - 800, 'firstaid')
 
       // lasers = this.game.add.group();
       // lasers.enableBody = true;
@@ -574,26 +581,14 @@ Heist.LevelTwo.prototype = {
       // }
 
       if (secondsElapsed < 10 ) {
-        promptText2.text = "0:0" + secondsElapsed;
+        timeDisplay.text = "0:0" + secondsElapsed;
       } else if ( secondsElapsed < 60) {
-        promptText2.text = "0:" + secondsElapsed;
+        timeDisplay.text = "0:" + secondsElapsed;
       } else if ( secondsElapsed > 60 && seconds < 10) {
-        promptText2.text = minutes + ":0" + seconds;
+        timeDisplay.text = minutes + ":0" + seconds;
       } else if ( secondsElapsed > 60 && seconds >= 10) {
-        promptText2.text = minutes + ":" + seconds;
+        timeDisplay.text = minutes + ":" + seconds;
       }
-    // if (timer.running) {
-    //     timerText.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
-    // }
-    // else {
-    //   var endGameTime = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
-    //   timerText.text = "Done!" + endGameTime ;
-    //
-    //   //this.timeOut();
-    //   return this.timeOut();
-    //
-    //   //TODO  Make the game end.
-    // }
 
     // For camera debugging only. Plz don't delete.
     // game.debug.cameraInfo(game.camera, 32, 32);

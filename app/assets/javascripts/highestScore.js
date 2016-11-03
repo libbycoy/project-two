@@ -1,11 +1,11 @@
 var Heist = Heist || {};
 
-Heist.LevelOneSummary = function (game) {
+Heist.HighestScore = function (game) {
 };
 
 
 var startButton;
-Heist.LevelOneSummary.prototype = {
+Heist.HighestScore.prototype = {
 
   create: function () {
     // Align canvas to middle.
@@ -20,28 +20,22 @@ Heist.LevelOneSummary.prototype = {
     startButton.events.onInputDown.add(this.clicked, this);
     startButton.anchor.setTo(0.5, 0.5);
 
-    var livesLeft = this.add.text(100, 375, '', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    var livesLeft = this.add.text(100, 127, '', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
     livesLeft.fixedToCamera = true;
     livesLeft.text = "You have " + Heist.playerLives + " lives left"
 
 
-    var levelScoreSummary = this.add.text(100, 335, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
-    levelScoreSummary.fixedToCamera = true;
-    levelScoreSummary.text = "You got $" + Heist.levelScore + " this level"
-
-
-    var totalScoreSummary = this.add.text(100, 295, '$0', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
-    totalScoreSummary.fixedToCamera = true;
-    totalScoreSummary.text = "This run: $" + Heist.totalScore;
+    var ded = this.add.text(100, 97, 'You lost a life', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    ded.fixedToCamera = true;
 
 
       },
 
       clicked: function (pointer) {
-
-        this.state.start('LevelTwo')
-        this.state.add('LevelTwoSummary', Heist.LevelTwoSummary)
+        this.state.add('LevelOne', Heist.LevelOne)
+        this.state.start('LevelOne')
         Heist.levelScore = 0;
+        this.timer.restart();
 
       }
 
