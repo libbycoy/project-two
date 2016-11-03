@@ -36,15 +36,15 @@ Heist.MainMenu.prototype = {
         // this.back.scale.set(2);
         // this.back.smoothed = false;
 
-        this.mummy = this.add.sprite(120, 260, 'mummy', 4000);
+        this.mummy = this.add.sprite(100, 100, 'mummy', 4000);
         this.mummy.scale.set(2);
         this.mummy.smoothed = true;
         this.anim = this.mummy.animations.add('walk');
 
-        // this.anim.onStart.add(this.animationStarted(), this);
-        // this.anim.onLoop.add(this.animationLooped(), this);
-        // this.anim.onComplete.add(this.animationStopped(), this);
-
+        // // this.anim.onStart.add(this.animationStarted(), this);
+        // // this.anim.onLoop.add(this.animationLooped(), this);
+        // // this.anim.onComplete.add(this.animationStopped(), this);
+        //
         this.anim.play(5, true);
 
       },
