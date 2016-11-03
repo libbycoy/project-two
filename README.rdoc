@@ -2,6 +2,7 @@
 ### "Burning Banks"
 #### Libby, Meggan, Michael & Shaila
 
+[Live Site](https://wealth-redistribution-sim.herokuapp.com/)
 
 #### Overview
 
