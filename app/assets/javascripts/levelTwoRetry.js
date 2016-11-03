@@ -36,6 +36,7 @@ Heist.LevelTwoRetry.prototype = {
         this.state.start('LevelTwo')
         Heist.levelScore = 0;
         this.timer.restart();
+        Heist.health = 80;
 
       },
 
