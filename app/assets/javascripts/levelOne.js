@@ -436,10 +436,6 @@ Heist.LevelOne.prototype = {
         this.createBadGuy(480, 550);
       }
 
-      player.body.onCollide = new Phaser.Signal();
-      player.body.onCollide.add(this.damageHealth(), this);
-
-
   },
 
   update: function () {
@@ -461,8 +457,8 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop, platforms);
       this.physics.arcade.collide(this.cop, this.innerWall);
       this.physics.arcade.collide(this.cop, this.outerWall);
-      // this.physics.arcade.collide(this.cop, player);
-      // this.physics.arcade.collide(player, this.cop, this.damageHealth(), this.processCallBack(), this);
+      this.physics.arcade.collide(this.cop, player);
+
 
       //Test for health loss on collision.
       // this.physics.arcade.collide(player, this.cop, this.ballHitBallHandler(), this.ballHitBallProcess(), this);
@@ -656,18 +652,6 @@ Heist.LevelOne.prototype = {
       } else if ( secondsElapsed > 60 && seconds >= 10) {
         timeDisplay.text = minutes + ":" + seconds;
       }
-    // if (timer.running) {
-    //     timerText.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
-    // }
-    // else {
-    //   var endGameTime = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
-    //   timerText.text = "Done!" + endGameTime ;
-    //
-    //   //this.timeOut();
-    //   return this.timeOut();
-    //
-    //   //TODO  Make the game end.
-    // }
 
     // For camera debugging only. Plz don't delete.
     // game.debug.cameraInfo(game.camera, 32, 32);
@@ -847,15 +831,7 @@ Heist.LevelOne.prototype = {
 
   heartPrompt: function(player, heart) {
     console.log('you are over the heart');
-  },
-  damageHealth: function(obj1, obj2) {
-      this.health - 1;
-      console.log("Lost health!!!");
-  },
-  processCallBack: function( obj1, obj2 ){
-    return true;
   }
-
 
 
 }; // End of LevelOne
