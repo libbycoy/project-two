@@ -4,7 +4,7 @@ var Heist = Heist || {};
 Heist.LevelOne = function(game) {
   this.player;
   this.totalLives;
-  this.health = 3;
+  this.health = 100;
   this.platforms;
   this.cursors;
   this.x;
@@ -307,6 +307,14 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.enable(this.cop3);
       this.physics.arcade.enable(this.cop4);
 
+      this.cop.body.setCircle(30);
+      this.cop2.body.setCircle(30);
+      this.cop3.body.setCircle(30);
+      this.cop4.body.setCircle(30);
+      this.cop.body.static = true;
+      this.cop2.body.static = true;
+
+
 
       this.dog.frame = 12;
       this.dog.body.collideWorldBounds = true;
@@ -337,6 +345,8 @@ Heist.LevelOne.prototype = {
       // debugger;
       //this.physics.arcade.moveToObject(this.dog, player, 200, 3000);
       // this.moveDog();
+
+
 
 
 
@@ -426,6 +436,10 @@ Heist.LevelOne.prototype = {
         this.createBadGuy(480, 550);
       }
 
+      player.body.onCollide = new Phaser.Signal();
+      player.body.onCollide.add(this.damageHealth(), this);
+
+
   },
 
   update: function () {
@@ -447,7 +461,12 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop, platforms);
       this.physics.arcade.collide(this.cop, this.innerWall);
       this.physics.arcade.collide(this.cop, this.outerWall);
-      this.physics.arcade.collide(this.cop, player);
+      // this.physics.arcade.collide(this.cop, player);
+      // this.physics.arcade.collide(player, this.cop, this.damageHealth(), this.processCallBack(), this);
+
+      //Test for health loss on collision.
+      // this.physics.arcade.collide(player, this.cop, this.ballHitBallHandler(), this.ballHitBallProcess(), this);
+
       this.physics.arcade.collide(this.cop, this.kWall);
       this.physics.arcade.collide(this.cop2, platforms);
       this.physics.arcade.collide(this.cop2, this.innerWall);
@@ -828,6 +847,15 @@ Heist.LevelOne.prototype = {
 
   heartPrompt: function(player, heart) {
     console.log('you are over the heart');
+  },
+  damageHealth: function(obj1, obj2) {
+      this.health - 1;
+      console.log("Lost health!!!");
+  },
+  processCallBack: function( obj1, obj2 ){
+    return true;
   }
+
+
 
 }; // End of LevelOne
