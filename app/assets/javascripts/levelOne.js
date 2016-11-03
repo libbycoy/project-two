@@ -358,7 +358,7 @@ Heist.LevelOne.prototype = {
 
 
       for (var i = 1; i < 4; i++) {
-        var cop = cops.create(i * 150, 1500, 'cop');
+        var cop = this.cops.create(i * 150, 1500, 'cop');
         cop.body.velocity.x = 120;
         cop.body.setCircle(25);
 
