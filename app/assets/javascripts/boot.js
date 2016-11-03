@@ -1,6 +1,6 @@
 var Heist = {
   //Global variables that persist regardless of state swaps
-  totalScore: 0, playerLives: 3, levelScore: 0, userName: "Player"
+  totalScore: 0, playerLives: 3, levelScore: 0, userName: "Player", health: 80
 };
 
 Heist.Boot = function(game) {};

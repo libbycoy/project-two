@@ -6,6 +6,10 @@ Heist.MainMenu2 = function (game) {
 
 
 var startButton;
+this.mummy;
+this.copCar;
+this.anim;
+
 Heist.MainMenu2.prototype = {
 
   create: function () {
@@ -15,6 +19,7 @@ Heist.MainMenu2.prototype = {
         startButton.input.pixelPerfectClick = true;
         startButton.events.onInputDown.add(this.clicked, this);
         startButton.anchor.setTo(0.5, 0.5);
+
 
       },
 

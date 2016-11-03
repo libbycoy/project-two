@@ -20,8 +20,10 @@ Heist.Ded.prototype = {
     startButton.events.onInputDown.add(this.clicked, this);
     startButton.anchor.setTo(0.5, 0.5);
 
-    var ded = this.add.text(100, 97, 'GAME OVER', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    var ded = this.add.text(100, 310, 'GAME OVER', { font: '50px Nothing You Could Do', fill: '#00FFFF' });
     ded.fixedToCamera = true;
+    var reason = this.add.text(180, 400, 'You ran out of lives', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    reason.fixedToCamera = true;
 
 
       },

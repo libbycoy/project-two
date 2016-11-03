@@ -22,7 +22,7 @@ Heist.LevelTwoRetry.prototype = {
 
     var livesLeft = this.add.text(100, 127, '', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
     livesLeft.fixedToCamera = true;
-    livesLeft.text = "You have " + Heist.playerLives + " lives left"
+    livesLeft.text = "You have " + Heist.playerLives + this.lifeOrLives(Heist.playerLives) + " left"
 
 
     var ded = this.add.text(100, 97, 'You lost a life', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
@@ -32,11 +32,20 @@ Heist.LevelTwoRetry.prototype = {
       },
 
       clicked: function (pointer) {
-        this.state.add('LevelTwo', Heist.LevelOne)
+        this.state.add('LevelTwo', Heist.LevelTwo)
         this.state.start('LevelTwo')
         Heist.levelScore = 0;
         this.timer.restart();
+        Heist.health = 80;
 
+      },
+
+      lifeOrLives: function(num) {
+        if (num === 1){
+          return " life"
+        } else {
+          return " lives"
+        }
       }
 
     };
