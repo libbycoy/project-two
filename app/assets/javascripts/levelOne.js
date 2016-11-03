@@ -17,6 +17,7 @@ Heist.LevelOne = function(game) {
   this.scoreText;
   this.promptText;
   this.promptText2;
+  this.timeDisplay;
   this.style1 = { font: '25px Nothing You Could Do', fill: '#00FFFF' };
   this.style2 = { font: '25px Nothing You Could Do', fill: '#00FFFF', align: 'centerY' };
   this.opaqimg;
@@ -248,6 +249,8 @@ Heist.LevelOne.prototype = {
                   var cop = this.cops.create(30+20*j, 30+20*i, 'cop');
                   // cop.physics.arcade.enable = true;
                   cop.body.immovable = false;
+                  cop.body.setCircle(25);
+
                   // cop.body.velocity.x = 120;
                 }
 
@@ -311,6 +314,7 @@ Heist.LevelOne.prototype = {
       v = this.input.keyboard.addKey(Phaser.Keyboard.V);
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       g = this.input.keyboard.addKey(Phaser.Keyboard.G);
+      b = this.input.keyboard.addKey(Phaser.Keyboard.B);
 
       // this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
       // this.physics.arcade.enable(this.heart);
@@ -328,6 +332,8 @@ Heist.LevelOne.prototype = {
       for (var i = 1; i < 4; i++) {
         var cop = cops.create(i * 150, 1500, 'cop');
         cop.body.velocity.x = 120;
+        cop.body.setCircle(25);
+
       }
 
       // Defines maximum possible score, please put all new 'collectables', ie gold, money, etc. above
@@ -344,9 +350,14 @@ Heist.LevelOne.prototype = {
       promptText.fixedToCamera = true;
 
       //PrompteText2
-      promptText2 = this.add.text(480, 520, 'PRINT ME', this.style2);
+      promptText2 = this.add.text(480, 520, '', this.style2);
       promptText2.anchor.setTo(0.5, 0.5);
       promptText2.fixedToCamera = true;
+
+      // Time display text. ONLY used to display time.
+      timeDisplay = this.add.text(900, 40, '0:00', this.style2);
+      timeDisplay.anchor.setTo(0.5, 0.5);
+      timeDisplay.fixedToCamera = true;
 
       // NotificationText varaible
       notificationText = this.add.text(480, 480, '', this.style2);
@@ -544,16 +555,16 @@ Heist.LevelOne.prototype = {
         }
       }
 
-      if (heartOverlap === true && g.isDown) {
+      if (heartOverlap === true && b.isDown) {
         this.lasers.destroy();
-        this.heart.kill();
+        // this.heart.kill();
         notificationText.text = "You disabled all lasers."
         this.fadeText(notificationText)
         return;
         }
 
       if (g.isDown) {
-        this.health =- 1
+        this.health -= 1
       }
 
       if (this.health < 1) {
@@ -583,13 +594,13 @@ Heist.LevelOne.prototype = {
       // }
 
       if (secondsElapsed < 10 ) {
-        promptText2.text = "0:0" + secondsElapsed;
+        timeDisplay.text = "0:0" + secondsElapsed;
       } else if ( secondsElapsed < 60) {
-        promptText2.text = "0:" + secondsElapsed;
+        timeDisplay.text = "0:" + secondsElapsed;
       } else if ( secondsElapsed > 60 && seconds < 10) {
-        promptText2.text = minutes + ":0" + seconds;
+        timeDisplay.text = minutes + ":0" + seconds;
       } else if ( secondsElapsed > 60 && seconds >= 10) {
-        promptText2.text = minutes + ":" + seconds;
+        timeDisplay.text = minutes + ":" + seconds;
       }
     // if (timer.running) {
     //     timerText.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
@@ -678,7 +689,7 @@ Heist.LevelOne.prototype = {
   },
 
   collectMoney: function(player, money) {
-    if (this.maxWeight <= 10) {
+    if (this.maxWeight <= 11) {
       this.maxWeight += 1;
       money.kill();
 
@@ -694,8 +705,8 @@ Heist.LevelOne.prototype = {
   },
 
   collectGold: function(player, gold) {
-    if (this.maxWeight <= 10) {
-      this.maxWeight += 1;
+    if (this.maxWeight <= 9) {
+      this.maxWeight += 3;
       gold.kill();
 
       this.playerCarryValue += 50000
