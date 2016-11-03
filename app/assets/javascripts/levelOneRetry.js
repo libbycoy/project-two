@@ -22,7 +22,7 @@ Heist.LevelOneRetry.prototype = {
 
     var livesLeft = this.add.text(100, 380, '', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
     livesLeft.fixedToCamera = true;
-    livesLeft.text = "You have " + Heist.playerLives + " lives left"
+    livesLeft.text = "You have " + Heist.playerLives + this.lifeOrLives(Heist.playerLives) + " left"
 
 
     var ded = this.add.text(100, 330, 'You lost a life', { font: '40px Nothing You Could Do', fill: '#00FFFF' });
@@ -37,6 +37,14 @@ Heist.LevelOneRetry.prototype = {
         Heist.levelScore = 0;
         this.timer.restart();
 
+      },
+
+      lifeOrLives: function(num) {
+        if (num === 1){
+          return " life"
+        } else {
+          return " lives"
+        }
       }
 
     };
