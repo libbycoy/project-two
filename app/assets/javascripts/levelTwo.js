@@ -372,7 +372,7 @@ Heist.LevelTwo.prototype = {
       extractLocation = this.add.group();
       extractLocation.enableBody = true;
       // extractLocation.body.immovable = true;
-      var extract = extractLocation.create(this.world.centerX - 700, this.world.height - 800, 'firstaid')
+      var extract = extractLocation.create(this.world.centerX - 700, this.world.height - 800, 'firstaid');
 
       // lasers = this.game.add.group();
       // lasers.enableBody = true;

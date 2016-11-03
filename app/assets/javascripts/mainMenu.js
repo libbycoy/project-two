@@ -10,7 +10,6 @@ var startButton;
 this.back;
 this.mummy;
 this.anim;
-this.loopText;
 
 Heist.MainMenu.prototype = {
 
