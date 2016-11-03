@@ -30,6 +30,7 @@ Heist.LevelOne = function(game) {
   this.outerWall;
   this.outerwalls;
   this.lasers;
+  this.direction;
 
   this.dog;
 
@@ -80,10 +81,6 @@ Heist.LevelOne.prototype = {
       this.diamonds.enableBody = true;
       this.cops = this.game.add.group();
       this.cops.enableBody = true;
-      this.lasers = this.game.add.group();
-      this.lasers.enableBody = true;
-      this.heart = this.game.add.group();
-      this.heart.enableBody = true;
 
 
       var level = [
@@ -102,14 +99,14 @@ Heist.LevelOne.prototype = {
           '#        a       *                                *                                 #',
           '         *       **bbbb******************cccc******             **************dddd** ',
           '#        *       B                                C                         *       #',
-          '         *       B                                C                         *     p  ',
+          '         *       B                                C                         *        ',
           '#        *       B                                C                         *       #',
           '         *       B                                C                         *        ',
           '#        *       *                                *******eeee*********      *       #',
           '         *       *                              ^ *           *             *        ',
           '# **    **       *                                *           *             *     ^ #',
           '         *       *      *********llll**************           *             *        ',
-          '#        *       *      * ^   *        &          *           E             *       #',
+          '#        *       *      * ^   *                   *           E             *       #',
           '         *       *      *     *                   *           E             ***DDDD* ',
           '#        *       b      *     *                   *           E                     #',
           '         *       b      *     *                   *           E                      ',
@@ -229,29 +226,10 @@ Heist.LevelOne.prototype = {
                     money.body.immovable = false;
                     //money.enableBody = true;
                 }
-
-                if (level [i][j] == '&'){
-                    var lasers = this.lasers.create(30+20*j, 30+20*i, 'laser');
-                    lasers.body.immovable = true;
-                    //money.enableBody = true;
-                }
-
-                if (level [i][j] == 'p'){
-                    var heart = this.heart.create(30+20*j, 30+20*i, 'heart');
-                    heart.body.immovable = true;
-                    //money.enableBody = true;
-                  }
-
                 if (level [i][j] == '@'){
                     var gold = this.gold.create(30+20*j, 30+20*i, 'gold');
                     gold.body.immovable = false;
                     //gold.enableBody = true;
-                }
-                if (level[i][j] == '%'){
-                  var cop = this.cops.create(30+20*j, 30+20*i, 'cop');
-                  // cop.physics.arcade.enable = true;
-                  cop.body.immovable = false;
-                  // cop.body.velocity.x = 120;
                 }
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
@@ -316,16 +294,12 @@ Heist.LevelOne.prototype = {
       this.dog.frame = 12;
       this.dog.body.collideWorldBounds = true;
       this.dog.body.velocity.x = -100;
-      this.dog.body.bounce.setTo(1,1);
+      //this.dog.body.bounce.setTo(1,1);
 
       this.dog.animations.add('left', [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12], 12, true);
       this.dog.animations.add('right', [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25], 12, true);
 
-      this.dog.animations.play('left');
-      // debugger;
-      //this.physics.arcade.moveToObject(this.dog, player, 200, 3000);
-      // this.moveDog();
-
+      //this.dog.animations.play('right');
 
 
       //  Our controls.
@@ -334,11 +308,10 @@ Heist.LevelOne.prototype = {
       v = this.input.keyboard.addKey(Phaser.Keyboard.V);
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       g = this.input.keyboard.addKey(Phaser.Keyboard.G);
-      b = this.input.keyboard.addKey(Phaser.Keyboard.B);
 
-      // this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
-      // this.physics.arcade.enable(this.heart);
-      // this.heart.body.collideWorldBounds = true;
+      this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
+      this.physics.arcade.enable(this.heart);
+      this.heart.body.collideWorldBounds = true;
 
       // add money, gold bars and cops to the group
       money = this.add.group();
@@ -397,6 +370,13 @@ Heist.LevelOne.prototype = {
       lasers = this.game.add.group();
       lasers.enableBody = true;
 
+      for (var i = 1; i < 13; i++) {
+
+        var laser = lasers.create(i * 30, 1500, 'laser');
+        laser.anchor.setTo(0.5, 0.5);
+        laser.body.immovable = true
+        laser.angle = i++;
+      }
 
       this.physics.enable(lasers, Phaser.Physics.ARCADE);
       this.physics.arcade.enable([player, lasers]);
@@ -447,7 +427,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.kWall);
       this.physics.arcade.collide(player, this.badguy);
-      // this.physics.arcade.collide(this.cop, this.outerWall);
+      this.physics.arcade.collide(this.cop, this.outerWall);
       this.physics.arcade.collide(player, cops);
       this.physics.arcade.collide(cops, this.innerWall, this.copHitWallInner);
       this.physics.arcade.collide(cops, this.outerWall, this.copHitWallOuter);
@@ -457,12 +437,14 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.money, platforms);
       this.physics.arcade.collide(this.gold, platforms);
       //this.physics.arcade.collide(this.lasers, player);
-      this.physics.arcade.collide(this.lasers, player);
+      this.physics.arcade.collide(lasers, player);
       // this.physics.arcade.collide(heart, player);
 
       this.physics.arcade.collide(this.dog, platforms);
       // this.physics.arcade.collide(this.dog, this.outerWall);
-      this.physics.arcade.collide(player, this.dog);
+
+      this.physics.arcade.collide(player, this.dog, this.killPlayer);
+
       this.physics.arcade.collide(this.dog, this.innerWall, this.dogHitWallInner);
       this.physics.arcade.collide(this.dog, this.outerWall, this.dogHitWallOuter);
 
@@ -480,19 +462,24 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.overlap(player, this.gold, this.collectGold, null, this);
       this.physics.arcade.overlap(player, this.heart, this.heartPrompt, null, this);
 
-
-      // var dogOverlap = this.physics.arcade.overlap(player, this.dog, this.moveDog, null, this)
-
       var overlap = this.physics.arcade.overlap(player, this.cop, this.moveCop, null, this)
       var extrct = this.physics.arcade.overlap(player, extractLocation, this.dropOff, null, this)
       var heartOverlap = this.physics.arcade.overlap(player, this.heart, this.dropOffHeart, null, this)
 
+
+      // make dog chase player, and make sure correct dog animation plays
+      this.physics.arcade.moveToObject(this.dog, player, 5000, 1000);
+
+      if (this.dog.body.velocity.x > 0){
+        this.dog.animations.play('right');
+      } else {
+        this.dog.animations.play('left');
+      }
+
+
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
       player.body.velocity.y = 0;
-
-      this.physics.arcade.moveToObject(this.dog, player, 5000, 1000);
-
 
       if (cursors.left.isDown) {
           //  Move to the left
@@ -517,7 +504,7 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
-      // Diagonal movement controller ///////////////////////////////////////////
+      // Diagonal controller ///////////////////////////////////////////
       // if ( cursors.left.isDown && cursors.down.isDown ) {
       //   player.body.velocity.x = -550;
       //   player.body.velocity.y = 550;
@@ -537,7 +524,6 @@ Heist.LevelOne.prototype = {
       //
       //   player.frame = 4;
       // }
-
 
       // Guard takeout action.
       if (overlap === true && s.isDown) {
@@ -571,9 +557,8 @@ Heist.LevelOne.prototype = {
         }
       }
 
-      if (heartOverlap === true && b.isDown) {
-        this.lasers.destroy();
-        // this.heart.kill();
+      if (heartOverlap === true && g.isDown) {
+        lasers.destroy();
         notificationText.text = "You disabled all lasers."
         this.fadeText(notificationText)
         return;
@@ -594,7 +579,32 @@ Heist.LevelOne.prototype = {
           Heist.playerLives -= 1
         }
       }
-  },
+
+},
+
+//this can be deleted friday lunch.
+// if (cursors.left.isDown) {
+//     //  Move to the left
+//     player.body.velocity.x = -250;
+//
+//     player.animations.play('left');
+// } else if (cursors.right.isDown) {
+//     //  Move to the right
+//     player.body.velocity.x = 250;
+//
+//     player.animations.play('right');
+// } else {
+//     //  Stand still
+//     player.animations.stop();
+//
+//     player.frame = 4;
+// }
+//
+// if (cursors.up.isDown) {
+//     player.body.velocity.y = -250;
+// } else if (cursors.down.isDown) {
+//     player.body.velocity.y = 250;
+// }
 
 
   render: function () {
@@ -652,7 +662,7 @@ Heist.LevelOne.prototype = {
   },
 
   dropOffHeart: function(player, extractHeart) {
-    promptText.text = 'Press B to disable lasers.';
+    promptText.text = 'Press G to disable lasers.';
     this.clearText(promptText);
   },
 
@@ -665,43 +675,6 @@ Heist.LevelOne.prototype = {
   printSecureMessage: function () {
     this.fadeText(notificationText)
     notificationText.text = "You secured $" + this.playerCarryValue
-  },
-
-  collectStar: function (player, star) {
-    if (this.maxWeight <= 11) {
-      this.maxWeight += 1;
-      console.log(this.maxWeight);
-      // Removes the star from the screen
-      star.kill();
-
-      this.playerCarryValue += 1000;
-      this.fadeText(promptText);
-      promptText.text = '+$1000'
-      this.getAll();
-    } else {
-      this.fadeText(notificationText);
-      notificationText.text = 'You are already carrying too much.'
-      return;
-    }
-
-  },
-
-  collectDiamond: function(player, diamond) {
-    if (this.maxWeight <= 10) {
-      this.maxWeight += 2;
-      console.log(this.maxWeight);
-      // Removes the diamond from the screen
-      diamond.kill();
-
-      this.playerCarryValue += 5000
-      this.fadeText(promptText);
-      promptText.text = '+$5000'
-      this.getAll();
-    } else {
-      this.fadeText(notificationText);
-      notificationText.text = 'You are already carrying too much.'
-      return;
-    }
   },
 
   collectMoney: function(player, money) {
@@ -739,6 +712,14 @@ Heist.LevelOne.prototype = {
     // this.badguy.create(x, y, 'guard');
   },
 
+  killPlayer: function(player, other) {
+    player.health
+    player.kill();
+
+
+    // console.log('player killed', a.key, b.key);
+  },
+
   killCop: function(player, cop) {
       // Removes the cop from the screen
       this.cop.kill();
@@ -761,34 +742,28 @@ Heist.LevelOne.prototype = {
 
   copHitWallInner: function(cop, innerWall){
     cop.body.velocity.x = -120;
-    // cop.body.velocity = (120, 120);
-    // cop.body.bounce.setTo(1,0);
   },
 
   copHitWallOuter: function(cop, outerWall){
     cop.body.velocity.x = 120;
-    // cop.body.bounce.setTo(1,0);
+  },
+
+  moveDog: function (dog) {
+    if (dog.body.direction === Phaser.RIGHT){
+      this.dog.animations.play('right');
+    }
+    else {
+      this.dog.animations.play('left');
+    }
   },
 
   dogHitWallInner: function(dog, innerWall){
-    console.log('dogHitWallInner', dog.body.velocity);
-    //dog.body.velocity,setTo(200, 200);
-    // dog.body.velocity.x *= -1;
-    // dog.body.bounce.setTo(1,0);
     dog.anchor.setTo(0.5, 1);
 
   },
 
   dogHitWallOuter: function(dog, outerWall){
-    console.log('dogHitWallOuter', dog.body.velocity, dog, outerWall);
     dog.anchor.setTo(0.5, 1);
-    //dog.body.velocity.x *= -1;
-    // dog.body.velocity.setTo(200, 200);
-    // dog.body.bounce.setTo(1,0);
-  },
-
-  moveDog: function (dog) {
-    this.dog.animations.play('left');
   },
 
   fadeText: function(textName) {
