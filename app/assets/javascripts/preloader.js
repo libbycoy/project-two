@@ -32,6 +32,7 @@ Heist.Preloader.prototype = {
         this.load.image('laser', 'assets/line-02.png');
         this.load.image('heart', 'assets/heart.png');
         this.load.spritesheet('cop', 'assets/sec_guard.png', 60, 80, 4);
+        this.load.spritesheet('guardDog', 'assets/guard-dog-sprite.png', 60, 48);
   },
 
   create: function() {
