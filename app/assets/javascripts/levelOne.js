@@ -132,7 +132,7 @@ Heist.LevelOne.prototype = {
           '#                             *^                              *           *         #',
           '                              *                               *           *          ',
           '# *****hhhh*******          ^ *                               *           *         #',
-          '                 *            G              %                *           *          ',
+          '                 *            G                               *           *          ',
           '#                *            G                               *           *         #',
           '                 *            G                               *           f          ',
           '#                *            G                               *           f         #',
@@ -144,7 +144,7 @@ Heist.LevelOne.prototype = {
           '#                *                                                        *         #',
           '                 *                                                        *          ',
           '#                *                                                        *^        #',
-          '                 H                                     %                  *          ',
+          '                 H                                                        *          ',
           '# ********       H                                                        *         #',
           '  ^      *       H                                                        *          ',
           '#        *       H                                                        *         #',
@@ -157,7 +157,7 @@ Heist.LevelOne.prototype = {
           '         *       *                                         ****************          ',
           '#        *       *                                         *              *         #',
           '                 *                                         *              *          ',
-          '#                *            %                            *              *         #',
+          '#                *                                         *              *         #',
           '                 *                                         *              K          ',
           '#                *^                                        *              K         #',
           '         *       *                                         *              K          ',
@@ -247,12 +247,6 @@ Heist.LevelOne.prototype = {
                     gold.body.immovable = false;
                     //gold.enableBody = true;
                 }
-                if (level[i][j] == '%'){
-                  var cop = this.cops.create(30+20*j, 30+20*i, 'cop');
-                  // cop.physics.arcade.enable = true;
-                  cop.body.immovable = false;
-                  // cop.body.velocity.x = 120;
-                }
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
                 // wall for that letter group
@@ -275,25 +269,6 @@ Heist.LevelOne.prototype = {
       keyimg.cameraOffset.setTo(20, 20);
 
 
-      var intervalID = window.setInterval(myCallback, 500);
-
-      function myCallback() {
-        // console.log('hello');
-      }
-
-      // Code for guard(s) TODO: Get sprites to work. Animate.
-
-      // this.cop = this.add.sprite(600, 1500, 'cop');
-      // this.physics.arcade.enable(this.cop);
-      // this.cop.body.collideWorldBounds = true;
-      // this.cop.anchor.setTo(0.5, 0.5);
-      // // this.cop.body.velocity.x=120;
-      // // this.badguy.animations.add('moveLeft', [0, 1], 4, true )
-      // // this.badguy.animations.add('moveRight', [2, 3], 4, true )
-      // this.cop.animations.add('walk');
-      // // this.cop.animations.play('walk', 8, true)
-
-
       // The player and its settings
       player = this.add.sprite(this.world.centerX, this.world.height - 390, 'dude')
       // player.body.setSize(20, 30, 0, 0)
@@ -313,10 +288,37 @@ Heist.LevelOne.prototype = {
       this.dog = this.game.add.sprite(900, 1450, 'guardDog');
       this.physics.arcade.enable(this.dog);
 
+      this.cop = this.game.add.sprite(800, 1450, 'cop');
+      this.cop2 = this.game.add.sprite(250, 400, 'cop');
+      this.cop3 = this.game.add.sprite(1200, 310, 'cop');
+      this.cop4 = this.game.add.sprite(900, 800, 'cop');
+      this.physics.arcade.enable(this.cop);
+      this.physics.arcade.enable(this.cop2);
+      this.physics.arcade.enable(this.cop3);
+      this.physics.arcade.enable(this.cop4);
+
+
       this.dog.frame = 12;
       this.dog.body.collideWorldBounds = true;
       this.dog.body.velocity.x = -100;
       this.dog.body.bounce.setTo(1,1);
+
+      this.cop.frame = 12;
+      this.cop2.frame = 12;
+      this.cop3.frame = 12;
+      this.cop4.frame = 12;
+      this.cop.body.collideWorldBounds = true;
+      this.cop2.body.collideWorldBounds = true;
+      this.cop3.body.collideWorldBounds = true;
+      this.cop4.body.collideWorldBounds = true;
+      this.cop.body.velocity.x = -100;
+      this.cop2.body.velocity.y = -100;
+      this.cop3.body.velocity.x = -100;
+      this.cop4.body.velocity.y = -200;
+      this.cop.body.bounce.setTo(1,1);
+      this.cop2.body.bounce.setTo(1,1);
+      this.cop3.body.bounce.setTo(1,1);
+      this.cop4.body.bounce.setTo(1,1);
 
       this.dog.animations.add('left', [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12], 12, true);
       this.dog.animations.add('right', [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25], 12, true);
@@ -343,15 +345,7 @@ Heist.LevelOne.prototype = {
       // add money, gold bars and cops to the group
       money = this.add.group();
       gold = this.add.group();
-      cops = this.add.group();
 
-      // create a cop
-      cops.enableBody = true;
-
-      for (var i = 1; i < 4; i++) {
-        var cop = cops.create(i * 150, 1500, 'cop');
-        cop.body.velocity.x = 120;
-      }
 
       // Defines maximum possible score, please put all new 'collectables', ie gold, money, etc. above
       // Used to define end of game and determine final score with timer bonus etc.
@@ -411,25 +405,6 @@ Heist.LevelOne.prototype = {
         this.createBadGuy(480, 550);
       }
 
-      //
-      // cop = this.add.sprite(400, 200, 'cop');
-      //
-      // this.physics.enable([this.outerWall,cop], Phaser.Physics.ARCADE);
-      //
-      // this.physics.arcade.collide(cop, this.outerWall);
-      // //  This gets it moving
-      // cop.body.velocity.setTo(200, 200);
-      //
-      // //  This makes the game world bounce-able
-      // cop.body.collideWorldBounds = true;
-      //
-      //
-      //
-      // //  This sets the image bounce energy for the horizontal
-      // //  and vertical vectors (as an x,y point). "1" is 100% energy return
-      // cop.body.bounce.setTo(1, 1);
-
-
   },
 
   update: function () {
@@ -446,14 +421,28 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.innerWall);
       this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.kWall);
-      this.physics.arcade.collide(player, this.badguy);
-      // this.physics.arcade.collide(this.cop, this.outerWall);
-      this.physics.arcade.collide(player, cops);
-      this.physics.arcade.collide(cops, this.innerWall, this.copHitWallInner);
-      this.physics.arcade.collide(cops, this.outerWall, this.copHitWallOuter);
       this.physics.arcade.collide(this.heart, platforms);
       this.physics.arcade.collide(this.badguy, platforms);
       this.physics.arcade.collide(this.cop, platforms);
+      this.physics.arcade.collide(this.cop, this.innerWall);
+      this.physics.arcade.collide(this.cop, this.outerWall);
+      this.physics.arcade.collide(this.cop, player);
+      this.physics.arcade.collide(this.cop, this.kWall);
+      this.physics.arcade.collide(this.cop2, platforms);
+      this.physics.arcade.collide(this.cop2, this.innerWall);
+      this.physics.arcade.collide(this.cop2, this.outerWall);
+      this.physics.arcade.collide(this.cop2, player);
+      this.physics.arcade.collide(this.cop2, this.kWall);
+      this.physics.arcade.collide(this.cop3, platforms);
+      this.physics.arcade.collide(this.cop3, this.innerWall);
+      this.physics.arcade.collide(this.cop3, this.outerWall);
+      this.physics.arcade.collide(this.cop3, player);
+      this.physics.arcade.collide(this.cop3, this.kWall);
+      this.physics.arcade.collide(this.cop4, platforms);
+      this.physics.arcade.collide(this.cop4, this.innerWall);
+      this.physics.arcade.collide(this.cop4, this.outerWall);
+      this.physics.arcade.collide(this.cop4, player);
+      this.physics.arcade.collide(this.cop4, this.kWall);
       this.physics.arcade.collide(this.money, platforms);
       this.physics.arcade.collide(this.gold, platforms);
       //this.physics.arcade.collide(this.lasers, player);
@@ -463,17 +452,10 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.dog, platforms);
       // this.physics.arcade.collide(this.dog, this.outerWall);
       this.physics.arcade.collide(player, this.dog);
+      this.physics.arcade.collide(this.dog, this.kWall, this.dogHitWallInner);
       this.physics.arcade.collide(this.dog, this.innerWall, this.dogHitWallInner);
       this.physics.arcade.collide(this.dog, this.outerWall, this.dogHitWallOuter);
 
-      // if ((this.cop.position.x < 900) && (this.cop.position.y < 900)) {
-      //   this.physics.arcade.moveToXY(this.cop, 500, 500);
-      // } else {
-      //   this.physics.arcade.moveToXY(this.cop, 900, 1800);
-      // }
-
-      // console.log(this.cop.position.x, this.cop.position.y);
-      // 600, 1500
 
       //  Checks to see if the player overlaps with any of the gold or money or heart, if he does call a 'collect' function
       this.physics.arcade.overlap(player, this.money, this.collectMoney, null, this);
@@ -759,19 +741,9 @@ Heist.LevelOne.prototype = {
     // this.getAll();
   },
 
-  copHitWallInner: function(cop, innerWall){
-    cop.body.velocity.x = -120;
-    // cop.body.velocity = (120, 120);
-    // cop.body.bounce.setTo(1,0);
-  },
-
-  copHitWallOuter: function(cop, outerWall){
-    cop.body.velocity.x = 120;
-    // cop.body.bounce.setTo(1,0);
-  },
 
   dogHitWallInner: function(dog, innerWall){
-    console.log('dogHitWallInner', dog.body.velocity);
+    // console.log('dogHitWallInner', dog.body.velocity);
     //dog.body.velocity,setTo(200, 200);
     // dog.body.velocity.x *= -1;
     // dog.body.bounce.setTo(1,0);
@@ -780,7 +752,7 @@ Heist.LevelOne.prototype = {
   },
 
   dogHitWallOuter: function(dog, outerWall){
-    console.log('dogHitWallOuter', dog.body.velocity, dog, outerWall);
+    // console.log('dogHitWallOuter', dog.body.velocity, dog, outerWall);
     dog.anchor.setTo(0.5, 1);
     //dog.body.velocity.x *= -1;
     // dog.body.velocity.setTo(200, 200);
