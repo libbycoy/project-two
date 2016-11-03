@@ -53,7 +53,7 @@ Heist.LevelTwo.prototype = {
       this.physics.startSystem(Phaser.Physics.BODY);
 
       //  Background sprite and bounds for the game
-      this.add.tileSprite(0, 0, 1920, 1920, 'background');
+      this.add.tileSprite(0, 0, 1920, 1920, 'background-02');
       this.world.setBounds(0, 0, 1920, 1920);
 
       //  The platforms group contains the walls to contain the sprite
@@ -261,7 +261,7 @@ Heist.LevelTwo.prototype = {
       opaqimg.fixedToCamera = true;
       opaqimg.cameraOffset.setTo(0, 0);
 
-      keyimg = this.add.sprite(150, 95, 'key');
+      keyimg = this.add.sprite(150, 95, 'key-02');
       keyimg.fixedToCamera = true;
       keyimg.cameraOffset.setTo(20, 20);
 

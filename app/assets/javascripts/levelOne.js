@@ -375,13 +375,6 @@ Heist.LevelOne.prototype = {
       lasers = this.game.add.group();
       lasers.enableBody = true;
 
-      for (var i = 1; i < 13; i++) {
-
-        var laser = lasers.create(i * 30, 1500, 'laser');
-        laser.anchor.setTo(0.5, 0.5);
-        laser.body.immovable = true
-        laser.angle = i++;
-      }
 
       this.physics.enable(lasers, Phaser.Physics.ARCADE);
       this.physics.arcade.enable([player, lasers]);
