@@ -4,7 +4,7 @@ var Heist = Heist || {};
 Heist.LevelOne = function(game) {
   this.player;
   this.totalLives;
-  this.health = 3;
+  this.health = 10;
   this.platforms;
   this.cursors;
   this.x;
@@ -307,6 +307,14 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.enable(this.cop3);
       this.physics.arcade.enable(this.cop4);
 
+      this.cop.body.setCircle(30);
+      this.cop2.body.setCircle(30);
+      this.cop3.body.setCircle(30);
+      this.cop4.body.setCircle(30);
+      this.cop.body.static = true;
+      this.cop2.body.static = true;
+
+
 
       this.dog.frame = 12;
       this.dog.body.collideWorldBounds = true;
@@ -337,6 +345,8 @@ Heist.LevelOne.prototype = {
       // debugger;
       //this.physics.arcade.moveToObject(this.dog, player, 200, 3000);
       // this.moveDog();
+
+
 
 
 
@@ -449,6 +459,11 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop, this.innerWall);
       this.physics.arcade.collide(this.cop, this.outerWall);
       this.physics.arcade.collide(this.cop, player);
+
+
+      //Test for health loss on collision.
+      // this.physics.arcade.collide(player, this.cop, this.ballHitBallHandler(), this.ballHitBallProcess(), this);
+
       this.physics.arcade.collide(this.cop, this.kWall);
       this.physics.arcade.collide(this.cop2, platforms);
       this.physics.arcade.collide(this.cop2, this.innerWall);
@@ -477,6 +492,8 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.dog, this.kWall, this.dogHitWallInner);
       this.physics.arcade.collide(this.dog, this.innerWall, this.dogHitWallInner);
       this.physics.arcade.collide(this.dog, this.outerWall, this.dogHitWallOuter);
+      this.physics.arcade.collide(this.dog, player, this.getHurtBoi );
+      // this.physics.arcade.collide(player, this.dog, this.getHurtBoi);
 
 
       //  Checks to see if the player overlaps with any of the gold or money or heart, if he does call a 'collect' function
@@ -600,10 +617,10 @@ Heist.LevelOne.prototype = {
         }
 
       if (g.isDown) {
-        this.health -= 1
+        Heist.health -= 1
       }
 
-      if (this.health < 1) {
+      if (Heist.health < 1) {
         if ( Heist.playerLives === 0){
           this.state.add('Ded', Heist.Ded)
           this.state.start('Ded')
@@ -638,18 +655,6 @@ Heist.LevelOne.prototype = {
       } else if ( secondsElapsed > 60 && seconds >= 10) {
         timeDisplay.text = minutes + ":" + seconds;
       }
-    // if (timer.running) {
-    //     timerText.text = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
-    // }
-    // else {
-    //   var endGameTime = this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000));
-    //   timerText.text = "Done!" + endGameTime ;
-    //
-    //   //this.timeOut();
-    //   return this.timeOut();
-    //
-    //   //TODO  Make the game end.
-    // }
 
     // For camera debugging only. Plz don't delete.
     // game.debug.cameraInfo(game.camera, 32, 32);
@@ -829,6 +834,12 @@ Heist.LevelOne.prototype = {
 
   heartPrompt: function(player, heart) {
     console.log('you are over the heart');
+  },
+  getHurtBoi: function() {
+    Heist.health -= 1;
+    console.log(Heist.health);
+    console.log("Lost one health");
   }
+
 
 }; // End of LevelOne

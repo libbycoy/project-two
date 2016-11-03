@@ -31,6 +31,7 @@ Heist.LevelTwo = function(game) {
   this.outerWall;
   this.outerwalls;
   this.lasers;
+  this.hLasers;
 
   //Weight limit variable
   this.maxWeight = 0;
@@ -80,6 +81,8 @@ Heist.LevelTwo.prototype = {
       this.cops.enableBody = true;
       this.lasers = this.game.add.group();
       this.lasers.enableBody = true;
+      this.hLasers = this.game.add.group();
+      this.hLasers.enableBody = true;
       this.heart = this.game.add.group();
       this.heart.enableBody = true;
 
@@ -129,7 +132,7 @@ Heist.LevelTwo.prototype = {
           '            *      *                 *          *       *                            ',
           '  #         *      *         ^^^     *          *       *                         #  ',
           '            *      *       ^^^ ^^^   *          *       *                            ',
-          '  #         *      *       ^^^ ^^^   *          *       *      **********&   *****#  ',
+          '  #         *      *       ^^^ ^^^   *          *       *      **********!   *****#  ',
           '            c      *       ^^^ ^^^   *       %  *       *      *                     ',
           '  #         c      *                 *          *       *      *                  #  ',
           '            c                        *                  *      *                     ',
@@ -138,7 +141,7 @@ Heist.LevelTwo.prototype = {
           '  #         *                        *                  *      *                  #  ',
           '            *      *                 *          *       *      *                     ',
           '  #         *      *                 *          *       *      *                  #  ',
-          '    ***    ******************************&   *******************                     ',
+          '    ***    ******************************!   *******************                     ',
           '  #                                             *                                 #  ',
           '                                                *                                    ',
           '  #                                             &                                 #  ',
@@ -236,6 +239,11 @@ Heist.LevelTwo.prototype = {
                 if (level [i][j] == '&'){
                     var lasers = this.lasers.create(30+20*j, 30+20*i, 'laser');
                     lasers.body.immovable = true;
+                    //money.enableBody = true;
+                }
+                if (level [i][j] == '!'){
+                    var hLasers = this.hLasers.create(30+20*j, 30+20*i, 'hLaser');
+                    hLasers.body.immovable = true;
                     //money.enableBody = true;
                 }
 
@@ -551,10 +559,10 @@ Heist.LevelTwo.prototype = {
         }
 
       if (g.isDown) {
-        this.health =- 1
+        Heist.health =- 1
       }
 
-      if (this.health < 1) {
+      if (Heist.health < 1) {
         if ( Heist.playerLives === 0){
           this.state.add('Ded', Heist.Ded)
           this.state.start('Ded')
