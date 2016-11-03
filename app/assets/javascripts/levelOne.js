@@ -414,7 +414,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.kWall);
       this.physics.arcade.collide(player, this.badguy);
-      this.physics.arcade.collide(this.cop, this.outerWall);
+      // this.physics.arcade.collide(this.cop, this.outerWall);
       this.physics.arcade.collide(player, cops);
       this.physics.arcade.collide(cops, this.innerWall, this.copHitWallInner);
       this.physics.arcade.collide(cops, this.outerWall, this.copHitWallOuter);
@@ -678,11 +678,14 @@ Heist.LevelOne.prototype = {
   },
 
   copHitWallInner: function(cop, innerWall){
-    cop.body.velocity.x = -120;
+    // cop.body.velocity.x = -120;
+    cop.body.velocity = (120, 120);
+    cop.body.bounce.setTo(1,0);
   },
 
   copHitWallOuter: function(cop, outerWall){
     cop.body.velocity.x = 120;
+    cop.body.bounce.setTo(1,0);
   },
 
   fadeText: function(textName) {
