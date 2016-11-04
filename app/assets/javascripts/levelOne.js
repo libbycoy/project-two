@@ -86,6 +86,10 @@ Heist.LevelOne.prototype = {
       this.diamonds.enableBody = true;
       this.cops = this.game.add.group();
       this.cops.enableBody = true;
+      this.lasers = this.game.add.group();
+      this.lasers.enableBody = true;
+      this.heart = this.game.add.group();
+      this.heart.enableBody = true;
 
 
       var level = [
@@ -112,7 +116,7 @@ Heist.LevelOne.prototype = {
           '# **    **       *                                *           *             *     ^ #',
           '         *       *      *********llll**************           *             *        ',
           '#        *       *      * ^   *                   *           E             *       #',
-          '         *       *      *     *                   *           E             ***DDDD* ',
+          '         *       *      *     *        &          *           E             ***DDDD* ',
           '#        *       b      *     *                   *           E                     #',
           '         *       b      *     *                   *           E                      ',
           '#        *       b      *              *          *           *                     #',
@@ -154,7 +158,7 @@ Heist.LevelOne.prototype = {
           '#        *       *                                                        *         #',
           '         *       *                                                        *          ',
           '#        *       *             ^                                          *         #',
-          '         *       *                                                      ^ *          ',
+          '         *       *                                              p       ^ *          ',
           '#        *       ****************                                         *         #',
           '         *       *                                         ****************          ',
           '#        *       *                                         *              *         #',
@@ -221,21 +225,30 @@ Heist.LevelOne.prototype = {
                     var wall = this.outerWall.create(30+20*j, 30+20*i, 'outerWall');
                     wall.body.immovable = true;
                 }
+
                 // Create interior bank walls and add them to the 'walls' group
                 if (level[i][j] == '*') {
                     var wall = this.innerWall.create(30+20*j, 30+20*i, 'innerWall');
                     wall.body.immovable = true;
                 }
+
                 if (level [i][j] == '^'){
                     var money = this.money.create(30+20*j, 30+20*i, 'money');
                     money.body.immovable = false;
                     //money.enableBody = true;
                 }
-                if (level [i][j] == '@'){
-                    var gold = this.gold.create(30+20*j, 30+20*i, 'gold');
-                    gold.body.immovable = false;
-                    //gold.enableBody = true;
-                }
+
+                if (level [i][j] == 'p'){
+                    var heart = this.heart.create(30+20*j, 30+20*i, 'heart');
+                    heart.body.immovable = true;
+                    //money.enableBody = true;
+                  }
+
+                  if (level [i][j] == '&'){
+                      var lasers = this.lasers.create(30+20*j, 30+20*i, 'laser');
+                      lasers.body.immovable = true;
+                      //money.enableBody = true;
+                  }
 
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
@@ -327,6 +340,8 @@ Heist.LevelOne.prototype = {
       v = this.input.keyboard.addKey(Phaser.Keyboard.V);
       s = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       g = this.input.keyboard.addKey(Phaser.Keyboard.G);
+      b = this.input.keyboard.addKey(Phaser.Keyboard.B);
+
 
       // this.heart = this.add.sprite(this.world.centerX, this.world.height - 450, 'heart')
       // this.physics.arcade.enable(this.heart);
@@ -378,6 +393,9 @@ Heist.LevelOne.prototype = {
       // fadeText1.fixedToCamera = true;
       // fadeText2.fixedToCamera = true;
 
+      // this.physics.enable(lasers, Phaser.Physics.ARCADE);
+      // this.physics.arcade.enable([player, lasers]);
+
       extractLocation = this.add.group();
       extractLocation.enableBody = true;
       // extractLocation.body.immovable = true;
@@ -428,6 +446,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop, this.outerWall);
       this.physics.arcade.collide(this.cop, this.kWall);
       this.physics.arcade.collide(this.cop, player, this.getHurtBoi );
+      this.physics.arcade.collide(this.lasers, player);
 
 
 
@@ -451,7 +470,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.money, platforms);
       this.physics.arcade.collide(this.gold, platforms);
       //this.physics.arcade.collide(this.lasers, player);
-      this.physics.arcade.collide(lasers, player);
+      this.physics.arcade.collide(this.lasers, player);
       // this.physics.arcade.collide(heart, player);
 
       this.physics.arcade.collide(this.dog, platforms);
@@ -465,6 +484,7 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.overlap(player, this.money, this.collectMoney, null, this);
       this.physics.arcade.overlap(player, this.gold, this.collectGold, null, this);
       this.physics.arcade.overlap(player, this.heart, this.heartPrompt, null, this);
+
 
       if (Math.abs(player.x - this.cop.x) <= 100 && Math.abs(player.y - this.cop.y) <= 100){
         this.physics.arcade.moveToObject(this.cop, player, 5000, 1000);
@@ -527,6 +547,7 @@ Heist.LevelOne.prototype = {
           player.body.velocity.y = 250;
       }
 
+
       // Diagonal controller ///////////////////////////////////////////
       // if ( cursors.left.isDown && cursors.down.isDown ) {
       //   player.body.velocity.x = -550;
@@ -552,6 +573,14 @@ Heist.LevelOne.prototype = {
       if (overlap === true && s.isDown) {
           this.killCop();
       }
+
+      if (heartOverlap === true && b.isDown) {
+        this.lasers.destroy();
+        // this.heart.kill();
+        notificationText.text = "You disabled all lasers."
+        this.fadeText(notificationText)
+        return;
+        }
 
       if (extrct === true && x.isDown) {
         this.pressedV();
@@ -579,13 +608,6 @@ Heist.LevelOne.prototype = {
           return;
         }
       }
-
-      if (heartOverlap === true && g.isDown) {
-        lasers.destroy();
-        notificationText.text = "You disabled all lasers."
-        this.fadeText(notificationText)
-        return;
-        }
 
       if (g.isDown) {
         Heist.health -= 1
@@ -648,7 +670,7 @@ Heist.LevelOne.prototype = {
   },
 
   dropOffHeart: function(player, extractHeart) {
-    promptText.text = 'Press G to disable lasers.';
+    promptText.text = 'Press B to disable lasers.';
     this.clearText(promptText);
   },
 
