@@ -36,7 +36,6 @@ Heist.LevelOne = function(game) {
   this.outerwalls;
   this.lasers;
   this.direction;
-
   this.dog;
 
 
@@ -115,8 +114,8 @@ Heist.LevelOne.prototype = {
           '         *       *                              ^ *           *             *        ',
           '# **    **       *                                *           *             *     ^ #',
           '         *       *      *********llll**************           *             *        ',
-          '#        *       *      * ^   *                   *           E             *       #',
-          '         *       *      *     *        &          *           E             ***DDDD* ',
+          '#        *       *      * ^   *        &          *           E             *       #',
+          '         *       *      *     *                   *           E             ***DDDD* ',
           '#        *       b      *     *                   *           E                     #',
           '         *       b      *     *                   *           E                      ',
           '#        *       b      *              *          *           *                     #',
@@ -297,7 +296,7 @@ Heist.LevelOne.prototype = {
 
 
       // guard dog add sprite
-      this.dog = this.game.add.sprite(900, 1450, 'guardDog');
+      this.dog = this.game.add.sprite(1200, 350, 'guardDog');
       this.physics.arcade.enable(this.dog);
 
       this.cop = this.game.add.sprite(800, 1450, 'cop');
