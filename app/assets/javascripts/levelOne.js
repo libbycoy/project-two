@@ -109,7 +109,7 @@ Heist.LevelOne.prototype = {
           '#        a       *                                *                                 #',
           '         *       **bbbb******************cccc******             **************dddd** ',
           '#        *       B                                C                         *       #',
-          '         *       B                                C                         *     p  ',
+          '         *       B                                C                         *     3  ',
           '#        *       B                                C                         *       #',
           '         *       B                                C                         *        ',
           '#        *       *                                *******eeee*********      *       #',
@@ -243,7 +243,7 @@ Heist.LevelOne.prototype = {
                     //money.enableBody = true;
                 }
 
-                if (level [i][j] == 'p'){
+                if (level [i][j] == '3'){
                     var heart = this.heart.create(30+20*j, 30+20*i, 'heart');
                     heart.body.immovable = true;
                     //money.enableBody = true;
