@@ -429,6 +429,9 @@ Heist.LevelTwo.prototype = {
       this.physics.enable(lasers, Phaser.Physics.ARCADE);
       this.physics.arcade.enable([player, lasers]);
 
+      this.physics.enable(hLasers, Phaser.Physics.ARCADE);
+      this.physics.arcade.enable([player, hLasers]);
+
       this.clearText(promptText);
       // this.clearText(promptText2);
       this.fadeText(notificationText);
@@ -463,6 +466,8 @@ Heist.LevelTwo.prototype = {
       this.physics.arcade.collide(this.gold, platforms);
       //this.physics.arcade.collide(this.lasers, player);
       this.physics.arcade.collide(this.lasers, player);
+      this.physics.arcade.collide(this.hLasers, player);
+
       // this.physics.arcade.collide(heart, player);
 
       this.physics.arcade.collide(this.cop, platforms);
@@ -632,6 +637,8 @@ Heist.LevelTwo.prototype = {
 
       if (heartOverlap === true && b.isDown) {
         this.lasers.destroy();
+        this.hLasers.destroy();
+
         // this.heart.kill();
         notificationText.text = "You disabled all lasers."
         this.fadeText(notificationText)

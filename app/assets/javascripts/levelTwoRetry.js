@@ -20,12 +20,12 @@ Heist.LevelTwoRetry.prototype = {
     startButton.events.onInputDown.add(this.clicked, this);
     startButton.anchor.setTo(0.5, 0.5);
 
-    var livesLeft = this.add.text(100, 127, '', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    var livesLeft = this.add.text(100, 475, '', { font: '37px Alegreya Sans SC', fill: '#FFFFFF' });
     livesLeft.fixedToCamera = true;
     livesLeft.text = "You have " + Heist.playerLives + this.lifeOrLives(Heist.playerLives) + " left"
 
 
-    var ded = this.add.text(100, 97, 'You lost a life', { font: '25px Nothing You Could Do', fill: '#00FFFF' });
+    var ded = this.add.text(100, 435, 'You lost a life', { font: '37px Alegreya Sans SC', fill: '#FFFFFF' });
     ded.fixedToCamera = true;
 
 
