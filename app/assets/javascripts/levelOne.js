@@ -298,7 +298,7 @@ Heist.LevelOne.prototype = {
 
 
       // guard dog
-      this.dog = this.game.add.sprite(900, 1450, 'guardDog');
+      this.dog = this.game.add.sprite(300, 450, 'guardDog');
       this.physics.arcade.enable(this.dog);
 
       this.cop = this.game.add.sprite(800, 1450, 'cop');
