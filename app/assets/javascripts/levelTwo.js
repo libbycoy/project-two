@@ -18,7 +18,7 @@ Heist.LevelTwo = function(game) {
   this.promptText;
   this.promptText2;
   this.timeDisplay;
-  this.style1 = { font: '37px Alegreya Sans SC', fill: '#FF0000'};
+  this.style1 = { font: '20px Alegreya Sans SC', fill: '#FFFFFF'};
   this.style2 = { font: '37px Alegreya Sans SC', fill: '#FF0000', align: 'centerY' };
   this.style2.stroke = '#FFFFFF';
   this.style2.strokeThickness = 6;
@@ -342,7 +342,7 @@ Heist.LevelTwo.prototype = {
       maxPossibleScore = ((this.gold.length * 10) + (this.money.length * 10)) ;
 
       //  The current level score controls
-      scoreText = this.add.text(100, 67, '$0', this.style1);
+      scoreText = this.add.text(100, 73, '$0', this.style1);
       scoreText.fixedToCamera = true;
 
       // promptText variable
@@ -383,6 +383,7 @@ Heist.LevelTwo.prototype = {
       extractLocation.enableBody = true;
       // extractLocation.body.immovable = true;
       var extract = extractLocation.create(this.world.centerX - 700, this.world.height - 800, 'redCar');
+      extract.scale.set(1.3);
 
       // lasers = this.game.add.group();
       // lasers.enableBody = true;

@@ -18,17 +18,17 @@ Heist.MainMenu.prototype = {
         this.game.scale.pageAlignHorizontally = true;
         this.game.scale.pageAlignVertically = true;
         this.game.scale.refresh();
-        startButton = this.add.sprite(700, 400, 'button') // , this.startGame(), this, 1, 0, 2);
+        startButton = this.add.sprite(530, 400, 'button') // , this.startGame(), this, 1, 0, 2);
         startButton.inputEnabled = true;
         startButton.input.pixelPerfectClick = true;
         startButton.events.onInputDown.add(this.clicked, this);
         startButton.anchor.setTo(0.5, 0.5);
 
-        tutButton = this.add.sprite(450, 400, 'button-02') // , this.startGame(), this, 1, 0, 2);
-        tutButton.inputEnabled = true;
-        tutButton.input.pixelPerfectClick = true;
-        tutButton.events.onInputDown.add(this.clicked, this);
-        tutButton.anchor.setTo(0.5, 0.5);
+        // tutButton = this.add.sprite(450, 400, 'button-02') // , this.startGame(), this, 1, 0, 2);
+        // tutButton.inputEnabled = true;
+        // tutButton.input.pixelPerfectClick = true;
+        // tutButton.events.onInputDown.add(this.clicked, this);
+        // tutButton.anchor.setTo(0.5, 0.5);
 
 
         // this.back = this.add.image(0, -400, 'lazur');
