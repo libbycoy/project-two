@@ -37,3 +37,8 @@
  .radial {
    background-image: radial-gradient(100px 100px , #064485 100%, #042f5b 100%);
  }
+.login_text {
+  text-decoration: none;
+  color: #fff;
+  margin: 20px;
+}
