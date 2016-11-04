@@ -14,11 +14,13 @@
  *= require_self
  */
 
- @import url('https://fonts.googleapis.com/css?family=Nothing+You+Could+Do');
+ @import url('https://fonts.googleapis.com/css?family=Nothing+You+Could+Do|Alegreya+Sans+SC:800');
+
 
  body {
    background-color: #073D76;
-   font-family: 'Nothing you could do';
+   /*font-family: 'Nothing you could do';*/
+   font-family: 'Alegreya Sans SC';
  }
 
  h1 {
@@ -35,3 +37,9 @@
  .radial {
    background-image: radial-gradient(100px 100px , #064485 100%, #042f5b 100%);
  }
+.login_text {
+  float: right;
+  text-decoration: none;
+  color: #fff;
+  margin: 20px;
+}

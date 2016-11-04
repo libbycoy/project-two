@@ -33,8 +33,6 @@ Heist.LevelOne = function(game) {
   this.lasers;
   this.dog;
 
-  this.footstepsSoundTimer = -1;
-
   // Sound variables
   this.footsteps;
   this.footStepSound;
@@ -542,7 +540,7 @@ Heist.LevelOne.prototype = {
 
       // console.log('FOOTSTEPSOUND', this.footStepSound, this);
 
-
+/*
       var playFootSteps = function () {
         // debugger;
         console.log('%cplayFootSteps', 'font-size: 14pt; color: red;', this.footStepSound, this);
@@ -565,44 +563,28 @@ Heist.LevelOne.prototype = {
           // console.log('clear sound timer', this.footstepsSoundTimer);
         }
       };
-
-      // debugger;
-
-if (cursors.left._justDown) {
-  console.log('JUST DOWN');
-} else if (cursors.left._justUp) {
-console.log('JUST UP');
-
-}
+*/
 
       if (cursors.left.isDown) {
           //  Move to the left
           player.body.velocity.x = -250;
-          testPlayFootSteps(true);
           player.animations.play('left');
       } else if (cursors.right.isDown) {
           //  Move to the right
           player.body.velocity.x = 250;
-          testPlayFootSteps(true);
           player.animations.play('right');
       } else {
           //  Stand still
           player.animations.stop();
-          testPlayFootSteps(false);
           player.frame = 4;
       }
 
       if (cursors.up.isDown) {
           player.body.velocity.y = -250;
-          this.playFootSteps
-          testPlayFootSteps(true);
       } else if (cursors.down.isDown) {
           player.body.velocity.y = 250;
-          this.playFootSteps
-          testPlayFootSteps(true);
       } else {
           //  Stand still
-          testPlayFootSteps(false);
       }
 
       // Diagonal movement controller ///////////////////////////////////////////
