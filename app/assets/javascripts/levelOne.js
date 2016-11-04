@@ -36,7 +36,6 @@ Heist.LevelOne = function(game) {
   this.outerwalls;
   this.lasers;
   this.direction;
-
   this.dog;
 
 
@@ -84,8 +83,6 @@ Heist.LevelOne.prototype = {
       this.gold.enableBody = true;
       this.diamonds = this.game.add.group();
       this.diamonds.enableBody = true;
-      this.cops = this.game.add.group();
-      this.cops.enableBody = true;
       this.lasers = this.game.add.group();
       this.lasers.enableBody = true;
       this.heart = this.game.add.group();
@@ -96,7 +93,7 @@ Heist.LevelOne.prototype = {
           '# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #',
           '                                                                                     ',
           '#      ^ *       *                                                                  #',
-          '         *       B                                                                   ',
+          '         *       B                                                             p     ',
           '#        *       B                                           ^                      #',
           '         *       B                                                                   ',
           '#        *       B                                ****************************    **#',
@@ -115,8 +112,8 @@ Heist.LevelOne.prototype = {
           '         *       *                              ^ *           *             *        ',
           '# **    **       *                                *           *             *     ^ #',
           '         *       *      *********llll**************           *             *        ',
-          '#        *       *      * ^   *                   *           E             *       #',
-          '         *       *      *     *        &          *           E             ***DDDD* ',
+          '#        *       *      * ^   *        &          *           E             *       #',
+          '         *       *      *     *                   *           E             ***DDDD* ',
           '#        *       b      *     *                   *           E                     #',
           '         *       b      *     *                   *           E                      ',
           '#        *       b      *              *          *           *                     #',
@@ -158,7 +155,7 @@ Heist.LevelOne.prototype = {
           '#        *       *                                                        *         #',
           '         *       *                                                        *          ',
           '#        *       *             ^                                          *         #',
-          '         *       *                                              p       ^ *          ',
+          '         *       *                                                      ^ *          ',
           '#        *       ****************                                         *         #',
           '         *       *                                         ****************          ',
           '#        *       *                                         *              *         #',
@@ -297,7 +294,7 @@ Heist.LevelOne.prototype = {
 
 
       // guard dog add sprite
-      this.dog = this.game.add.sprite(900, 1450, 'guardDog');
+      this.dog = this.game.add.sprite(1200, 350, 'guardDog');
       this.physics.arcade.enable(this.dog);
 
       this.cop = this.game.add.sprite(800, 1450, 'cop');
