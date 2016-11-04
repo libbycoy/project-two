@@ -33,10 +33,16 @@ Heist.Preloader.prototype = {
         this.load.image('laser', 'assets/line-02.png');
         this.load.image('hLaser', 'assets/laser-01.png');
         this.load.image('heart', 'assets/heart.png');
+        this.load.image('inivisblewall', 'assets/invisible-01.png');
+
         this.load.spritesheet('cop', 'assets/sec_guard.png', 60, 80, 4);
         this.load.spritesheet('mummy', 'assets/71e-01.png', 107, 70, 5);
         this.load.spritesheet('guardDog', 'assets/guard-dog-sprite.png', 60, 48);
         this.load.spritesheet('police', 'assets/redcars.png',  107, 70, 5);
+
+        this.load.audio('stepsound', 'assets/step.mp3');
+        this.load.audio('woof', 'assets/dogbark.mp3');
+
         this.load.spritesheet('redCar', 'assets/new_car-05.png');
 
   },

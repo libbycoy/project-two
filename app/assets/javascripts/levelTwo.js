@@ -71,6 +71,8 @@ Heist.LevelTwo.prototype = {
       this.outerWall.enableBody = true;
       this.innerWall = this.game.add.group();
       this.innerWall.enableBody = true;
+      this.invisibleWall = this.game.add.group();
+      this.invisibleWall.enableBody = true;
       this.kWall = this.game.add.group();
       this.kWall.enableBody = true;
       this.money = this.game.add.group();
@@ -151,26 +153,27 @@ Heist.LevelTwo.prototype = {
           '  #                                             *                                 #  ',
           '                                                *                                    ',
           '  # # # # #      # # # # # **********************                                 #  ',
-          '                                                *                                    ',
-          '          Z      Z        #               ^     *                                 #  ',
-          '          Z      Z                              *                       ^            ',
-          '          Z      Z        #  @@@    @@@    @@@  *                                 #  ',
-          '          Z      Z                              *                                    ',
-          '          Z      Z        #  @@@    @@@    @@@  *                                 #  ',
-          '          Z      Z                              *                                    ',
-          '          Z      Z        #  @@@    @@@    @@@  *                                 #  ',
-          '          Z      Z                              *                                    ',
-          '          Z      Z        #  @@@    @@@    @@@  *                                 #  ',
-          '          Z      Z                              *                                    ',
-          '          Z      Z        #  p                                                    #  ',
-          '          Z      Z                                                                   ',
-          '          Z      Z        #                                             ^  ^      #  ',
-          '          Z      Z                                                                   ',
-          '          Z      Z        #                     *                                 #  ',
-          '          Z      Z             ^^^        @@@   *                                    ',
-          '          Z      Z        #               @@@   *                                 #  ',
-          '          Z      Z                              *                                    ',
-          '          Z      Z        # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  '
+          '          :      :                              *                                    ',
+          '          :      :        #               ^     *                                 #  ',
+          '          :      :                              *                       ^            ',
+          '          :      :        #  @@@    @@@    @@@  *                                 #  ',
+          '          :      :                              *                                    ',
+          '          :      :        #  @@@    @@@    @@@  *                                 #  ',
+          '          :      :                              *                                    ',
+          '          :      :        #  @@@    @@@    @@@  *                                 #  ',
+          '          :      :                              *                                    ',
+          '          :      :        #  @@@    @@@    @@@  *                                 #  ',
+          '          :      :                              *                                    ',
+          '          :      :        #                                                       #  ',
+          '          :      :                                                                   ',
+          '          :      :        #                                             ^  ^      #  ',
+          '          :      :                                                                   ',
+          '          :      :        #                     *                                 #  ',
+          '          :      :             ^^^        @@@   *                                    ',
+          '          :      :        #               @@@   *                                 #  ',
+          '          :      :                              *                                    ',
+          '          ::::::::        # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  '
+
       ];
 
         // the following code looks at random walls being placed where the letters are on the map above
@@ -225,6 +228,10 @@ Heist.LevelTwo.prototype = {
                     var wall = this.innerWall.create(30+20*j, 30+20*i, 'innerWall');
                     wall.body.immovable = true;
                 }
+                if (level[i][j] == ':') {
+                    var invisibleWall = this.invisibleWall.create(30+20*j, 30+20*i, 'inivisblewall');
+                    invisibleWall.body.immovable = true;
+                }
                 if (level [i][j] == '^'){
                     var money = this.money.create(30+20*j, 30+20*i, 'money');
                     money.body.immovable = false;
@@ -278,7 +285,7 @@ Heist.LevelTwo.prototype = {
 
 
       // The player and its settings
-      player = this.add.sprite(this.world.centerX - 620, this.world.height - 700, 'dude')
+      player = this.add.sprite(this.world.centerX - 650, this.world.height - 500, 'dude')
       // player.body.setSize(20, 30, 0, 0)
 
       //  We need to enable physics on the player
@@ -457,6 +464,7 @@ Heist.LevelTwo.prototype = {
        //  Collision for things.
       this.physics.arcade.collide(player, platforms);
       this.physics.arcade.collide(player, this.innerWall);
+      this.physics.arcade.collide(player, this.invisibleWall);
       this.physics.arcade.collide(player, this.outerWall);
       this.physics.arcade.collide(player, this.kWall);
       this.physics.arcade.collide(player, this.badguy);

@@ -50,6 +50,7 @@ Heist.LevelOneSummary.prototype = {
         this.state.start('LevelTwo')
         this.state.add('LevelTwoSummary', Heist.LevelTwoSummary)
         Heist.levelScore = 0;
+        Heist.health = 80;
 
       },
 
