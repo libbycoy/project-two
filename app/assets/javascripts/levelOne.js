@@ -18,8 +18,11 @@ Heist.LevelOne = function(game) {
   this.promptText;
   this.promptText2;
   this.timeDisplay;
-  this.style1 = { font: '25px Nothing You Could Do', fill: '#00FFFF' };
-  this.style2 = { font: '25px Nothing You Could Do', fill: '#00FFFF', align: 'centerY' };
+  this.style1 = { font: '17px Alegreya Sans SC', fill: '#00FFFF' };
+  this.style2 = { font: '37px Alegreya Sans SC', fill: '#073D76', align: 'centerY' };
+  this.style2.stroke = '#FFFFFF';
+  this.style2.strokeThickness = 5;
+  this.style3 = { font: '37px Alegreya Sans SC', fill: '#00FFFF', align: 'centerY' };
   this.opaqimg;
   this.timer;
   this.timerEvent;
@@ -396,7 +399,7 @@ Heist.LevelOne.prototype = {
       timeDisplay.fixedToCamera = true;
 
       // NotificationText varaible
-      notificationText = this.add.text(480, 480, '', this.style2);
+      notificationText = this.add.text(480, 480, '', this.style3);
       notificationText.anchor.setTo(0.5, 0.5);
       notificationText.fixedToCamera = true;
 
