@@ -296,34 +296,48 @@ Heist.LevelOne.prototype = {
       this.cop2 = this.game.add.sprite(250, 400, 'cop');
       this.cop3 = this.game.add.sprite(1200, 310, 'cop');
       this.cop4 = this.game.add.sprite(900, 800, 'cop');
+      this.cop5 = this.game.add.sprite(600, 700, 'cop');
+      this.cop6 = this.game.add.sprite(400, 1200, 'cop');
       this.physics.arcade.enable(this.cop);
       this.physics.arcade.enable(this.cop2);
       this.physics.arcade.enable(this.cop3);
       this.physics.arcade.enable(this.cop4);
+      this.physics.arcade.enable(this.cop5);
+      this.physics.arcade.enable(this.cop6);
 
       // the cop
       this.cop.body.setCircle(30);
       this.cop2.body.setCircle(30);
       this.cop3.body.setCircle(30);
       this.cop4.body.setCircle(30);
-      this.cop.body.static = true;
-      this.cop2.body.static = true;
+      this.cop5.body.setCircle(30);
+      this.cop6.body.setCircle(30);
+      // this.cop.body.static = true;
+      // this.cop2.body.static = true;
       this.cop.frame = 12;
       this.cop2.frame = 12;
       this.cop3.frame = 12;
       this.cop4.frame = 12;
+      this.cop5.frame = 12;
+      this.cop6.frame = 12;
       this.cop.body.collideWorldBounds = true;
       this.cop2.body.collideWorldBounds = true;
       this.cop3.body.collideWorldBounds = true;
       this.cop4.body.collideWorldBounds = true;
+      this.cop5.body.collideWorldBounds = true;
+      this.cop6.body.collideWorldBounds = true;
       this.cop.body.velocity.x = -100;
       this.cop2.body.velocity.y = -100;
       this.cop3.body.velocity.x = -100;
       this.cop4.body.velocity.y = -200;
+      this.cop5.body.velocity.y = -150;
+      this.cop6.body.velocity.x = -200;
       this.cop.body.bounce.setTo(1,1);
       this.cop2.body.bounce.setTo(1,1);
       this.cop3.body.bounce.setTo(1,1);
       this.cop4.body.bounce.setTo(1,1);
+      this.cop5.body.bounce.setTo(1,1);
+      this.cop6.body.bounce.setTo(1,1);
 
       // the dog
       this.dog.frame = 12;
@@ -467,6 +481,16 @@ Heist.LevelOne.prototype = {
       this.physics.arcade.collide(this.cop4, this.outerWall);
       this.physics.arcade.collide(this.cop4, player, this.getHurtBoi );
       this.physics.arcade.collide(this.cop4, this.kWall);
+      this.physics.arcade.collide(this.cop5, platforms);
+      this.physics.arcade.collide(this.cop5, this.innerWall);
+      this.physics.arcade.collide(this.cop5, this.outerWall);
+      this.physics.arcade.collide(this.cop5, player, this.getHurtBoi );
+      this.physics.arcade.collide(this.cop5, this.kWall);
+      this.physics.arcade.collide(this.cop6, platforms);
+      this.physics.arcade.collide(this.cop6, this.innerWall);
+      this.physics.arcade.collide(this.cop6, this.outerWall);
+      this.physics.arcade.collide(this.cop6, player, this.getHurtBoi );
+      this.physics.arcade.collide(this.cop6, this.kWall);
       this.physics.arcade.collide(this.money, platforms);
       this.physics.arcade.collide(this.gold, platforms);
       //this.physics.arcade.collide(this.lasers, player);
@@ -500,6 +524,14 @@ Heist.LevelOne.prototype = {
 
       if (Math.abs(player.x - this.cop4.x) <= 200 && Math.abs(player.y - this.cop4.y) <= 200) {
         this.physics.arcade.moveToObject(this.cop4, player, 10000, 1000);
+      }
+
+      if (Math.abs(player.x - this.cop5.x) <= 150 && Math.abs(player.y - this.cop5.y) <= 150) {
+        this.physics.arcade.moveToObject(this.cop5, player, 90000, 1000);
+      }
+
+      if (Math.abs(player.x - this.cop6.x) <= 150 && Math.abs(player.y - this.cop6.y) <= 150) {
+        this.physics.arcade.moveToObject(this.cop6, player, 120000, 1000);
       }
 
 
