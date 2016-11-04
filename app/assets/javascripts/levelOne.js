@@ -250,6 +250,14 @@ Heist.LevelOne.prototype = {
                       //money.enableBody = true;
                   }
 
+                  if (level [i][j] == '@'){
+                      var gold = this.gold.create(30+20*j, 30+20*i, 'gold');
+                      gold.body.immovable = true;
+                      //money.enableBody = true;
+                  }
+
+
+
 
                 // Check if current cell is an alphabet letter, and decide whether to draw the
                 // wall for that letter group
