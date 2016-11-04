@@ -27,6 +27,7 @@ Heist.Preloader.prototype = {
         this.load.spritesheet('button-02', 'assets/tutorial_button-04.png', 193, 81);
         this.load.spritesheet('button-03', 'assets/button-05.png', 193, 81);
         this.load.spritesheet('button-04', 'assets/play-again-05.png', 193, 81);
+        this.load.spritesheet('button-05', 'assets/button_go-04.png', 193, 81);
         this.load.image('outerWall', 'assets/walls/outer-wall-block.png');
         this.load.image('innerWall', 'assets/walls/inner-wall-block.png');
         this.load.image('laser', 'assets/line-02.png');
