@@ -54,6 +54,7 @@ Heist.MainMenu.prototype = {
         this.state.add('LevelOne', Heist.LevelOne)
         this.state.start('LevelOne')
         Heist.playerLives = 3;
+        Heist.health = 80;
       },
 
     };

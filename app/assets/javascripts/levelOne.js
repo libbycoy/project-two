@@ -31,8 +31,13 @@ Heist.LevelOne = function(game) {
   this.outerWall;
   this.outerwalls;
   this.lasers;
-
   this.dog;
+
+  this.footstepsSoundTimer = -1;
+
+  // Sound variables
+  this.footsteps;
+  this.footStepSound;
 
 
   //Weight limit variable
@@ -346,10 +351,6 @@ Heist.LevelOne.prototype = {
       //this.physics.arcade.moveToObject(this.dog, player, 200, 3000);
       // this.moveDog();
 
-
-
-
-
       //  Our controls.
       cursors = this.input.keyboard.createCursorKeys();
       x = this.input.keyboard.addKey(Phaser.Keyboard.X);
@@ -437,6 +438,11 @@ Heist.LevelOne.prototype = {
         this.createBadGuy(480, 550);
       }
 
+      //SOUNDS ///////////////////////////////////////////////////////////
+      // cursors = this.input.keyboard.createCursorKeys();
+      // x = this.input.keyboard.addKey(Phaser.Keyboard.X);
+      this.footStepSound = this.add.audio('stepsound');
+      this.dogbark = this.add.audio('woof');
   },
 
   update: function () {
@@ -517,6 +523,9 @@ Heist.LevelOne.prototype = {
       if (Math.abs(player.x - this.cop4.x) <= 200 && Math.abs(player.y - this.cop4.y) <= 200) {
         this.physics.arcade.moveToObject(this.cop4, player, 10000, 1000);
       }
+      if (Math.abs(player.x - this.dog.x) <= 200 && Math.abs(player.y - this.cop4.y) <= 200) {
+        this.dogbark.play("", 0, 0.3, true )
+      }
 
 
       // var dogOverlap = this.physics.arcade.overlap(player, this.dog, this.moveDog, null, this)
@@ -531,28 +540,69 @@ Heist.LevelOne.prototype = {
 
       this.physics.arcade.moveToObject(this.dog, player, 5000, 1000);
 
+      // console.log('FOOTSTEPSOUND', this.footStepSound, this);
+
+
+      var playFootSteps = function () {
+        // debugger;
+        console.log('%cplayFootSteps', 'font-size: 14pt; color: red;', this.footStepSound, this);
+        this.footStepSound.play("", 0, 0.5, true );
+      }.bind(this);
+
+      var testPlayFootSteps = function (start) {
+        if(start){
+          console.log('in testPlayFootSteps', this.footstepsSoundTimer, this.footStepSound);
+          if( this.footstepsSoundTimer == -1) {
+            var sound = this.footStepSound;
+            this.footstepsSoundTimer = setInterval(function () {
+              playFootSteps();
+            }, 500);
+          }
+        } else {
+          //stop
+          clearTimeout(this.footstepsSoundTimer);
+          this.footstepsSoundTimer = -1;
+          // console.log('clear sound timer', this.footstepsSoundTimer);
+        }
+      };
+
+      // debugger;
+
+if (cursors.left._justDown) {
+  console.log('JUST DOWN');
+} else if (cursors.left._justUp) {
+console.log('JUST UP');
+
+}
 
       if (cursors.left.isDown) {
           //  Move to the left
           player.body.velocity.x = -250;
-
+          testPlayFootSteps(true);
           player.animations.play('left');
       } else if (cursors.right.isDown) {
           //  Move to the right
           player.body.velocity.x = 250;
-
+          testPlayFootSteps(true);
           player.animations.play('right');
       } else {
           //  Stand still
           player.animations.stop();
-
+          testPlayFootSteps(false);
           player.frame = 4;
       }
 
       if (cursors.up.isDown) {
           player.body.velocity.y = -250;
+          this.playFootSteps
+          testPlayFootSteps(true);
       } else if (cursors.down.isDown) {
           player.body.velocity.y = 250;
+          this.playFootSteps
+          testPlayFootSteps(true);
+      } else {
+          //  Stand still
+          testPlayFootSteps(false);
       }
 
       // Diagonal movement controller ///////////////////////////////////////////

@@ -38,6 +38,9 @@ Heist.Preloader.prototype = {
         this.load.spritesheet('mummy', 'assets/71e-01.png', 107, 70, 5);
         this.load.spritesheet('guardDog', 'assets/guard-dog-sprite.png', 60, 48);
         this.load.spritesheet('police', 'assets/redcars.png',  107, 70, 5);
+
+        this.load.audio('stepsound', 'assets/step.mp3');
+        this.load.audio('woof', 'assets/dogbark.mp3');
   },
 
   create: function() {
